@@ -8,37 +8,38 @@ import {
   FormMessage,
   FormLabel,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
-
-// ✅ Schema
-const formSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  terms: z
-    .boolean()
-    .refine((val) => val === true, { message: "You must agree to terms" }),
-  alerts: z
-    .boolean()
-    .refine((val) => val === true, { message: "You must agree to alerts" }),
-});
-
-// ✅ Type from Schema
-type LoginFormValues = z.infer<typeof formSchema>;
-
-export default function Login() {
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(formSchema),
+import { registerUser } from "@/services/AuthServices";
+import { toast } from "sonner";
+import { Dispatch, SetStateAction } from "react";
+import {
+  RegisterFormValues,
+  registrationSchema,
+} from "./RegisterValidationSchema";
+import { useUser } from "@/Context/UserContext";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import auth from "../../../Firebase/firebase.config";
+export default function Register({
+  setOpen,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registrationSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       terms: false,
       alerts: false,
     },
   });
-
+  const { setIsLoading } = useUser();
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
   const {
     formState: { isSubmitting },
     watch,
@@ -49,14 +50,58 @@ export default function Login() {
   const alerts = watch("alerts");
   const isAgreed = terms && alerts;
 
-  // ✅ Typed onSubmit
-  function onSubmit(values: LoginFormValues) {
-    console.log(values);
-  }
+  // Step 3: Safe type for form values
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      // Create user in Firebase
+      const firebaseUser = await createUserWithEmailAndPassword(
+        data.email,
+        data.password
+      );
+
+      if (firebaseUser?.user) {
+        // Prepare the data you want to send to your backend
+        const payload = {
+          name: data.name,
+          email: data.email,
+          password: data.password, // ⚠️ Only if your backend needs it (ensure secure handling!)
+        };
+
+        // Send to your backend
+        const res = await registerUser(payload);
+
+        if (res.success) {
+          toast.success(res?.message || "Registration successful!");
+          setOpen(false);
+          setIsLoading(true);
+        } else {
+          toast.error(res?.message || "Something went wrong!");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An unexpected error occurred!");
+    }
+  };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        {/* Name Field */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Full Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Email Field */}
         <FormField
           control={form.control}
           name="email"
@@ -70,6 +115,7 @@ export default function Login() {
           )}
         />
 
+        {/* Password Field */}
         <FormField
           control={form.control}
           name="password"
@@ -83,6 +129,7 @@ export default function Login() {
           )}
         />
 
+        {/* Terms Checkbox */}
         <FormField
           control={form.control}
           name="terms"
@@ -105,6 +152,7 @@ export default function Login() {
           )}
         />
 
+        {/* Alerts Checkbox */}
         <FormField
           control={form.control}
           name="alerts"
@@ -124,12 +172,13 @@ export default function Login() {
           )}
         />
 
+        {/* Submit Button */}
         <Button
           type="submit"
           className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-semibold"
           disabled={!isAgreed || isSubmitting}
         >
-          {isSubmitting ? "Отправка..." : "авторизоваться"}
+          {isSubmitting ? "Отправка..." : "Создать аккаунт"}
         </Button>
       </form>
     </Form>

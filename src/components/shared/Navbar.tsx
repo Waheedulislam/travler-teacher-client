@@ -1,10 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import { LogIn as LoginIcon, LogOut as LogoutIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -14,16 +15,41 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import LoginRegisterModal from "../ui/core/NMTabs/NMTabs";
+import { useUser } from "@/Context/UserContext";
+import { logout } from "@/services/AuthServices";
+import { CgLogOut } from "react-icons/cg";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, setIsLoading } = useUser();
+  const router = useRouter();
 
-  const navItems = [
-    { name: "Учителя", href: "/" },
-    { name: "Категории", href: "/categories" },
-    { name: "Страны", href: "/countries" },
-  ];
+  const handleLogOut = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out from your account.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, log me out",
+      cancelButtonText: "Cancel",
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        logout();
+        setIsLoading(true);
+        Swal.fire({
+          title: "Logged out!",
+          text: "You have been successfully logged out.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    });
+  };
 
   const NavLinks = () => (
     <ul className="flex flex-col lg:flex-row lg:justify-center items-start lg:items-center gap-4 lg:gap-12 text-base lg:text-lg text-[#33373D] w-full lg:w-auto">
@@ -45,7 +71,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className=" w-full px-4 lg:px-12 py-3 bg-white shadow-sm flex items-center justify-between sticky top-0 z-50">
+    <nav className="w-full px-4 lg:px-12 py-3 bg-white shadow-sm flex items-center justify-between sticky top-0 z-50">
       {/* Logo */}
       <Link href="/">
         <Image
@@ -64,24 +90,36 @@ const Navbar = () => {
 
       {/* Desktop Actions */}
       <div className="hidden lg:flex items-center gap-4">
-        <Link href="/login" className="text-orange-500 text-xl">
-          Войти в лк
-        </Link>
-
-        <LoginRegisterModal>
-          <Button className="bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-12 py-4 rounded-md shadow hover:opacity-90 transition text-lg font-normal">
-            Найти учителя
+        {!user ? (
+          <LoginRegisterModal>
+            <Button
+              variant="ghost"
+              className="text-orange-500 text-xl flex items-center gap-2"
+            >
+              <LoginIcon size={20} /> Войти в лк
+            </Button>
+          </LoginRegisterModal>
+        ) : (
+          <Button
+            onClick={handleLogOut}
+            className="flex items-center gap-2 bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 px-10 py-3 rounded-md text-lg font-semibold shadow-md transition-all duration-200 "
+          >
+            <CgLogOut style={{ width: "20px", height: "20px" }} /> Выйти
           </Button>
-        </LoginRegisterModal>
+        )}
+
+        <Button className="bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-12 py-4 rounded-md shadow hover:opacity-90 transition text-lg font-normal">
+          Найти учителя
+        </Button>
       </div>
 
       {/* Mobile Nav Toggle */}
       <div className="lg:hidden">
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger asChild>
-            <div className=" text-black hover:bg-yellow-400">
+            <div className="text-black ">
               {menuOpen ? (
-                <X size={30} className="text-black " />
+                <X size={30} className="text-black" />
               ) : (
                 <Menu size={30} className="text-black" />
               )}
@@ -96,12 +134,24 @@ const Navbar = () => {
             </SheetHeader>
             <div className="mt-2 space-y-6 px-2">
               <NavLinks />
-              <Link
-                href="/login"
-                className="block text-orange-500 px-4 text-lg font-normal"
-              >
-                Войти в лк
-              </Link>
+              {!user ? (
+                <LoginRegisterModal>
+                  <Button
+                    variant="ghost"
+                    className="text-orange-500 text-xl flex items-center gap-2 w-full"
+                  >
+                    <LoginIcon size={20} /> Войти в лк
+                  </Button>
+                </LoginRegisterModal>
+              ) : (
+                <Button
+                  onClick={handleLogOut}
+                  className="w-full bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 font-semibold py-2 rounded-md shadow-md transition-all duration-200 flex items-center gap-2 text-md"
+                >
+                  <CgLogOut className="w-12 h-12" /> Выйти
+                </Button>
+              )}
+
               <Button className="px-2 w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md shadow hover:opacity-90 transition">
                 Найти учителя
               </Button>
@@ -112,5 +162,11 @@ const Navbar = () => {
     </nav>
   );
 };
+
+const navItems = [
+  { name: "Учителя", href: "/" },
+  { name: "Категории", href: "/categories" },
+  { name: "Страны", href: "/countries" },
+];
 
 export default Navbar;

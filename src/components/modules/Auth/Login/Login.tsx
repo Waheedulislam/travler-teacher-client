@@ -12,36 +12,27 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
-import { registerUser } from "@/services/AuthServices";
+import { LoginFormValues, loginSchema } from "./LoginValidationSchema";
+import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
+import { LoginUser } from "@/services/AuthServices";
+import { useUser } from "@/Context/UserContext";
 
-// Step 1: Form schema update with 'name'
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  terms: z
-    .boolean()
-    .refine((val) => val === true, { message: "You must agree to terms" }),
-  alerts: z
-    .boolean()
-    .refine((val) => val === true, { message: "You must agree to alerts" }),
-});
-
-// Step 2: TypeScript type from schema
-type RegisterFormValues = z.infer<typeof formSchema>;
-
-export default function Register() {
-  const form = useForm<RegisterFormValues>({
-    resolver: zodResolver(formSchema),
+export default function Login({
+  setOpen,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
       terms: false,
       alerts: false,
     },
   });
+  const { setIsLoading } = useUser();
 
   const {
     formState: { isSubmitting },
@@ -53,14 +44,15 @@ export default function Register() {
   const alerts = watch("alerts");
   const isAgreed = terms && alerts;
 
-  // Step 3: Safe type for form values
+  // ✅ Typed onSubmit
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     try {
-      const res = await registerUser(data);
+      const res = await LoginUser(data);
 
       if (res.success) {
         toast.success(res?.message || "Registration successful!");
+        setOpen(false);
+        setIsLoading(true);
       } else {
         toast.error(res?.message || "Something went wrong!");
       }
@@ -73,21 +65,6 @@ export default function Register() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        {/* Name Field */}
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Full Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Email Field */}
         <FormField
           control={form.control}
           name="email"
@@ -101,7 +78,6 @@ export default function Register() {
           )}
         />
 
-        {/* Password Field */}
         <FormField
           control={form.control}
           name="password"
@@ -115,7 +91,6 @@ export default function Register() {
           )}
         />
 
-        {/* Terms Checkbox */}
         <FormField
           control={form.control}
           name="terms"
@@ -138,7 +113,6 @@ export default function Register() {
           )}
         />
 
-        {/* Alerts Checkbox */}
         <FormField
           control={form.control}
           name="alerts"
@@ -158,13 +132,12 @@ export default function Register() {
           )}
         />
 
-        {/* Submit Button */}
         <Button
           type="submit"
           className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-semibold"
           disabled={!isAgreed || isSubmitting}
         >
-          {isSubmitting ? "Отправка..." : "Создать аккаунт"}
+          {isSubmitting ? "Отправка..." : "авторизоваться"}
         </Button>
       </form>
     </Form>
