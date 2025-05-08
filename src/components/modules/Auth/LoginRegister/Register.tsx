@@ -8,10 +8,12 @@ import {
   FormMessage,
   FormLabel,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
+import { registerUser } from "@/services/AuthServices";
+import { toast } from "sonner";
 
 // Step 1: Form schema update with 'name'
 const formSchema = z.object({
@@ -52,9 +54,21 @@ export default function Register() {
   const isAgreed = terms && alerts;
 
   // Step 3: Safe type for form values
-  function onSubmit(values: RegisterFormValues) {
-    console.log(values);
-  }
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data);
+    try {
+      const res = await registerUser(data);
+
+      if (res.success) {
+        toast.success(res?.message || "Registration successful!");
+      } else {
+        toast.error(res?.message || "Something went wrong!");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An unexpected error occurred!");
+    }
+  };
 
   return (
     <Form {...form}>
