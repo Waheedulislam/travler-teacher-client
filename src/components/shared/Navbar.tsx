@@ -13,7 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import LoginRegisterModal from "../modules/Auth/LoginRegister/LoginRegister";
+import LoginRegisterModal from "../ui/core/NMTabs/NMTabs";
 
 const Navbar = () => {
   const pathname = usePathname();
