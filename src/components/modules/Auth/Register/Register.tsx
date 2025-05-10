@@ -51,39 +51,57 @@ export default function Register({
   const isAgreed = terms && alerts;
 
   // Step 3: Safe type for form values
+  // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  //   try {
+  //     // Create user in Firebase
+  //     const firebaseUser = await createUserWithEmailAndPassword(
+  //       data.email,
+  //       data.password
+  //     );
+
+  //     if (firebaseUser?.user) {
+  //       // Prepare the data you want to send to your backend
+  //       const payload = {
+  //         name: data.name,
+  //         email: data.email,
+  //         password: data.password,
+  //       };
+
+  //       // Send to your backend
+  //       const res = await registerUser(payload);
+
+  //       if (res.success) {
+  //         toast.success(res?.message || "Registration successful!");
+  //         setOpen(false);
+  //         setIsLoading(true);
+  //       } else {
+  //         toast.error(res?.message || "Something went wrong!");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("An unexpected error occurred!");
+  //   }
+  // };
+
+  // Step 3: Safe type for form values
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       // Create user in Firebase
       const firebaseUser = await createUserWithEmailAndPassword(
         data.email,
         data.password
-      );
-
-      if (firebaseUser?.user) {
-        // Prepare the data you want to send to your backend
-        const payload = {
-          name: data.name,
-          email: data.email,
-          password: data.password, // ⚠️ Only if your backend needs it (ensure secure handling!)
-        };
-
-        // Send to your backend
-        const res = await registerUser(payload);
-
-        if (res.success) {
-          toast.success(res?.message || "Registration successful!");
+      ).then((data) => {
+        if (data?.user?.email) {
+          toast.success("Successfully login");
           setOpen(false);
-          setIsLoading(true);
-        } else {
-          toast.error(res?.message || "Something went wrong!");
         }
-      }
+      });
     } catch (error) {
       console.error(error);
       toast.error("An unexpected error occurred!");
     }
   };
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">

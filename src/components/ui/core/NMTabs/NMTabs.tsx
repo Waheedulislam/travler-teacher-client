@@ -56,12 +56,12 @@ export default function LoginRegisterModal({ children }: Props) {
           <Button variant="outline" className="w-full flex items-center gap-2">
             <FcGoogle size={18} /> Continue with Google
           </Button>
-          <Button variant="outline" className="w-full flex items-center gap-2">
+          {/* <Button variant="outline" className="w-full flex items-center gap-2">
             <FaApple size={18} /> Continue with Apple
           </Button>
           <Button variant="outline" className="w-full flex items-center gap-2">
             <FaFacebookF size={18} /> Continue with Facebook
-          </Button>
+          </Button> */}
         </div>
       </DialogContent>
     </Dialog>
