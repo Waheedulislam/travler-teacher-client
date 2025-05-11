@@ -15,11 +15,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import LoginRegisterModal from "../ui/core/NMTabs/NMTabs";
-// import { useUser } from "@/Context/UserContext";
 import { logout } from "@/services/AuthServices";
 import { CgLogOut } from "react-icons/cg";
 import Swal from "sweetalert2";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import auth from "../Firebase/firebase.config";
 
 const Navbar = () => {
@@ -27,6 +26,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   // const { user, setIsLoading } = useUser();
   const [user] = useAuthState(auth);
+  const [signOut] = useSignOut(auth);
 
   const handleLogOut = () => {
     Swal.fire({
@@ -41,6 +41,7 @@ const Navbar = () => {
     }).then((result: any) => {
       if (result.isConfirmed) {
         logout();
+        signOut();
         Swal.fire({
           title: "Logged out!",
           text: "You have been successfully logged out.",
@@ -109,9 +110,11 @@ const Navbar = () => {
           </Button>
         )}
 
-        <Button className="bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-12 py-4 rounded-md shadow hover:opacity-90 transition text-lg font-normal">
-          Найти учителя
-        </Button>
+        <Link href="teacher">
+          <Button className="cursor-pointer bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-12 py-4 rounded-md shadow hover:opacity-90 transition text-lg font-normal">
+            Найти учителя
+          </Button>
+        </Link>
       </div>
 
       {/* Mobile Nav Toggle */}
@@ -153,9 +156,11 @@ const Navbar = () => {
                 </Button>
               )}
 
-              <Button className="px-2 w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md shadow hover:opacity-90 transition">
-                Найти учителя
-              </Button>
+              <Link href="teacher">
+                <Button className="cursor-pointer  px-2 w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md shadow hover:opacity-90 transition">
+                  Найти учителя
+                </Button>
+              </Link>
             </div>
           </SheetContent>
         </Sheet>

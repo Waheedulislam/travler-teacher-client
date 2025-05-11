@@ -9,6 +9,7 @@ import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import Link from "next/link";
 
 const MostPopularTeachers = () => {
   return (
@@ -39,33 +40,35 @@ const MostPopularTeachers = () => {
           {teachers.map((teacher, index) => (
             <SwiperSlide key={index}>
               <SwiperSlide key={index}>
-                <div className="relative w-full max-w-xs h-96 mx-auto rounded-2xl overflow-hidden shadow-lg border ">
-                  {/* Image */}
-                  <div>
+                <Card
+                  key={index}
+                  className="overflow-hidden border shadow-lg rounded-2xl w-80 p-0 mx-auto"
+                >
+                  <div className="relative w-full max-w-80  p-0 h-96 mx-auto rounded-2xl">
                     <Image
                       src={teacher.image}
                       alt={teacher.name}
                       fill
-                      className="object-cover"
+                      className="object-cover w-96"
                     />
                   </div>
-                </div>
-                <Card className=" mx-10  border border-white">
-                  <div className="">
-                    <div className="flex items-center justify-center gap-20 ">
-                      <div className="text-lg font-semibold">
+                  <div className="p-4">
+                    <div className="flex items-center justify-center gap-20 px-12">
+                      <div className="text-lg font-semibold ml-2">
                         {teacher.name}
                       </div>
                       <Image
                         src={teacher.countryImage}
                         alt={teacher.name}
-                        width={50}
-                        height={50}
-                        className="object-cover rounded-xl"
+                        width={40}
+                        height={40}
+                        className="object-cover rounded-2xl"
                       />
-                      <p className="text-lg font-semibold">{teacher.country}</p>
+                      <p className="text-lg font-semibold mr-2">
+                        {teacher.country}
+                      </p>
                     </div>
-                    <div className="my-2 font-semibold text-gray-700">
+                    <div className="my-2 font-semibold text-center text-gray-700">
                       {teacher.description}
                     </div>
                   </div>
@@ -75,9 +78,11 @@ const MostPopularTeachers = () => {
           ))}
         </Swiper>
 
-        <Button className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white  px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
-          Смотреть все категории
-        </Button>
+        <Link href="teacher">
+          <Button className="cursor-pointer bg-gradient-to-r from-orange-400 to-yellow-400 text-white  px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
+            Смотреть все категории
+          </Button>
+        </Link>
       </section>
     </Container>
   );

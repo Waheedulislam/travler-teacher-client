@@ -12,6 +12,9 @@ import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Register from "@/components/modules/Auth/Register/Register";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import auth from "@/components/Firebase/firebase.config";
+import { toast } from "sonner";
 
 interface Props {
   children: ReactElement;
@@ -19,6 +22,21 @@ interface Props {
 
 export default function LoginRegisterModal({ children }: Props) {
   const [open, setOpen] = useState(false);
+  const [signInWithGoogle] = useSignInWithGoogle(auth);
+
+  const handleGoogleLogin = async () => {
+    try {
+      const userCredential = await signInWithGoogle();
+
+      if (userCredential?.user?.email) {
+        toast.success("Successfully signed in with Google");
+        setOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An unexpected error occurred during Google login!");
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -52,7 +70,11 @@ export default function LoginRegisterModal({ children }: Props) {
           <Separator className="flex-1" />
         </div>
         <div className="space-y-2">
-          <Button variant="outline" className="w-full flex items-center gap-2">
+          <Button
+            onClick={handleGoogleLogin}
+            variant="outline"
+            className="w-full flex items-center gap-2"
+          >
             <FcGoogle size={18} /> Continue with Google
           </Button>
           {/* <Button variant="outline" className="w-full flex items-center gap-2">

@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const PopularCategories = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -65,8 +66,9 @@ const PopularCategories = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+        <Link href="categories"></Link>
 
-        <Button className="bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white  px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
+        <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white  px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
           Смотреть все категории
         </Button>
       </section>
