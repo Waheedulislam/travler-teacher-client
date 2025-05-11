@@ -2,22 +2,17 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { format } from "date-fns";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
 import bannerImage from "../../../../../public/assets/banner-image.png";
 import { FaLocationDot } from "react-icons/fa6";
-import { FaCalendarAlt } from "react-icons/fa";
 import { BsCurrencyDollar } from "react-icons/bs";
+import { FaCalendarAlt } from "react-icons/fa";
 
 export default function HeroSection() {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | null>(new Date());
 
   return (
     <section className="relative w-full h-[90vh] overflow-hidden">
@@ -60,24 +55,20 @@ export default function HeroSection() {
             </div>
 
             {/* Date Picker */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <div className="flex items-center gap-2 min-w-[160px] flex-1 cursor-pointer">
-                  <div className="border border-[#1E93A6] rounded-xl p-3 flex items-center justify-center">
-                    <FaCalendarAlt className="text-[#1E93A6] h-5 w-5" />
-                  </div>
-                  <div className="flex flex-col text-base">
-                    <span className="text-muted-foreground">Дата</span>
-                    <span className="font-medium text-[#FF8926]">
-                      {format(date ?? new Date(), "eee, d MMM")}
-                    </span>
-                  </div>
-                </div>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={date} onSelect={setDate} />
-              </PopoverContent>
-            </Popover>
+            <div className="flex items-center gap-2 min-w-[160px] flex-1">
+              <div className="border border-[#1E93A6] rounded-xl p-3 flex items-center justify-center">
+                <FaCalendarAlt className="text-[#1E93A6] h-5 w-5" />
+              </div>
+              <div className="flex flex-col text-base">
+                <span className="text-muted-foreground">Дата</span>
+                <DatePicker
+                  selected={date}
+                  onChange={(date) => setDate(date)}
+                  dateFormat="EEE, d MMM"
+                  className="font-medium text-[#FF8926] bg-transparent border-none focus:outline-none"
+                />
+              </div>
+            </div>
 
             {/* CTA Button */}
             <div className="w-full md:w-auto">
