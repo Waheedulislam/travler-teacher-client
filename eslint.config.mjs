@@ -13,7 +13,7 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
-      "@typeScript-eslint/no-explicit-any": "warn"
+      "@typescript-eslint/no-explicit-any": "warn"
     }
   }
 ];

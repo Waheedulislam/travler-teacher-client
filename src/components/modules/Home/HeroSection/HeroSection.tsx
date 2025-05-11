@@ -26,7 +26,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      {/* Overlay Card */}
+      {/* Overlay Card sasdf */}
       <div className="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4">
         <Card className="mx-auto rounded-2xl bg-white/90 backdrop-blur-md shadow-xl border border-white/40 w-full max-w-4xl">
           <div className="flex flex-wrap items-center justify-center md:justify-between gap-4 md:gap-6 p-6">
