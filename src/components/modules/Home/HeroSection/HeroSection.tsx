@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -61,12 +60,7 @@ export default function HeroSection() {
               </div>
               <div className="flex flex-col text-base">
                 <span className="text-muted-foreground">Дата</span>
-                <DatePicker
-                  selected={date}
-                  onChange={(date) => setDate(date)}
-                  dateFormat="EEE, d MMM"
-                  className="font-medium text-[#FF8926] bg-transparent border-none focus:outline-none"
-                />
+                <span className="font-medium text-[#FF8926]">$800 - $1000</span>
               </div>
             </div>
 
