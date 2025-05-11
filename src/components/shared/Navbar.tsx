@@ -1,11 +1,11 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { LogIn as LoginIcon, LogOut as LogoutIcon } from "lucide-react";
+import { LogIn as LoginIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,16 +15,18 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import LoginRegisterModal from "../ui/core/NMTabs/NMTabs";
-import { useUser } from "@/Context/UserContext";
+// import { useUser } from "@/Context/UserContext";
 import { logout } from "@/services/AuthServices";
 import { CgLogOut } from "react-icons/cg";
 import Swal from "sweetalert2";
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "../Firebase/firebase.config";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, setIsLoading } = useUser();
-  const router = useRouter();
+  // const { user, setIsLoading } = useUser();
+  const [user] = useAuthState(auth);
 
   const handleLogOut = () => {
     Swal.fire({
@@ -39,7 +41,6 @@ const Navbar = () => {
     }).then((result: any) => {
       if (result.isConfirmed) {
         logout();
-        setIsLoading(true);
         Swal.fire({
           title: "Logged out!",
           text: "You have been successfully logged out.",

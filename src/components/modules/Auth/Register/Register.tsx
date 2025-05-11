@@ -12,14 +12,12 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
-import { registerUser } from "@/services/AuthServices";
 import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
 import {
   RegisterFormValues,
   registrationSchema,
 } from "./RegisterValidationSchema";
-import { useUser } from "@/Context/UserContext";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "../../../Firebase/firebase.config";
 export default function Register({
@@ -37,8 +35,7 @@ export default function Register({
       alerts: false,
     },
   });
-  const { setIsLoading } = useUser();
-  const [createUserWithEmailAndPassword, user, loading, error] =
+  const [createUserWithEmailAndPassword] =
     useCreateUserWithEmailAndPassword(auth);
   const {
     formState: { isSubmitting },
@@ -88,15 +85,15 @@ export default function Register({
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       // Create user in Firebase
-      const firebaseUser = await createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         data.email,
         data.password
-      ).then((data) => {
-        if (data?.user?.email) {
-          toast.success("Successfully login");
-          setOpen(false);
-        }
-      });
+      );
+
+      if (userCredential?.user?.email) {
+        toast.success("Successfully signed up");
+        setOpen(false);
+      }
     } catch (error) {
       console.error(error);
       toast.error("An unexpected error occurred!");

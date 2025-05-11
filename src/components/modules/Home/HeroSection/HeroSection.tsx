@@ -10,8 +10,6 @@ import { BsCurrencyDollar } from "react-icons/bs";
 import { FaCalendarAlt } from "react-icons/fa";
 
 export default function HeroSection() {
-  const [date, setDate] = useState<Date | null>(new Date());
-
   return (
     <section className="relative w-full h-[90vh] overflow-hidden">
       {/* Background Image */}
