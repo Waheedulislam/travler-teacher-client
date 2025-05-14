@@ -7,8 +7,25 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
 import NMDateComponents from "@/components/ui/core/NMDateComponents/NMDateComponents";
+import { ICategory } from "@/types/category";
+import { useEffect, useState } from "react";
+import { getAllCategory } from "@/services/CategoryServices";
 
 const PopularCategories = () => {
+  const [categories, setCategories] = useState<ICategory[]>([]);
+
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const response = await getAllCategory();
+        setCategories(response?.data?.result || []);
+      } catch (error) {
+        console.error("Error fetching teachers:", error);
+      }
+    };
+
+    fetchTeachers();
+  }, []);
   return (
     <Container>
       <div>
@@ -54,24 +71,5 @@ const PopularCategories = () => {
     </Container>
   );
 };
-
-const categories = [
-  {
-    title: "Итальянский в Риме",
-    image: "/assets/Category-image/Rectangle1.png",
-  },
-  {
-    title: "Английский в Лондоне",
-    image: "/assets/Category-image/Rectangle2.png",
-  },
-  {
-    title: "Испанский в Барселоне",
-    image: "/assets/Category-image/Rectangle3.png",
-  },
-  {
-    title: "Испанский в Барселоне",
-    image: "/assets/Category-image/Rectangle3.png",
-  },
-];
 
 export default PopularCategories;

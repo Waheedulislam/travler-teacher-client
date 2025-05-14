@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import bannerImage from "../../../../../public/assets/banner-image.png";
 import NMDateComponents from "@/components/ui/core/NMDateComponents/NMDateComponents";
 
 export default function HeroSection() {
@@ -10,7 +9,7 @@ export default function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={bannerImage}
+          src="https://rosemaryravinal.com/wp-content/uploads/2024/07/Tour-guide.png"
           alt="Banner Image"
           fill
           className="object-cover"

@@ -10,9 +10,25 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getAllCategory } from "@/services/CategoryServices";
+import { ICategory } from "@/types/category";
 
 const PopularCategories = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const response = await getAllCategory();
+        setCategories(response?.data?.result || []);
+      } catch (error) {
+        console.error("Error fetching teachers:", error);
+      }
+    };
+
+    fetchTeachers();
+  }, []);
 
   useEffect(() => {
     setIsMounted(true);
@@ -66,33 +82,14 @@ const PopularCategories = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <Link href="categories"></Link>
-
-        <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white  px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
-          Смотреть все категории
-        </Button>
+        <Link href="categories">
+          <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white  px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
+            Смотреть все категории
+          </Button>
+        </Link>
       </section>
     </Container>
   );
 };
-
-const categories = [
-  {
-    title: "Итальянский в Риме",
-    image: "/assets/Category-image/Rectangle1.png",
-  },
-  {
-    title: "Английский в Лондоне",
-    image: "/assets/Category-image/Rectangle2.png",
-  },
-  {
-    title: "Испанский в Барселоне",
-    image: "/assets/Category-image/Rectangle3.png",
-  },
-  {
-    title: "Испанский в Барселоне",
-    image: "/assets/Category-image/Rectangle3.png",
-  },
-];
 
 export default PopularCategories;

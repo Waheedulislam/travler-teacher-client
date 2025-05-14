@@ -38,7 +38,7 @@ const NMDateComponents = () => {
             </div>
             <div className="flex flex-col text-base">
               <span className="text-muted-foreground">Дата</span>
-              <span className="font-medium text-[#FF8926]">$800 - $1000</span>
+              <span className="font-medium text-[#FF8926]">Sun, 15 Jan</span>
             </div>
           </div>
 
