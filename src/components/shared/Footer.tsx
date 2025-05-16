@@ -69,24 +69,44 @@ export default function Footer() {
         {/* Social & App Download */}
         <div className="flex flex-col items-center md:items-start gap-4">
           <div className="flex space-x-3">
-            <Button
-              size="icon"
-              className="bg-[#1877F2] text-white hover:bg-[#155dc1] rounded-full"
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <FaFacebookF />
-            </Button>
-            <Button
-              size="icon"
-              className="bg-[#E4405F] text-white hover:bg-[#c32c4f] rounded-full"
+              <Button
+                size="icon"
+                className="bg-[#1877F2] text-white hover:bg-[#155dc1] rounded-full"
+              >
+                <FaFacebookF />
+              </Button>
+            </a>
+
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <FaInstagram />
-            </Button>
-            <Button
-              size="icon"
-              className="bg-[#1DA1F2] text-white hover:bg-[#0d8ddb] rounded-full"
+              <Button
+                size="icon"
+                className="bg-[#E4405F] text-white hover:bg-[#c32c4f] rounded-full"
+              >
+                <FaInstagram />
+              </Button>
+            </a>
+
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <FaTwitter />
-            </Button>
+              <Button
+                size="icon"
+                className="bg-[#1DA1F2] text-white hover:bg-[#0d8ddb] rounded-full"
+              >
+                <FaTwitter />
+              </Button>
+            </a>
           </div>
 
           <p className="mt-2">Скачайте приложение</p>
