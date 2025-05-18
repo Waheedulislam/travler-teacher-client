@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import NMDateComponents from "@/components/ui/core/NMDateComponents/NMDateComponents";
 
@@ -43,7 +42,7 @@ const AllTeachers = () => {
         {teachers.map((teacher, index) => (
           <Card
             key={index}
-            className="overflow-hidden border shadow-lg rounded-2xl w-80 p-0 mx-auto"
+            className="overflow-hidden border rounded-2xl w-80 p-0 mx-auto transform transition duration-300 hover:scale-105 shadow-md hover:shadow-lg"
           >
             <div className="relative w-full max-w-80  p-0 h-96 mx-auto rounded-2xl">
               <Image
@@ -72,11 +71,11 @@ const AllTeachers = () => {
           </Card>
         ))}
       </div>
-      <div className="text-center mb-12">
+      {/* <div className="text-center mb-12">
         <Button className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
           Load More
         </Button>
-      </div>
+      </div> */}
     </Container>
   );
 };

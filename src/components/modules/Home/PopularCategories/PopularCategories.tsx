@@ -34,7 +34,7 @@ const PopularCategories = () => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return null; // avoid hydration mismatch
+  if (!isMounted) return null;
 
   return (
     <Container>
@@ -44,6 +44,7 @@ const PopularCategories = () => {
           guide for the language you&lsquo;d like to learn.
         </h1>
       </div>
+
       <div>
         <Title title="Popular Categories" />
       </div>
@@ -63,23 +64,24 @@ const PopularCategories = () => {
         >
           {categories.map((cat, index) => (
             <SwiperSlide key={index}>
-              <div className="relative w-full max-w-xs mx-auto overflow-hidden">
+              <div className="group relative w-full max-w-xs mx-auto overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 ease-in-out hover:scale-[1.04] hover:shadow-xl">
                 <Image
                   src={cat.image}
                   alt={cat.title}
                   height={420}
                   width={420}
-                  className="object-cover"
+                  className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
                 />
-                <div className="absolute bottom-0 w-full bg-sky-400 text-white text-sm font-medium py-4 text-center rounded-b-xl">
+                <div className="absolute bottom-0 w-full bg-sky-500/90 backdrop-blur-sm text-white text-sm font-semibold py-4 text-center rounded-b-xl transition-colors duration-500 ease-in-out group-hover:bg-sky-600">
                   {cat.title}
                 </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
-        <Link href="categories">
-          <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
+
+        <Link href="/categories">
+          <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition duration-500 ease-in-out">
             View All Categories
           </Button>
         </Link>

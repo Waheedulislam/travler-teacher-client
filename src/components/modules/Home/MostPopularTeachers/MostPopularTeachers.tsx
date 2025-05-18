@@ -58,7 +58,7 @@ const MostPopularTeachers = () => {
         >
           {teachers.map((teacher) => (
             <SwiperSlide key={teacher._id}>
-              <Card className="overflow-hidden border shadow-lg rounded-2xl w-80 p-0 mx-auto">
+              <Card className=" overflow-hidden border shadow-lg rounded-2xl w-80 p-0 mx-auto transform transition duration-300 hover:scale-105">
                 <div className="relative w-full max-w-80 p-0 h-96 mx-auto rounded-2xl">
                   <Image
                     src={teacher.image}

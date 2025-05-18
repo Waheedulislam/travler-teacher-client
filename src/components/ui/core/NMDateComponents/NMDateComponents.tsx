@@ -3,6 +3,7 @@ import { Button } from "../../button";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
 import { Card } from "../../card";
+import Link from "next/link";
 
 const NMDateComponents = () => {
   return (
@@ -44,9 +45,11 @@ const NMDateComponents = () => {
 
           {/* CTA Button */}
           <div className="w-full md:w-auto">
-            <Button className="w-full md:w-auto bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-4 rounded-xl shadow-md hover:opacity-90 transition font-semibold text-base">
-              Find a Teacher
-            </Button>
+            <Link href="teacher">
+              <Button className="w-full md:w-auto bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-4 rounded-xl shadow-md hover:opacity-90 transition font-semibold text-base">
+                Find a Teacher
+              </Button>
+            </Link>
           </div>
         </div>
       </Card>

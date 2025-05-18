@@ -9,7 +9,6 @@ import Image from "next/image";
 import { MessageSquare, Plane } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
-import { Button } from "@/components/ui/button";
 
 export default function UseFulArticles() {
   return (
@@ -70,14 +69,14 @@ export default function UseFulArticles() {
             ))}
           </Swiper>
         </div>
-        <div className="text-center">
+        {/* <div className="text-center">
           <Button
             size="lg"
             className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white  px-12 py-6 my-10 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition"
           >
             Read all articles
           </Button>
-        </div>
+        </div> */}
       </section>
     </Container>
   );
