@@ -18,50 +18,50 @@ export default function Footer() {
           />
         </div>
 
-        {/* Учителя */}
+        {/* Teachers */}
         <div>
-          <h4 className="font-semibold text-lg mb-3">Учителя</h4>
+          <h4 className="font-semibold text-lg mb-3">Teachers</h4>
           <ul className="space-y-2 text-[#5E6282]">
             <li>
-              <Link href="#">Страны</Link>
+              <Link href="#">Countries</Link>
             </li>
             <li>
-              <Link href="#">Категории</Link>
+              <Link href="#">Categories</Link>
             </li>
             <li>
-              <Link href="#">Записаться</Link>
+              <Link href="#">Sign Up</Link>
             </li>
           </ul>
         </div>
 
-        {/* Оплата */}
+        {/* Payment */}
         <div>
-          <h4 className="font-semibold text-lg mb-3">Оплата</h4>
+          <h4 className="font-semibold text-lg mb-3">Payment</h4>
           <ul className="space-y-2 text-[#5E6282]">
             <li>
-              <Link href="#">Помощь</Link>
+              <Link href="#">Help</Link>
             </li>
             <li>
-              <Link href="#">Политика</Link>
+              <Link href="#">Policy</Link>
             </li>
             <li>
-              <Link href="#">Оферта</Link>
+              <Link href="#">Offer</Link>
             </li>
           </ul>
         </div>
 
-        {/* Другое */}
+        {/* Other */}
         <div>
-          <h4 className="font-semibold text-lg mb-3">Другое</h4>
+          <h4 className="font-semibold text-lg mb-3">Other</h4>
           <ul className="space-y-2 text-[#5E6282] ">
             <li>
-              <Link href="#">Личный кабинет</Link>
+              <Link href="#">Profile</Link>
             </li>
             <li>
-              <Link href="#">Блог</Link>
+              <Link href="#">Blog</Link>
             </li>
             <li>
-              <Link href="#">Связаться</Link>
+              <Link href="#">Contact</Link>
             </li>
           </ul>
         </div>
@@ -76,7 +76,7 @@ export default function Footer() {
             >
               <Button
                 size="icon"
-                className="bg-[#1877F2] text-white hover:bg-[#155dc1] rounded-full"
+                className="cursor-pointer bg-[#1877F2] text-white hover:bg-[#155dc1] rounded-full"
               >
                 <FaFacebookF />
               </Button>
@@ -89,7 +89,7 @@ export default function Footer() {
             >
               <Button
                 size="icon"
-                className="bg-[#E4405F] text-white hover:bg-[#c32c4f] rounded-full"
+                className="cursor-pointer bg-[#E4405F] text-white hover:bg-[#c32c4f] rounded-full"
               >
                 <FaInstagram />
               </Button>
@@ -102,14 +102,14 @@ export default function Footer() {
             >
               <Button
                 size="icon"
-                className="bg-[#1DA1F2] text-white hover:bg-[#0d8ddb] rounded-full"
+                className="cursor-pointer bg-[#1DA1F2] text-white hover:bg-[#0d8ddb] rounded-full"
               >
                 <FaTwitter />
               </Button>
             </a>
           </div>
 
-          <p className="mt-2">Скачайте приложение</p>
+          <p className="mt-2">Download the app</p>
           <div className="flex space-x-2">
             <a
               href="https://play.google.com"
@@ -141,7 +141,7 @@ export default function Footer() {
 
       {/* Bottom note */}
       <div className="mt-6 flex flex-col sm:flex-row justify-center items-center text-center text-md gap-4 text-black">
-        Поддержка защищённых онлайн-платежей
+        Secure online payment support
         <div className="flex gap-4">
           <Image
             src="/assets/footer-image/Paypal-Logo-2014 2.png"

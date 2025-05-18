@@ -18,16 +18,16 @@ const PopularCategories = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
 
   useEffect(() => {
-    const fetchTeachers = async () => {
+    const fetchCategories = async () => {
       try {
         const response = await getAllCategory();
         setCategories(response?.data?.result || []);
       } catch (error) {
-        console.error("Error fetching teachers:", error);
+        console.error("Error fetching categories:", error);
       }
     };
 
-    fetchTeachers();
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -35,16 +35,17 @@ const PopularCategories = () => {
   }, []);
 
   if (!isMounted) return null; // avoid hydration mismatch
+
   return (
     <Container>
       <div>
-        <h1 className="italic text-center text-xl font-normal mt-8 lg:mb-14 mb-6  ">
-          Вы едете в путешествие, а мы вам предоставляем гида учителя языка,
-          который вам бы хотелось изучить.
+        <h1 className="italic text-center text-xl font-normal mt-8 lg:mb-14 mb-6">
+          You’re going on a trip, and we’ll provide you with a language teacher
+          guide for the language you&lsquo;d like to learn.
         </h1>
       </div>
       <div>
-        <Title title="Популярные категории" />
+        <Title title="Popular Categories" />
       </div>
 
       <section className="py-12 text-center">
@@ -62,29 +63,24 @@ const PopularCategories = () => {
         >
           {categories.map((cat, index) => (
             <SwiperSlide key={index}>
-              <SwiperSlide key={index}>
-                <div className="relative w-full max-w-xs  mx-auto overflow-hidden">
-                  {/* Image */}
-                  <Image
-                    src={cat.image}
-                    alt={cat.title}
-                    height="420"
-                    width="420"
-                    className="object-cover"
-                  />
-
-                  {/* Title on top of image */}
-                  <div className="absolute bottom-0 w-full bg-sky-400 text-white text-sm font-medium py-4 text-center rounded-b-xl">
-                    {cat.title}
-                  </div>
+              <div className="relative w-full max-w-xs mx-auto overflow-hidden">
+                <Image
+                  src={cat.image}
+                  alt={cat.title}
+                  height={420}
+                  width={420}
+                  className="object-cover"
+                />
+                <div className="absolute bottom-0 w-full bg-sky-400 text-white text-sm font-medium py-4 text-center rounded-b-xl">
+                  {cat.title}
                 </div>
-              </SwiperSlide>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
         <Link href="categories">
-          <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white  px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
-            Смотреть все категории
+          <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
+            View All Categories
           </Button>
         </Link>
       </section>

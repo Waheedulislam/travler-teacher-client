@@ -8,7 +8,7 @@ const OurAdvantages = () => {
   return (
     <Container>
       <div>
-        <Title title="Наши преимущества" />
+        <Title title="Our Advantages" />
       </div>
       <section className="py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -54,27 +54,26 @@ const OurAdvantages = () => {
 
 const advantages = [
   {
-    title: "Знания и опыт:",
-    description: "Учителя часто имеют сильное образование и богатые знания.",
+    title: "Knowledge and Experience",
+    description: "Teachers often have strong education and deep knowledge.",
     image: "/assets/group-image/Group 48.png",
     bg: "bg-yellow-300",
   },
   {
-    title: "Уроки истории:",
-    description:
-      "Учителя помогают путешественникам узнать больше о местном регионе.",
+    title: "History Lessons",
+    description: "Teachers help travelers learn more about the local region.",
     image: "/assets/group-image/Group 51.png",
     bg: "bg-white",
   },
   {
-    title: "Навыки общения:",
-    description: "Учителя всегда хорошо владеют местным языком.",
+    title: "Communication Skills",
+    description: "Teachers are always fluent in the local language.",
     image: "/assets/group-image/Group 50.png",
     bg: "bg-yellow-300",
   },
   {
-    title: "Местный регион",
-    description: "Краткие уроки о местной культуре, истории и обычаях.",
+    title: "Local Region Insights",
+    description: "Brief lessons about local culture, history, and customs.",
     image: "/assets/group-image/Group 49.png",
     bg: "bg-yellow-300",
   },

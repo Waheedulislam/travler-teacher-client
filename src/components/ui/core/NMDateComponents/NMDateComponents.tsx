@@ -15,8 +15,8 @@ const NMDateComponents = () => {
               <FaLocationDot className="text-[#1E93A6] h-5 w-5" />
             </div>
             <div className="flex flex-col text-base">
-              <span className="text-muted-foreground">Страна</span>
-              <span className="font-medium text-[#FF8926]">Sen martin</span>
+              <span className="text-muted-foreground">Country</span>
+              <span className="font-medium text-[#FF8926]">Sen Martin</span>
             </div>
           </div>
 
@@ -26,7 +26,7 @@ const NMDateComponents = () => {
               <BsCurrencyDollar className="text-[#1E93A6] h-5 w-5" />
             </div>
             <div className="flex flex-col text-base">
-              <span className="text-muted-foreground">Цена</span>
+              <span className="text-muted-foreground">Price</span>
               <span className="font-medium text-[#FF8926]">$800 - $1000</span>
             </div>
           </div>
@@ -37,7 +37,7 @@ const NMDateComponents = () => {
               <FaCalendarAlt className="text-[#1E93A6] h-5 w-5" />
             </div>
             <div className="flex flex-col text-base">
-              <span className="text-muted-foreground">Дата</span>
+              <span className="text-muted-foreground">Date</span>
               <span className="font-medium text-[#FF8926]">Sun, 15 Jan</span>
             </div>
           </div>
@@ -45,7 +45,7 @@ const NMDateComponents = () => {
           {/* CTA Button */}
           <div className="w-full md:w-auto">
             <Button className="w-full md:w-auto bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-4 rounded-xl shadow-md hover:opacity-90 transition font-semibold text-base">
-              Найти учителя
+              Find a Teacher
             </Button>
           </div>
         </div>

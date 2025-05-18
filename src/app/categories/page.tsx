@@ -29,11 +29,11 @@ const PopularCategories = () => {
   return (
     <Container>
       <div>
-        <Title title="все Категории" />
+        <Title title="All Categories" />
       </div>
       <div>
         <h1 className="italic text-center text-xl font-normal mt-8 lg:mb-14 mb-6  ">
-          Присоединяйтесь - приглашайте друзей или находите новые знания
+          Join us — invite friends or find new knowledge
         </h1>
       </div>
       {/* section-2  */}
@@ -65,7 +65,7 @@ const PopularCategories = () => {
         </div>
 
         <Button className="bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white  px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
-          Загрузить больше
+          Load More
         </Button>
       </section>
     </Container>

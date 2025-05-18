@@ -31,6 +31,7 @@ export default function Login({
       alerts: false,
     },
   });
+
   const { setIsLoading } = useUser();
 
   const {
@@ -49,7 +50,7 @@ export default function Login({
       const res = await LoginUser(data);
 
       if (res.success) {
-        toast.success(res?.message || "Registration successful!");
+        toast.success(res?.message || "Login successful!");
         setOpen(false);
         setIsLoading(true);
       } else {
@@ -136,7 +137,7 @@ export default function Login({
           className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-semibold"
           disabled={!isAgreed || isSubmitting}
         >
-          {isSubmitting ? "Отправка..." : "авторизоваться"}
+          {isSubmitting ? "Submitting..." : "Login"}
         </Button>
       </form>
     </Form>

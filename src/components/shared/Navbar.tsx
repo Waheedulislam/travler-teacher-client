@@ -24,7 +24,6 @@ import auth from "../Firebase/firebase.config";
 const Navbar = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  // const { user, setIsLoading } = useUser();
   const [user] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
 
@@ -98,7 +97,7 @@ const Navbar = () => {
               variant="ghost"
               className="text-orange-500 text-xl flex items-center gap-2"
             >
-              <LoginIcon size={20} /> Войти в лк
+              <LoginIcon size={20} /> Login
             </Button>
           </LoginRegisterModal>
         ) : (
@@ -106,13 +105,13 @@ const Navbar = () => {
             onClick={handleLogOut}
             className="flex items-center gap-2 bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 px-10 py-3 rounded-md text-lg font-semibold shadow-md transition-all duration-200 "
           >
-            <CgLogOut style={{ width: "20px", height: "20px" }} /> Выйти
+            <CgLogOut style={{ width: "20px", height: "20px" }} /> Logout
           </Button>
         )}
 
-        <Link href="teacher">
+        <Link href="/teacher">
           <Button className="cursor-pointer bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-12 py-4 rounded-md shadow hover:opacity-90 transition text-lg font-normal">
-            Найти учителя
+            Find a Teacher
           </Button>
         </Link>
       </div>
@@ -121,7 +120,7 @@ const Navbar = () => {
       <div className="lg:hidden">
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger asChild>
-            <div className="text-black ">
+            <div className="text-black">
               {menuOpen ? (
                 <X size={30} className="text-black" />
               ) : (
@@ -133,7 +132,7 @@ const Navbar = () => {
           <SheetContent side="left">
             <SheetHeader>
               <SheetTitle className="text-left text-lg font-semibold mx-2">
-                Меню
+                Menu
               </SheetTitle>
             </SheetHeader>
             <div className="mt-2 space-y-6 px-2">
@@ -144,7 +143,7 @@ const Navbar = () => {
                     variant="ghost"
                     className="text-orange-500 text-xl flex items-center gap-2 w-full"
                   >
-                    <LoginIcon size={20} /> Войти в лк
+                    <LoginIcon size={20} /> Login
                   </Button>
                 </LoginRegisterModal>
               ) : (
@@ -152,13 +151,13 @@ const Navbar = () => {
                   onClick={handleLogOut}
                   className="w-full bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 font-semibold py-2 rounded-md shadow-md transition-all duration-200 flex items-center gap-2 text-md"
                 >
-                  <CgLogOut className="w-12 h-12" /> Выйти
+                  <CgLogOut className="w-12 h-12" /> Logout
                 </Button>
               )}
 
-              <Link href="teacher">
-                <Button className="cursor-pointer  px-2 w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md shadow hover:opacity-90 transition">
-                  Найти учителя
+              <Link href="/teacher">
+                <Button className="cursor-pointer px-2 w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md shadow hover:opacity-90 transition">
+                  Find a Teacher
                 </Button>
               </Link>
             </div>
@@ -170,9 +169,9 @@ const Navbar = () => {
 };
 
 const navItems = [
-  { name: "Учителя", href: "/" },
-  { name: "Категории", href: "/categories" },
-  { name: "Страны", href: "/countries" },
+  { name: "Teachers", href: "/" },
+  { name: "Categories", href: "/categories" },
+  { name: "Countries", href: "/countries" },
 ];
 
 export default Navbar;

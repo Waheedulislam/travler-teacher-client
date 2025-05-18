@@ -9,7 +9,6 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
@@ -20,6 +19,7 @@ import {
 } from "./RegisterValidationSchema";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "../../../Firebase/firebase.config";
+
 export default function Register({
   setOpen,
 }: {
@@ -35,8 +35,10 @@ export default function Register({
       alerts: false,
     },
   });
+
   const [createUserWithEmailAndPassword] =
     useCreateUserWithEmailAndPassword(auth);
+
   const {
     formState: { isSubmitting },
     watch,
@@ -47,41 +49,7 @@ export default function Register({
   const alerts = watch("alerts");
   const isAgreed = terms && alerts;
 
-  // Step 3: Safe type for form values
-  // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-  //   try {
-  //     // Create user in Firebase
-  //     const firebaseUser = await createUserWithEmailAndPassword(
-  //       data.email,
-  //       data.password
-  //     );
-
-  //     if (firebaseUser?.user) {
-  //       // Prepare the data you want to send to your backend
-  //       const payload = {
-  //         name: data.name,
-  //         email: data.email,
-  //         password: data.password,
-  //       };
-
-  //       // Send to your backend
-  //       const res = await registerUser(payload);
-
-  //       if (res.success) {
-  //         toast.success(res?.message || "Registration successful!");
-  //         setOpen(false);
-  //         setIsLoading(true);
-  //       } else {
-  //         toast.error(res?.message || "Something went wrong!");
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("An unexpected error occurred!");
-  //   }
-  // };
-
-  // Step 3: Safe type for form values
+  // Safe type for form values
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       // Create user in Firebase
@@ -99,6 +67,7 @@ export default function Register({
       toast.error("An unexpected error occurred!");
     }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
@@ -193,7 +162,7 @@ export default function Register({
           className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-semibold"
           disabled={!isAgreed || isSubmitting}
         >
-          {isSubmitting ? "Отправка..." : "Создать аккаунт"}
+          {isSubmitting ? "Submitting..." : "Create Account"}
         </Button>
       </form>
     </Form>

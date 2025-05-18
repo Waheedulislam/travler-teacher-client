@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { ReactElement, useState } from "react";
 import {
   Dialog,
@@ -43,32 +44,32 @@ export default function LoginRegisterModal({ children }: Props) {
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent className="sm:max-w-[820px]">
-        <DialogTitle>Зарегистрироваться</DialogTitle>
-        <DialogDescription>
-          Это абсолютно бесплатно. Зарегистрируйтесь, используя свой адрес
-          электронной почты или номер телефона ниже, чтобы начать.
+        <DialogTitle>Sign Up</DialogTitle>
+        <DialogDescription className="text-md">
+          It's absolutely free. Sign up and Sign in using your email or phone
+          number below to get started.
         </DialogDescription>
 
-        {/* Tabs-component  */}
+        {/* Tabs component */}
         <Tabs defaultValue="register" className="w-full">
           <TabsList className="grid grid-cols-2 mb-4">
             <TabsTrigger value="register">Register</TabsTrigger>
             <TabsTrigger value="login">Login</TabsTrigger>
           </TabsList>
           <TabsContent value="register">
-            {/* Register-file  */}
             <Register setOpen={setOpen} />
           </TabsContent>
           <TabsContent value="login">
-            {/* Login-file  */}
             <Login setOpen={setOpen} />
           </TabsContent>
         </Tabs>
+
         <div className="my-4 flex items-center">
           <Separator className="flex-1" />
           <span className="mx-2 text-xs text-muted-foreground">or</span>
           <Separator className="flex-1" />
         </div>
+
         <div className="space-y-2">
           <Button
             onClick={handleGoogleLogin}
@@ -77,12 +78,16 @@ export default function LoginRegisterModal({ children }: Props) {
           >
             <FcGoogle size={18} /> Continue with Google
           </Button>
-          {/* <Button variant="outline" className="w-full flex items-center gap-2">
+
+          {/* Additional OAuth buttons (optional) */}
+          {/* 
+          <Button variant="outline" className="w-full flex items-center gap-2">
             <FaApple size={18} /> Continue with Apple
           </Button>
           <Button variant="outline" className="w-full flex items-center gap-2">
             <FaFacebookF size={18} /> Continue with Facebook
-          </Button> */}
+          </Button> 
+          */}
         </div>
       </DialogContent>
     </Dialog>

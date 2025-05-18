@@ -34,13 +34,13 @@ const MostPopularTeachers = () => {
     <Container className="bg-gray-50">
       <div>
         <h1 className="italic text-center text-xl font-normal mt-8 lg:mb-14 mb-6">
-          Вы едете в путешествие, а мы вам предоставляем гида учителя языка,
-          который вам бы хотелось изучить.
+          You’re going on a trip, and we’ll provide you with a language teacher
+          guide for the language you&lsquo;d like to learn.
         </h1>
       </div>
 
       <div>
-        <Title title="Самые популярные учителя" />
+        <Title title="Most Popular Teachers" />
       </div>
 
       <section className="py-12 text-center">
@@ -92,7 +92,7 @@ const MostPopularTeachers = () => {
 
         <Link href="/teacher">
           <Button className="cursor-pointer bg-gradient-to-r from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
-            Смотреть все категории
+            View All Teachers
           </Button>
         </Link>
       </section>

@@ -15,7 +15,7 @@ export default function UseFulArticles() {
   return (
     <Container>
       <div>
-        <Title title="Полезные статьи" />
+        <Title title="Useful Articles" />
       </div>
       <section className="py-16 ">
         <div className=" px-4">
@@ -49,7 +49,7 @@ export default function UseFulArticles() {
                       </div>
                       <div className="flex items-center gap-2">
                         <MessageSquare className="w-7 h-7 text-orange-500" />
-                        <span>{trip.comments} Комментария</span>
+                        <span>{trip.comments} Comments</span>
                       </div>
                     </div>
                     <h3 className="text-2xl font-semibold text-gray-800">
@@ -62,7 +62,7 @@ export default function UseFulArticles() {
                       href="#"
                       className="text-lg text-[#596B86] font-medium inline-flex items-center gap-1 hover:underline mt-4"
                     >
-                      Читать →
+                      Read more →
                     </a>
                   </CardContent>
                 </Card>
@@ -75,7 +75,7 @@ export default function UseFulArticles() {
             size="lg"
             className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white  px-12 py-6 my-10 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition"
           >
-            Читать все статьи
+            Read all articles
           </Button>
         </div>
       </section>
@@ -84,35 +84,35 @@ export default function UseFulArticles() {
 }
 const trips = [
   {
-    title: "Отдых в Мадриде",
+    title: "Vacation in Madrid",
     image: "/assets/articales-image/gerson-repreza-CepDpEiALqM-unsplash 1.png",
     comments: 2,
     category: "Travel",
     description:
-      "Путешествие с учителем гидом по самым неизвестным местам города.",
+      "A trip with a tour guide to the most unknown places of the city.",
   },
   {
-    title: "Отдых в Пенсильвании",
+    title: "Vacation in Pennsylvania",
     image: "/assets/articales-image/house-isolated-field 1.png",
     comments: 2,
     category: "Travel",
     description:
-      "Путешествие с учителем гидом по самым неизвестным местам города.",
+      "A trip with a tour guide to the most unknown places of the city.",
   },
   {
-    title: "Отдых в Нью-Йорке",
+    title: "Vacation in New York",
     image: "/assets/articales-image/chris-barbalis-IQMG9KbT4yE-unsplash 1.png",
     comments: 2,
     category: "Travel",
     description:
-      "Путешествие с учителем гидом по самым неизвестным местам города.",
+      "A trip with a tour guide to the most unknown places of the city.",
   },
   {
-    title: "Отдых в Нью-Йорке",
+    title: "Vacation in New York",
     image: "/assets/articales-image/chris-barbalis-IQMG9KbT4yE-unsplash 1.png",
     comments: 2,
     category: "Travel",
     description:
-      "Путешествие с учителем гидом по самым неизвестным местам города.",
+      "A trip with a tour guide to the most unknown places of the city.",
   },
 ];
