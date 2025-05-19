@@ -1,4 +1,5 @@
 "use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -8,46 +9,37 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Title from "@/components/shared/Title";
 import Container from "@/components/shared/Container";
+import { getAllReview } from "@/services/ReviewServies";
+import { useEffect, useState } from "react";
 
-const reviews = [
-  {
-    name: "Anna Smirnova",
-    role: "Student from Moscow",
-    avatar:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fHww",
-    review:
-      "Wonderful lessons! The teacher was very professional and made learning the language engaging and useful.",
-  },
-  {
-    name: "Ivan Kozlov",
-    role: "Tourist",
-    avatar:
-      "https://plus.unsplash.com/premium_photo-1689530775582-83b8abdb5020?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fHww",
-    review:
-      "I really enjoyed the cultural classes. Learned a lot of interesting things about local traditions! Lively and interesting lessons.",
-  },
-  {
-    name: "Maria Ivanova",
-    role: "Traveler",
-    avatar:
-      "https://media.istockphoto.com/id/1618846975/photo/smile-black-woman-and-hand-pointing-in-studio-for-news-deal-or-coming-soon-announcement-on.jpg?s=612x612&w=0&k=20&c=LUvvJu4sGaIry5WLXmfQV7RStbGG5hEQNo8hEFxZSGY=",
-    review:
-      "The teacher explains the material perfectly and makes each lesson unforgettable.",
-  },
-  {
-    name: "Maria Ivanova",
-    role: "Traveler",
-    avatar:
-      "https://media.istockphoto.com/id/1618846975/photo/smile-black-woman-and-hand-pointing-in-studio-for-news-deal-or-coming-soon-announcement-on.jpg?s=612x612&w=0&k=20&c=LUvvJu4sGaIry5WLXmfQV7RStbGG5hEQNo8hEFxZSGY=",
-    review:
-      "The teacher explains the material perfectly and makes each lesson unforgettable.",
-  },
-];
+interface IReview {
+  name: string;
+  role: string;
+  avatar: string;
+  review: string;
+}
+
 export default function ReviewSection() {
+  const [reviews, setReviews] = useState<IReview[]>([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await getAllReview();
+        const fetchedReviews: IReview[] = response?.data?.result || [];
+        setReviews(fetchedReviews);
+      } catch (error) {
+        console.error("Failed to fetch reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
   return (
     <section className="py-10 bg-gradient-to-r from-white to-blue-50">
-      <Container className=" px-8  text-center">
-        <Title title="Student Reviews"></Title>
+      <Container className="px-8 text-center">
+        <Title title="Student Reviews" />
 
         <Swiper
           modules={[Navigation]}
@@ -70,7 +62,7 @@ export default function ReviewSection() {
                     width={80}
                     height={80}
                     alt={item.name}
-                    className="rounded-full object-cover "
+                    className="rounded-full object-cover"
                   />
                   <h3 className="text-lg font-semibold text-gray-800">
                     {item.name}
