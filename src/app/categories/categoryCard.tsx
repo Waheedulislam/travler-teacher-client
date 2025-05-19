@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 
 const CategoryCard = ({ category }: { category: ICategory }) => {
+  console.log(category);
   return (
     <div>
       <div className="relative w-full max-w-xs mx-auto overflow-hidden rounded-xl transform transition duration-300 hover:scale-105 shadow-md hover:shadow-lg">

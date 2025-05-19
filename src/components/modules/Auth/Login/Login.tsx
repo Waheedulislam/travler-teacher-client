@@ -12,10 +12,11 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { LoginFormValues, loginSchema } from "./LoginValidationSchema";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "sonner";
-import { LoginUser } from "@/services/AuthServices";
 import { useUser } from "@/Context/UserContext";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import auth from "@/components/Firebase/firebase.config";
 
 export default function Login({
   setOpen,
@@ -33,6 +34,8 @@ export default function Login({
   });
 
   const { setIsLoading } = useUser();
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
 
   const {
     formState: { isSubmitting },
@@ -44,23 +47,20 @@ export default function Login({
   const alerts = watch("alerts");
   const isAgreed = terms && alerts;
 
-  // ✅ Typed onSubmit
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    try {
-      const res = await LoginUser(data);
-
-      if (res.success) {
-        toast.success(res?.message || "Login successful!");
-        setOpen(false);
-        setIsLoading(true);
-      } else {
-        toast.error(res?.message || "Something went wrong!");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("An unexpected error occurred!");
-    }
+    await signInWithEmailAndPassword(data.email, data.password);
   };
+
+  useEffect(() => {
+    if (user) {
+      toast.success("Login successful!");
+      setOpen(false);
+      setIsLoading(true);
+    }
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [user, error, setOpen, setIsLoading]);
 
   return (
     <Form {...form}>
@@ -135,9 +135,9 @@ export default function Login({
         <Button
           type="submit"
           className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-semibold"
-          disabled={!isAgreed || isSubmitting}
+          disabled={!isAgreed || isSubmitting || loading}
         >
-          {isSubmitting ? "Submitting..." : "Login"}
+          {isSubmitting || loading ? "Submitting..." : "Login"}
         </Button>
       </form>
     </Form>

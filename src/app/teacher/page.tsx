@@ -1,29 +1,15 @@
-"use client";
-import Image from "next/image";
 import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
-import { Card } from "@/components/ui/card";
 import NMDateComponents from "@/components/ui/core/NMDateComponents/NMDateComponents";
 
-import { useEffect, useState } from "react";
-import { ITeacher } from "@/types";
+import TeacherCard from "./teacherCard";
 import { getAllTeachers } from "@/services/TeacherServices";
+import { ITeacher } from "@/types";
 
-const AllTeachers = () => {
-  const [teachers, setTeachers] = useState<ITeacher[]>([]);
+const AllTeachers = async () => {
+  const response = await getAllTeachers();
+  const teachers: ITeacher[] = response?.data?.result || [];
 
-  useEffect(() => {
-    const fetchTeachers = async () => {
-      try {
-        const response = await getAllTeachers();
-        setTeachers(response?.data?.result || []);
-      } catch (error) {
-        console.error("Error fetching teachers:", error);
-      }
-    };
-
-    fetchTeachers();
-  }, []);
   return (
     <Container className="bg-gray-50">
       <div className="mt-10">
@@ -40,35 +26,7 @@ const AllTeachers = () => {
       {/* section-3  */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-8 px-4 py-12 ">
         {teachers.map((teacher, index) => (
-          <Card
-            key={index}
-            className="overflow-hidden border rounded-2xl w-80 p-0 mx-auto transform transition duration-300 hover:scale-105 shadow-md hover:shadow-lg"
-          >
-            <div className="relative w-full max-w-80  p-0 h-96 mx-auto rounded-2xl">
-              <Image
-                src={teacher.image}
-                alt={teacher.name}
-                fill
-                className="object-cover w-96"
-              />
-            </div>
-            <div className="p-4">
-              <div className="flex items-center justify-center gap-12 px-12">
-                <div className="text-lg font-semibold ml-2">{teacher.name}</div>
-                <Image
-                  src={teacher.countryImage}
-                  alt={teacher.name}
-                  width={40}
-                  height={40}
-                  className="object-cover rounded-2xl"
-                />
-                <p className="text-lg font-semibold mr-2">{teacher.country}</p>
-              </div>
-              <div className="my-2 font-semibold text-center text-gray-700">
-                {teacher.description}
-              </div>
-            </div>
-          </Card>
+          <TeacherCard key={index} teacher={teacher} />
         ))}
       </div>
       {/* <div className="text-center mb-12">
