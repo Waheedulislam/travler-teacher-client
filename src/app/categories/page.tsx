@@ -1,30 +1,15 @@
-"use client";
-
 import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
 import "swiper/css";
 import "swiper/css/navigation";
-import Image from "next/image";
 import NMDateComponents from "@/components/ui/core/NMDateComponents/NMDateComponents";
-import { ICategory } from "@/types/category";
-import { useEffect, useState } from "react";
+import CategoryCard from "./categoryCard";
 import { getAllCategory } from "@/services/CategoryServices";
+import { ICategory } from "@/types/category";
 
-const PopularCategories = () => {
-  const [categories, setCategories] = useState<ICategory[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await getAllCategory();
-        setCategories(response?.data?.result || []);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+const PopularCategories = async () => {
+  const response = await getAllCategory();
+  const categories: ICategory[] = response?.data?.result || [];
 
   return (
     <Container>
@@ -44,34 +29,10 @@ const PopularCategories = () => {
       {/* section-3 */}
       <section className="py-12 text-center my-10">
         <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center items-center px-4 gap-10">
-          {categories.map((cat, index) => (
-            <div
-              key={index}
-              className="relative w-full max-w-xs mx-auto overflow-hidden rounded-xl transform transition duration-300 hover:scale-105 shadow-md hover:shadow-lg"
-            >
-              {/* Image */}
-              <Image
-                src={cat.image}
-                alt={cat.title}
-                height={420}
-                width={420}
-                className="object-cover rounded-xl"
-              />
-
-              {/* Title overlay */}
-              <div className="absolute bottom-0 w-full bg-sky-400 text-white text-sm font-medium py-4 text-center rounded-b-xl">
-                {cat.title}
-              </div>
-            </div>
+          {categories.map((category: ICategory, index: number) => (
+            <CategoryCard key={index} category={category} />
           ))}
         </div>
-
-        {/* Optional Load More Button */}
-        {/* 
-        <Button className="bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
-          Load More
-        </Button> 
-        */}
       </section>
     </Container>
   );
