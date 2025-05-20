@@ -170,7 +170,7 @@ const Navbar = () => {
 
 const navItems = [
   { name: "Teachers", href: "/" },
-  { name: "Categories", href: "/categories" },
+  { name: "Category", href: "/category" },
   { name: "Countries", href: "/countries" },
 ];
 
