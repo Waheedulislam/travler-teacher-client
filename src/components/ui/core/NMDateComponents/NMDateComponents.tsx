@@ -46,7 +46,7 @@ const NMDateComponents = () => {
           {/* CTA Button */}
           <div className="w-full md:w-auto">
             <Link href="teacher">
-              <Button className="w-full md:w-auto bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-4 rounded-xl shadow-md hover:opacity-90 transition font-semibold text-base">
+              <Button className="cursor-pointer w-full md:w-auto bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-4 rounded-xl shadow-md hover:opacity-90 transition font-semibold text-base">
                 Find a Teacher
               </Button>
             </Link>

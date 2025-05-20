@@ -120,3 +120,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* globals.css */
+.swiper-button-prev {
+  left: -2px !important;
+}
+
+.swiper-button-next {
+  right: -2px !important;
+}

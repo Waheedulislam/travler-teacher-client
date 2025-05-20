@@ -1,21 +1,20 @@
 "use client";
+
 import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
 import { Button } from "@/components/ui/button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/navigation";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { getAllCategory } from "@/services/CategoryServices";
 import { ICategory } from "@/types/category";
+import CategorySkeleton from "./CategorySkeleton";
 
 const PopularCategories = () => {
-  const [isMounted, setIsMounted] = useState(false);
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -24,17 +23,21 @@ const PopularCategories = () => {
         setCategories(response?.data?.result || []);
       } catch (error) {
         console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
+  if (loading) {
+    return (
+      <Container>
+        <CategorySkeleton />
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -49,22 +52,22 @@ const PopularCategories = () => {
         <Title title="Popular Categories" />
       </div>
 
-      <section className="py-12 text-center">
+      <section className="py-12 text-center ">
         <Swiper
           modules={[Navigation]}
           navigation
-          spaceBetween={20}
+          spaceBetween={0}
           slidesPerView={1}
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
           }}
-          className="mb-8 px-4"
+          className="mb-8 px-4 max-w-6xl mx-auto"
         >
           {categories.map((cat, index) => (
             <SwiperSlide key={index}>
-              <div className="group relative w-full max-w-xs mx-auto overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 ease-in-out hover:scale-[1.04] hover:shadow-xl">
+              <div className="group relative w-full max-w-xs mx-auto overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 ease-in-out hover:scale-[1.04] hover:shadow-xl ">
                 <Image
                   src={cat.image}
                   alt={cat.title}

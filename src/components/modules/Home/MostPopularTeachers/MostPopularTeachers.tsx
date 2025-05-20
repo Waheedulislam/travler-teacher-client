@@ -13,9 +13,11 @@ import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { getAllTeachers } from "@/services/TeacherServices";
 import { ITeacher } from "@/types";
+import MostPopularTeachersSkeleton from "./MostPopularTeachersSkeleton";
 
 const MostPopularTeachers = () => {
   const [teachers, setTeachers] = useState<ITeacher[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -24,11 +26,21 @@ const MostPopularTeachers = () => {
         setTeachers(response?.data?.result || []);
       } catch (error) {
         console.error("Error fetching teachers:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTeachers();
   }, []);
+
+  if (loading) {
+    return (
+      <Container>
+        <MostPopularTeachersSkeleton />
+      </Container>
+    );
+  }
 
   return (
     <Container className="bg-gray-50">
@@ -54,11 +66,11 @@ const MostPopularTeachers = () => {
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
           }}
-          className="mb-8 px-4"
+          className="mb-8 px-4 max-w-6xl mx-auto"
         >
           {teachers.map((teacher) => (
             <SwiperSlide key={teacher._id}>
-              <Card className=" overflow-hidden border shadow-lg rounded-2xl w-80 p-0 mx-auto transform transition duration-300 hover:scale-105">
+              <Card className="overflow-hidden border shadow-lg rounded-2xl w-80 p-0 mx-auto transform transition duration-300 hover:scale-105">
                 <div className="relative w-full max-w-80 p-0 h-96 mx-auto rounded-2xl">
                   <Image
                     src={teacher.image}

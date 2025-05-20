@@ -5,6 +5,8 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import { Toaster } from "sonner";
 import Providers from "@/providers/provider";
+import { Suspense } from "react";
+import Loader from "@/components/Loader/Loader";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,7 +35,7 @@ export default function RootLayout({
         >
           <Navbar />
           <Toaster richColors position="top-center" />
-          {children}
+          <Suspense fallback={<Loader />}>{children}</Suspense>
           <Footer />
         </body>
       </html>

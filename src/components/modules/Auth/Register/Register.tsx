@@ -62,9 +62,8 @@ export default function Register({
         toast.success("Successfully signed up");
         setOpen(false);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("An unexpected error occurred!");
+    } catch (error: any) {
+      toast.error(error || "An unexpected error occurred!");
     }
   };
 
