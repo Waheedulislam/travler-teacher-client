@@ -8,11 +8,28 @@ export const getAllCategory = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/category`, {
       next: {
-        tags: ["category"],
+        tags: ["CATEGORY"],
       },
     });
     const data = await res.json();
     console.log(data);
+    return data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
+// get single teacher
+export const getSingleCategory = async (categoryId: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/category/${categoryId}`,
+      {
+        next: {
+          tags: ["CATEGORY"],
+        },
+      }
+    );
+    const data = await res.json();
     return data;
   } catch (error: any) {
     return Error(error.message);

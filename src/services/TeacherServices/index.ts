@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
 
 // get all teachers
 export const getAllTeachers = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/teacher`, {
       next: {
-        tags: ["teacher"],
+        tags: ["TEACHER"],
       },
     });
     const data = await res.json();
@@ -18,14 +16,14 @@ export const getAllTeachers = async () => {
   }
 };
 
-// get single product
-export const getSingleProduct = async (productId: string) => {
+// get single teacher
+export const getSingleTeacher = async (teacherId: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/teacher/${teacherId}`,
       {
         next: {
-          tags: ["PRODUCT"],
+          tags: ["TEACHER"],
         },
       }
     );
@@ -33,45 +31,5 @@ export const getSingleProduct = async (productId: string) => {
     return data;
   } catch (error: any) {
     return Error(error.message);
-  }
-};
-
-// add product
-export const addProduct = async (productData: FormData): Promise<any> => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product`, {
-      method: "POST",
-      body: productData,
-      headers: {
-        Authorization: (await cookies()).get("accessToken")!.value,
-      },
-    });
-    revalidateTag("PRODUCT");
-    return res.json();
-  } catch (error: any) {
-    return Error(error);
-  }
-};
-
-// update product
-export const updateProduct = async (
-  productData: FormData,
-  productId: string
-): Promise<any> => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
-      {
-        method: "PATCH",
-        body: productData,
-        headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
-        },
-      }
-    );
-    revalidateTag("PRODUCT");
-    return res.json();
-  } catch (error: any) {
-    return Error(error);
   }
 };
