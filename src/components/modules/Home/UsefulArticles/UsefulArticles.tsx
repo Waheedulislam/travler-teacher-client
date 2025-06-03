@@ -9,8 +9,38 @@ import Image from "next/image";
 import { MessageSquare, Plane } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
+import { getAllArticle } from "@/services/Articles";
+import { useEffect, useState } from "react";
+import { IArticle } from "@/types";
+import ArticleSkeleton from "./ArticleSkeleton";
+import Link from "next/link";
 
 export default function UseFulArticles() {
+  const [articles, setArticles] = useState<IArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getAllArticle();
+        setArticles(response?.data?.result || []);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) {
+    return (
+      <Container>
+        <ArticleSkeleton />
+      </Container>
+    );
+  }
   return (
     <Container>
       <div>
@@ -30,16 +60,18 @@ export default function UseFulArticles() {
             }}
             className="mb-8 px-4"
           >
-            {trips.map((trip, index) => (
+            {articles.map((trip, index) => (
               <SwiperSlide key={index}>
                 <Card className="overflow-hidden border rounded-xl transition hover:shadow-lg bg-white">
-                  <Image
-                    src={trip.image}
-                    alt={trip.title}
-                    width={500}
-                    height={300}
-                    className="w-full h-full -mt-10"
-                  />
+                  <Link href={`/article/${trip._id}`} passHref>
+                    <Image
+                      src={trip.image}
+                      alt={trip.title}
+                      width={500}
+                      height={300}
+                      className="w-full h-full -mt-10 object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                    />
+                  </Link>
                   <CardContent className="p-4 space-y-2">
                     <div className="flex items-center justify-between text-lg text-gray-500 space-x-4">
                       <div className="flex items-center gap-2">
@@ -51,18 +83,20 @@ export default function UseFulArticles() {
                         <span>{trip.comments} Comments</span>
                       </div>
                     </div>
-                    <h3 className="text-2xl font-semibold text-gray-800">
-                      {trip.title}
-                    </h3>
-                    <p className="text-lg font-normal text-gray-600">
+                    <Link href={`/article/${trip._id}`} passHref>
+                      <h3 className="text-2xl font-semibold hover:text-orange-700 text-gray-800">
+                        {trip.title}
+                      </h3>
+                    </Link>
+                    <p className="text-lg mt-2 font-normal text-gray-600">
                       {trip.description}
                     </p>
-                    <a
-                      href="#"
-                      className="text-lg text-[#596B86] font-medium inline-flex items-center gap-1 hover:underline mt-4"
+                    <Link
+                      href={`/article/${trip._id}`}
+                      className="text-lg text-[#596B86] font-medium inline-flex items-center gap-1 hover:underline mt-4 hover:text-orange-700"
                     >
                       Read more →
-                    </a>
+                    </Link>
                   </CardContent>
                 </Card>
               </SwiperSlide>
@@ -81,37 +115,3 @@ export default function UseFulArticles() {
     </Container>
   );
 }
-const trips = [
-  {
-    title: "Vacation in Madrid",
-    image: "/assets/articales-image/gerson-repreza-CepDpEiALqM-unsplash 1.png",
-    comments: 2,
-    category: "Travel",
-    description:
-      "A trip with a tour guide to the most unknown places of the city.",
-  },
-  {
-    title: "Vacation in Pennsylvania",
-    image: "/assets/articales-image/house-isolated-field 1.png",
-    comments: 2,
-    category: "Travel",
-    description:
-      "A trip with a tour guide to the most unknown places of the city.",
-  },
-  {
-    title: "Vacation in New York",
-    image: "/assets/articales-image/chris-barbalis-IQMG9KbT4yE-unsplash 1.png",
-    comments: 2,
-    category: "Travel",
-    description:
-      "A trip with a tour guide to the most unknown places of the city.",
-  },
-  {
-    title: "Vacation in New York",
-    image: "/assets/articales-image/chris-barbalis-IQMG9KbT4yE-unsplash 1.png",
-    comments: 2,
-    category: "Travel",
-    description:
-      "A trip with a tour guide to the most unknown places of the city.",
-  },
-];

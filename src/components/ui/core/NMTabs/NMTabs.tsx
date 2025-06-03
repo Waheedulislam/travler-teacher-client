@@ -1,4 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
+"use client";
+
 import { ReactElement, useState } from "react";
 import {
   Dialog,
@@ -9,12 +11,12 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Login from "@/components/modules/Auth/Login/Login";
+import Register from "@/components/modules/Auth/Register/Register";
 import { FcGoogle } from "react-icons/fc";
+import { FaFacebookF } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Register from "@/components/modules/Auth/Register/Register";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
-import auth from "@/components/Firebase/firebase.config";
+import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 
 interface Props {
@@ -23,19 +25,41 @@ interface Props {
 
 export default function LoginRegisterModal({ children }: Props) {
   const [open, setOpen] = useState(false);
-  const [signInWithGoogle] = useSignInWithGoogle(auth);
 
   const handleGoogleLogin = async () => {
     try {
-      const userCredential = await signInWithGoogle();
+      const res = await signIn("google", {
+        redirect: false,
+        callbackUrl: "/profile",
+      });
+      console.log(res);
 
-      if (userCredential?.user?.email) {
-        toast.success("Successfully signed in with Google");
+      if (res?.error) {
+        toast.error("Google login failed");
+      } else {
         setOpen(false);
       }
     } catch (error) {
       console.error(error);
-      toast.error("An unexpected error occurred during Google login!");
+      toast.error("Something went wrong during Google login!");
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      const res = await signIn("facebook", {
+        redirect: false,
+        callbackUrl: "/profile",
+      });
+
+      if (res?.error) {
+        toast.error("Facebook login failed");
+      } else {
+        setOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong during Facebook login!");
     }
   };
 
@@ -50,12 +74,13 @@ export default function LoginRegisterModal({ children }: Props) {
           number below to get started.
         </DialogDescription>
 
-        {/* Tabs component */}
+        {/* Tabs */}
         <Tabs defaultValue="register" className="w-full">
           <TabsList className="grid grid-cols-2 mb-4">
             <TabsTrigger value="register">Register</TabsTrigger>
             <TabsTrigger value="login">Login</TabsTrigger>
           </TabsList>
+
           <TabsContent value="register">
             <Register setOpen={setOpen} />
           </TabsContent>
@@ -79,15 +104,13 @@ export default function LoginRegisterModal({ children }: Props) {
             <FcGoogle size={18} /> Continue with Google
           </Button>
 
-          {/* Additional OAuth buttons (optional) */}
-          {/* 
-          <Button variant="outline" className="w-full flex items-center gap-2">
-            <FaApple size={18} /> Continue with Apple
-          </Button>
-          <Button variant="outline" className="w-full flex items-center gap-2">
+          <Button
+            onClick={handleFacebookLogin}
+            variant="outline"
+            className="w-full flex items-center gap-2"
+          >
             <FaFacebookF size={18} /> Continue with Facebook
-          </Button> 
-          */}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

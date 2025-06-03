@@ -1,3 +1,5 @@
+"use client";
+
 import { getCurrentUser } from "@/services/AuthServices";
 import { IUser } from "@/types";
 import {
@@ -9,8 +11,8 @@ import {
   SetStateAction,
   useContext,
 } from "react";
-
-// Define context type properly (you can define any object instead of undefined)
+import { useSession } from "next-auth/react";
+import { setCookie } from "cookies-next";
 
 interface IUserProviderValues {
   user: IUser | null;
@@ -24,23 +26,38 @@ export const UserContext = createContext<IUserProviderValues | undefined>(
 );
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  // You can use any state or user data here
+  const { data: session, status } = useSession();
+
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleUser = async () => {
-    const user = await getCurrentUser();
-    setUser(user);
-    setIsLoading(false);
-  };
   useEffect(() => {
-    handleUser();
-  }, [isLoading]);
+    const handleUser = async () => {
+      try {
+        if (session?.accessToken) {
+          setCookie("accessToken", session.accessToken);
+        }
+
+        const user = await getCurrentUser();
+        setUser(user);
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (status === "authenticated") {
+      handleUser();
+    } else {
+      setIsLoading(false);
+      setUser(null);
+    }
+  }, [session, status]);
 
   return (
-    <UserContext.Provider
-      value={{ user, setUser, isLoading, setIsLoading: setIsLoading }}
-    >
+    <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
       {children}
     </UserContext.Provider>
   );
@@ -49,7 +66,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 export const useUser = () => {
   const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error("use User must be used within the UserProvider");
+    throw new Error("useUser must be used within the UserProvider");
   }
 
   return context;

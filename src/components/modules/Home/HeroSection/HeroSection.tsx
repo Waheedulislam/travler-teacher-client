@@ -9,13 +9,13 @@ export default function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0 ">
         <Image
-          src="https://rosemaryravinal.com/wp-content/uploads/2024/07/Tour-guide.png"
+          src="https://rezdy.com/wp-content/uploads/2018/11/Blog-Photos-86_11zon.jpg"
           alt="Banner Image"
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0" />
       </div>
 
       {/* Overlay Card sasdf */}

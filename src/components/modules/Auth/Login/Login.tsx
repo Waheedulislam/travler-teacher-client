@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,10 +14,12 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { LoginFormValues, loginSchema } from "./LoginValidationSchema";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "sonner";
 import { useUser } from "@/Context/UserContext";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useRouter } from "next/navigation";
+import { LoginUser } from "@/services/AuthServices";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import auth from "@/components/Firebase/firebase.config";
 
 export default function Login({
@@ -34,8 +38,8 @@ export default function Login({
   });
 
   const { setIsLoading } = useUser();
-  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const {
     formState: { isSubmitting },
@@ -47,20 +51,59 @@ export default function Login({
   const alerts = watch("alerts");
   const isAgreed = terms && alerts;
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    await signInWithEmailAndPassword(data.email, data.password);
-  };
+  // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  //   setLoading(true);
+  //   try {
+  //     const result = await LoginUser(data);
 
-  useEffect(() => {
-    if (user) {
-      toast.success("Login successful!");
-      setOpen(false);
-      setIsLoading(true);
+  //     if (result.success) {
+  //       toast.success("Login successful!");
+  //       setOpen(false);
+  //       setIsLoading(true);
+
+  //       // Optional: redirect to profile
+  //       router.push("/profile");
+  //     } else {
+  //       toast.error(result.message || "Login failed");
+  //     }
+  //   } catch (err: any) {
+  //     toast.error(err.message || "Something went wrong");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setLoading(true);
+    try {
+      // ১. Firebase এ লগিন
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+
+      if (userCredential.user) {
+        const result = await LoginUser({
+          email: data.email,
+          password: data.password,
+        });
+
+        if (result.success) {
+          toast.success("Login successful!");
+          setOpen(false);
+          setIsLoading(true);
+          router.push("/profile");
+        } else {
+          toast.error(result.message || "Login failed");
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
-    if (error) {
-      toast.error(error.message);
-    }
-  }, [user, error, setOpen, setIsLoading]);
+  };
 
   return (
     <Form {...form}>

@@ -67,18 +67,20 @@ const PopularCategories = () => {
         >
           {categories.map((cat, index) => (
             <SwiperSlide key={index}>
-              <div className="group relative w-full max-w-xs mx-auto overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 ease-in-out hover:scale-[1.04] hover:shadow-xl ">
-                <Image
-                  src={cat.image}
-                  alt={cat.title}
-                  height={420}
-                  width={420}
-                  className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
-                />
-                <div className="absolute bottom-0 w-full bg-sky-500/90 backdrop-blur-sm text-white text-sm font-semibold py-4 text-center rounded-b-xl transition-colors duration-500 ease-in-out group-hover:bg-sky-600">
-                  {cat.title}
+              <Link href={`/category/${cat._id}`} passHref>
+                <div className="group relative w-full max-w-xs mx-auto overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 ease-in-out hover:scale-[1.04] hover:shadow-xl ">
+                  <Image
+                    src={cat.image}
+                    alt={cat.title}
+                    height={420}
+                    width={420}
+                    className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-0 w-full bg-sky-500/90 backdrop-blur-sm text-white text-sm font-semibold py-4 text-center rounded-b-xl transition-colors duration-500 ease-in-out group-hover:bg-sky-600">
+                    {cat.title}
+                  </div>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

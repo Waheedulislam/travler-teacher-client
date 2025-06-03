@@ -4,9 +4,10 @@ import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import { Toaster } from "sonner";
-import Providers from "@/providers/provider";
 import { Suspense } from "react";
 import Loader from "@/components/Loader/Loader";
+import { Providers } from "./providers";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,9 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <Providers>
       <html lang="en">
@@ -36,6 +35,7 @@ export default function RootLayout({
           <Navbar />
           <Toaster richColors position="top-center" />
           <Suspense fallback={<Loader />}>{children}</Suspense>
+
           <Footer />
         </body>
       </html>

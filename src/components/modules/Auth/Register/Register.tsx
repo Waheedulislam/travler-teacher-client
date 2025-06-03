@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,13 +14,16 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   RegisterFormValues,
   registrationSchema,
 } from "./RegisterValidationSchema";
+import { useRouter } from "next/navigation";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "../../../Firebase/firebase.config";
+import { registerUser } from "@/services/AuthServices";
+import { updateProfile } from "firebase/auth";
 
 export default function Register({
   setOpen,
@@ -39,31 +44,50 @@ export default function Register({
   const [createUserWithEmailAndPassword] =
     useCreateUserWithEmailAndPassword(auth);
 
+  const router = useRouter();
   const {
     formState: { isSubmitting },
     watch,
     setValue,
   } = form;
 
+  const [loading, setLoading] = useState(false);
+
   const terms = watch("terms");
   const alerts = watch("alerts");
   const isAgreed = terms && alerts;
-
-  // Safe type for form values
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      // Create user in Firebase
+      setLoading(true);
+
+      // 1. Create user with email & password
       const userCredential = await createUserWithEmailAndPassword(
         data.email,
         data.password
       );
 
-      if (userCredential?.user?.email) {
+      // 2. Update user profile with name
+      if (userCredential?.user) {
+        await updateProfile(userCredential.user, {
+          displayName: data.name,
+        });
+
+        // 3. Send name, email, password (if you want) to backend
+        await registerUser({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
+
         toast.success("Successfully signed up");
         setOpen(false);
+        router.push("/profile");
       }
     } catch (error: any) {
-      toast.error(error || "An unexpected error occurred!");
+      console.error("Registration error:", error);
+      toast.error(error?.message || "An unexpected error occurred!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -159,9 +183,9 @@ export default function Register({
         <Button
           type="submit"
           className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-semibold"
-          disabled={!isAgreed || isSubmitting}
+          disabled={!isAgreed || isSubmitting || loading}
         >
-          {isSubmitting ? "Submitting..." : "Create Account"}
+          {isSubmitting || loading ? "Submitting..." : "Create Account"}
         </Button>
       </form>
     </Form>

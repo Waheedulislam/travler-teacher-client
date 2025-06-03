@@ -36,9 +36,9 @@ export const LoginUser = async (userData: FieldValues) => {
       },
       body: JSON.stringify(userData),
     });
-
+    console.log(res);
     const result = await res.json();
-
+    console.log(result);
     if (result.success) {
       (await cookies()).set("accessToken", result.data.accessToken);
     }
@@ -52,15 +52,25 @@ export const LoginUser = async (userData: FieldValues) => {
 export const getCurrentUser = async () => {
   const accessToken = (await cookies()).get("accessToken")?.value;
   let decodedData = null;
-
+  console.log(accessToken);
   if (accessToken) {
     decodedData = await jwtDecode(accessToken);
+    console.log(decodedData);
     return decodedData;
   } else {
     return null;
   }
 };
-// Logout user
-export const logout = async () => {
-  (await cookies()).delete("accessToken");
+
+// src/services/AuthServices/index.ts
+export const logoutUser = async () => {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_API || "";
+    await fetch(`${baseUrl}/api/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+  } catch (error) {
+    console.error("API logout failed:", error);
+  }
 };

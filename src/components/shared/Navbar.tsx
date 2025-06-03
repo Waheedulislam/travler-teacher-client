@@ -1,11 +1,10 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
-import { LogIn as LoginIcon } from "lucide-react";
+import { Menu, X, LogIn as LoginIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,20 +14,24 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import LoginRegisterModal from "../ui/core/NMTabs/NMTabs";
-import { logout } from "@/services/AuthServices";
 import { CgLogOut } from "react-icons/cg";
 import Swal from "sweetalert2";
+import { logoutUser } from "@/services/AuthServices";
+import { useUser } from "@/Context/UserContext";
+import { signOut } from "next-auth/react";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import auth from "../Firebase/firebase.config";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user] = useAuthState(auth);
-  const [signOut] = useSignOut(auth);
+  const { user } = useUser();
+  const [firebaseUser] = useAuthState(auth);
+  const [signOutFirebase] = useSignOut(auth);
 
-  const handleLogOut = () => {
-    Swal.fire({
+  const handleLogOut = async () => {
+    const result = await Swal.fire({
       title: "Are you sure?",
       text: "You will be logged out from your account.",
       icon: "warning",
@@ -37,19 +40,18 @@ const Navbar = () => {
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, log me out",
       cancelButtonText: "Cancel",
-    }).then((result: any) => {
-      if (result.isConfirmed) {
-        logout();
-        signOut();
-        Swal.fire({
-          title: "Logged out!",
-          text: "You have been successfully logged out.",
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-      }
     });
+
+    if (result.isConfirmed) {
+      try {
+        await logoutUser();
+        await signOut({ redirect: false });
+        await signOutFirebase();
+        router.push("/");
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
+    }
   };
 
   const NavLinks = () => (
@@ -91,7 +93,14 @@ const Navbar = () => {
 
       {/* Desktop Actions */}
       <div className="hidden lg:flex items-center gap-4">
-        {!user ? (
+        {user || firebaseUser ? (
+          <Button
+            onClick={handleLogOut}
+            className="flex items-center gap-2 bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 px-10 py-3 rounded-md text-lg font-semibold shadow-md transition-all duration-200 "
+          >
+            <CgLogOut style={{ width: "20px", height: "20px" }} /> Logout
+          </Button>
+        ) : (
           <LoginRegisterModal>
             <Button
               variant="ghost"
@@ -100,13 +109,6 @@ const Navbar = () => {
               <LoginIcon size={20} /> Login
             </Button>
           </LoginRegisterModal>
-        ) : (
-          <Button
-            onClick={handleLogOut}
-            className="flex items-center gap-2 bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 px-10 py-3 rounded-md text-lg font-semibold shadow-md transition-all duration-200 "
-          >
-            <CgLogOut style={{ width: "20px", height: "20px" }} /> Logout
-          </Button>
         )}
 
         <Link href="/teacher">
@@ -137,7 +139,14 @@ const Navbar = () => {
             </SheetHeader>
             <div className="mt-2 space-y-6 px-2">
               <NavLinks />
-              {!user ? (
+              {user || firebaseUser ? (
+                <Button
+                  onClick={handleLogOut}
+                  className="w-full bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 font-semibold py-2 rounded-md shadow-md transition-all duration-200 flex items-center gap-2 text-md"
+                >
+                  <CgLogOut className="w-12 h-12" /> Logout
+                </Button>
+              ) : (
                 <LoginRegisterModal>
                   <Button
                     variant="ghost"
@@ -146,13 +155,6 @@ const Navbar = () => {
                     <LoginIcon size={20} /> Login
                   </Button>
                 </LoginRegisterModal>
-              ) : (
-                <Button
-                  onClick={handleLogOut}
-                  className="w-full bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 font-semibold py-2 rounded-md shadow-md transition-all duration-200 flex items-center gap-2 text-md"
-                >
-                  <CgLogOut className="w-12 h-12" /> Logout
-                </Button>
               )}
 
               <Link href="/teacher">
