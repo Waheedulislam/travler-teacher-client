@@ -18,7 +18,7 @@ interface ExtendedProfile {
 
 const DUMMY_PASSWORD = "social_login_dummy_password";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -27,8 +27,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("🟡 authorize() called with:", credentials);
-
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_API}/auth/login`,
           {
@@ -42,10 +40,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         const data = await res.json();
-        console.log("🟢 Login Response:", data);
-
         if (res.ok && data.success) {
-          console.log("✅ User authenticated via credentials");
           return {
             id: data.data.user._id,
             name: data.data.user.name,
@@ -53,8 +48,6 @@ export const authOptions: NextAuthOptions = {
             accessToken: data.data.accessToken,
           };
         }
-
-        console.log("🔴 Credential login failed");
         return null;
       },
     }),
@@ -77,18 +70,12 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user, account, profile }) {
-      console.log("🔁 jwt() callback");
-      console.log("👉 user:", user);
-      console.log("👉 account:", account);
-      console.log("👉 profile:", profile);
-
-      // From Credentials
+      // Credentials Provider থেকে accessToken সেট করা
       if (user?.accessToken) {
-        console.log("✅ accessToken from Credentials");
         token.backendAccessToken = user.accessToken;
       }
 
-      // From Google or Facebook
+      // Google / Facebook Social Login এর জন্য
       if (account && profile) {
         const extendedProfile = profile as ExtendedProfile;
         const userData = {
@@ -102,7 +89,6 @@ export const authOptions: NextAuthOptions = {
         };
 
         try {
-          console.log("🟡 Trying to register social user");
           const registerRes = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API}/user/create-user`,
             {
@@ -113,15 +99,11 @@ export const authOptions: NextAuthOptions = {
           );
 
           const registerData = await registerRes.json();
-          console.log("🔵 Register Response:", registerData);
 
-          // Already registered
           if (
             !registerRes.ok &&
             registerData.message === "Email is already registered"
           ) {
-            console.log("🔁 Trying login for existing user");
-
             const loginRes = await fetch(
               `${process.env.NEXT_PUBLIC_BASE_API}/auth/login`,
               {
@@ -135,32 +117,22 @@ export const authOptions: NextAuthOptions = {
             );
 
             const loginData = await loginRes.json();
-            console.log("🟢 Login Response (Social):", loginData);
-
             if (loginData.success && loginData.data?.accessToken) {
-              console.log("✅ accessToken from Social Login");
               token.backendAccessToken = loginData.data.accessToken;
             }
           } else if (registerData.success && registerData.data?.accessToken) {
-            console.log("✅ accessToken from Social Registration");
             token.backendAccessToken = registerData.data.accessToken;
           }
         } catch (err) {
-          console.error("🔴 Social user sync failed:", err);
+          console.error("Social user sync failed:", err);
         }
       }
 
-      console.log("✅ Returning token from jwt() =>", token);
       return token;
     },
 
     async session({ session, token }) {
-      console.log("📦 session() callback");
-      console.log("👉 token:", token);
-
       session.accessToken = token.backendAccessToken as string | undefined;
-
-      console.log("✅ Final session:", session);
       return session;
     },
   },
@@ -169,7 +141,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/signin",
     error: "/auth/error",
   },
-};
+} satisfies NextAuthOptions;
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

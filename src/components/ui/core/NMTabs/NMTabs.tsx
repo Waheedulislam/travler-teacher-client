@@ -13,11 +13,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Login from "@/components/modules/Auth/Login/Login";
 import Register from "@/components/modules/Auth/Register/Register";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { FaFacebookF } from "react-icons/fa";
 
 interface Props {
   children: ReactElement;

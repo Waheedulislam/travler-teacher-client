@@ -99,9 +99,9 @@ export default function ProfilePage() {
   };
 
   const handleLogout = async () => {
-    await signOutFirebase(); // Firebase logout
-    await signOutNextAuth({ redirect: false }); // NextAuth logout
-    router.push("/"); // Redirect to home
+    await signOutFirebase();
+    await signOutNextAuth({ redirect: false });
+    router.push("/");
     toast.success("🚪 Logged out");
   };
 
