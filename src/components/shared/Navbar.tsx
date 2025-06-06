@@ -21,6 +21,7 @@ import { useUser } from "@/Context/UserContext";
 import { signOut } from "next-auth/react";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import auth from "../Firebase/firebase.config";
+import logo from "../../../public/assets/logo.png";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -78,7 +79,7 @@ const Navbar = () => {
       {/* Logo */}
       <Link href="/">
         <Image
-          src="https://traveltoyourteacher.ru/wp-content/uploads/2024/11/cropped-cropped-Logo-for-Travel-to-Your-Teacher-travel-agency_Var-1.1.png"
+          src={logo}
           alt="Logo"
           width={50}
           height={50}

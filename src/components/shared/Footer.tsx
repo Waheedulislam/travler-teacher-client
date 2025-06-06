@@ -2,6 +2,7 @@ import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import logo from "../../../public/assets/logo.png";
 
 export default function Footer() {
   return (
@@ -10,7 +11,7 @@ export default function Footer() {
         {/* Logo */}
         <div className="flex flex-col items-center md:items-start">
           <Image
-            src="https://traveltoyourteacher.ru/wp-content/uploads/2024/11/cropped-cropped-Logo-for-Travel-to-Your-Teacher-travel-agency_Var-1.1.png"
+            src={logo}
             alt="Logo"
             width={100}
             height={100}
