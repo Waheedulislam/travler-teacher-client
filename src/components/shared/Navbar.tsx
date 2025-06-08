@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, LogIn as LoginIcon } from "lucide-react";
+import { Menu, X, LogIn as LoginIcon, ExternalLink, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -13,6 +13,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import LoginRegisterModal from "../ui/core/NMTabs/NMTabs";
 import { CgLogOut } from "react-icons/cg";
 import Swal from "sweetalert2";
@@ -95,12 +102,50 @@ const Navbar = () => {
       {/* Desktop Actions */}
       <div className="hidden lg:flex items-center gap-4">
         {user || firebaseUser ? (
-          <Button
-            onClick={handleLogOut}
-            className="flex items-center gap-2 bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 px-10 py-3 rounded-md text-lg font-semibold shadow-md transition-all duration-200 "
-          >
-            <CgLogOut style={{ width: "20px", height: "20px" }} /> Logout
-          </Button>
+          <>
+            {/* Avatar Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="focus:outline-none">
+                  <Image
+                    src={
+                      user?.image ||
+                      firebaseUser?.photoURL ||
+                      "/default-avatar.png"
+                    }
+                    alt="User Avatar"
+                    width={42}
+                    height={42}
+                    className="rounded-full border border-gray-300 shadow-sm hover:ring-2 hover:ring-orange-400 transition"
+                  />
+                </button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => router.push("/profile")}
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" /> View Profile
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => router.push("/")}
+                >
+                  <Copy className="w-4 h-4 mr-2" /> Home
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Logout button OUTSIDE dropdown */}
+            <Button
+              onClick={handleLogOut}
+              className="flex items-center gap-2 bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 px-10 py-3 rounded-md text-lg font-semibold shadow-md transition-all duration-200 "
+            >
+              <CgLogOut style={{ width: "20px", height: "20px" }} /> Logout
+            </Button>
+          </>
         ) : (
           <LoginRegisterModal>
             <Button
@@ -140,13 +185,39 @@ const Navbar = () => {
             </SheetHeader>
             <div className="mt-2 space-y-6 px-2">
               <NavLinks />
+
               {user || firebaseUser ? (
-                <Button
-                  onClick={handleLogOut}
-                  className="w-full bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 font-semibold py-2 rounded-md shadow-md transition-all duration-200 flex items-center gap-2 text-md"
-                >
-                  <CgLogOut className="w-12 h-12" /> Logout
-                </Button>
+                <>
+                  {/* Profile link with avatar */}
+                  <div
+                    onClick={() => {
+                      router.push("/profile");
+                      setMenuOpen(false);
+                    }}
+                    className="flex items-center gap-3 px-2 py-1 cursor-pointer"
+                  >
+                    <Image
+                      src={
+                        user?.image ||
+                        firebaseUser?.photoURL ||
+                        "/default-avatar.png"
+                      }
+                      alt="User Avatar"
+                      width={40}
+                      height={40}
+                      className="rounded-full border border-gray-300"
+                    />
+                    <span className="font-medium">My Profile</span>
+                  </div>
+
+                  {/* Logout button outside dropdown */}
+                  <Button
+                    onClick={handleLogOut}
+                    className="w-full bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 font-semibold py-2 rounded-md shadow-md transition-all duration-200 flex items-center gap-2 text-md"
+                  >
+                    <CgLogOut className="w-12 h-12" /> Logout
+                  </Button>
+                </>
               ) : (
                 <LoginRegisterModal>
                   <Button

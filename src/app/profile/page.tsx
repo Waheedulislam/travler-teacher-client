@@ -113,11 +113,11 @@ export default function ProfilePage() {
       .toUpperCase();
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-10">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-10 bg-gradient-to-br from-violet-500/5 via-fuchsia-500/5 to-pink-500/5 backdrop-blur-xl border-0 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
+      <div className="max-w-full mx-auto">
         <Card className="overflow-hidden border-0 shadow-2xl rounded-3xl">
-          <div className="h-36 sm:h-40 md:h-48 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 relative" />
-          <CardContent className="relative -mt-20 sm:-mt-24 md:-mt-28 p-6 sm:p-8 md:p-10">
+          <div className="h-36 sm:h-40 md:h-48 bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-600 relative" />
+          <CardContent className="relative -mt-20 sm:-mt-24 md:-mt-28 p-6 sm:p-8 md:p-10 bg-gradient-to-br from-violet-500/5 via-fuchsia-500/5 to-pink-500/5 backdrop-blur-xl border-0 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
             {loading || !user ? (
               <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 mt-4">
                 {/* Left: avatar + skeleton text */}
