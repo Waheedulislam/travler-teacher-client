@@ -243,7 +243,8 @@ const Navbar = () => {
 };
 
 const navItems = [
-  { name: "Teachers", href: "/" },
+  { name: "Home", href: "/" },
+  { name: "Teachers", href: "/teacher" },
   { name: "Category", href: "/category" },
   { name: "Countries", href: "/countries" },
 ];

@@ -41,18 +41,27 @@ const PopularCategories = () => {
 
   return (
     <Container>
-      <div>
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1200"
+        data-aos-easing="ease-in-out"
+      >
         <h1 className="italic text-center text-xl font-normal mt-8 lg:mb-14 mb-6">
           You’re going on a trip, and we’ll provide you with a language teacher
           guide for the language you&lsquo;d like to learn.
         </h1>
       </div>
 
-      <div>
+      <div
+        data-aos="fade-up"
+        data-aos-delay="200"
+        data-aos-duration="1200"
+        data-aos-easing="ease-in-out"
+      >
         <Title title="Popular Categories" />
       </div>
 
-      <section className="py-12 text-center ">
+      <section className="py-12 text-center">
         <Swiper
           modules={[Navigation]}
           navigation
@@ -68,7 +77,13 @@ const PopularCategories = () => {
           {categories.map((cat, index) => (
             <SwiperSlide key={index}>
               <Link href={`/category/${cat._id}`} passHref>
-                <div className="group relative w-full max-w-xs mx-auto overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 ease-in-out hover:scale-[1.04] hover:shadow-xl ">
+                <div
+                  className="group relative w-full max-w-xs mx-auto overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 ease-in-out hover:scale-[1.04] hover:shadow-xl"
+                  data-aos="zoom-in"
+                  data-aos-delay={index * 200}
+                  data-aos-duration="1200"
+                  data-aos-easing="ease-in-out"
+                >
                   <Image
                     src={cat.image}
                     alt={cat.title}
@@ -85,11 +100,18 @@ const PopularCategories = () => {
           ))}
         </Swiper>
 
-        <Link href="/category">
-          <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition duration-500 ease-in-out">
-            View All Categories
-          </Button>
-        </Link>
+        <div
+          data-aos="fade-up"
+          data-aos-delay="400"
+          data-aos-duration="1200"
+          data-aos-easing="ease-in-out"
+        >
+          <Link href="/category">
+            <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition duration-500 ease-in-out">
+              View All Categories
+            </Button>
+          </Link>
+        </div>
       </section>
     </Container>
   );

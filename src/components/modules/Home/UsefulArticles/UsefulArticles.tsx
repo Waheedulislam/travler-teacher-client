@@ -14,12 +14,15 @@ import { useEffect, useState } from "react";
 import { IArticle } from "@/types";
 import ArticleSkeleton from "./ArticleSkeleton";
 import Link from "next/link";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function UseFulArticles() {
   const [articles, setArticles] = useState<IArticle[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    AOS.init({ once: true });
     const fetchCategories = async () => {
       try {
         const response = await getAllArticle();
@@ -41,9 +44,10 @@ export default function UseFulArticles() {
       </Container>
     );
   }
+
   return (
     <Container>
-      <div>
+      <div data-aos="fade-up" data-aos-duration="1000">
         <Title title="Useful Articles" />
       </div>
       <section className="py-16 ">
@@ -61,56 +65,50 @@ export default function UseFulArticles() {
             className="mb-8 px-4"
           >
             {articles.map((trip, index) => (
-              <SwiperSlide key={index}>
-                <Card className="overflow-hidden border rounded-xl transition hover:shadow-lg bg-white">
-                  <Link href={`/article/${trip._id}`} passHref>
+              <SwiperSlide
+                key={index}
+                data-aos="zoom-in"
+                data-aos-delay={index * 300} // Increased delay for slower stagger
+                data-aos-duration="1200" // Increased duration for slower animation
+              >
+                <Link href={`/article/${trip._id}`} passHref>
+                  <Card className="overflow-hidden border rounded-xl hover:shadow-lg bg-white transition-transform duration-300 ease-in-out hover:scale-105">
                     <Image
                       src={trip.image}
                       alt={trip.title}
                       width={500}
                       height={300}
-                      className="w-full h-full -mt-10 object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                      className="w-full h-full -mt-10 object-cover"
                     />
-                  </Link>
-                  <CardContent className="p-4 space-y-2">
-                    <div className="flex items-center justify-between text-lg text-gray-500 space-x-4">
-                      <div className="flex items-center gap-2">
-                        <Plane className="w-7 7 text-orange-500" />
-                        <span>{trip.category}</span>
+                    <CardContent className="p-4 space-y-2">
+                      <div className="flex items-center justify-between text-lg text-gray-500 space-x-4">
+                        <div className="flex items-center gap-2">
+                          <Plane className="w-7 h-7 text-orange-500" />
+                          <span>{trip.category}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="w-7 h-7 text-orange-500" />
+                          <span>{trip.comments} Comments</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <MessageSquare className="w-7 h-7 text-orange-500" />
-                        <span>{trip.comments} Comments</span>
-                      </div>
-                    </div>
-                    <Link href={`/article/${trip._id}`} passHref>
+
                       <h3 className="text-2xl font-semibold hover:text-orange-700 text-gray-800">
                         {trip.title}
                       </h3>
-                    </Link>
-                    <p className="text-lg mt-2 font-normal text-gray-600">
-                      {trip.description}
-                    </p>
-                    <Link
-                      href={`/article/${trip._id}`}
-                      className="text-lg text-[#596B86] font-medium inline-flex items-center gap-1 hover:underline mt-4 hover:text-orange-700"
-                    >
-                      Read more →
-                    </Link>
-                  </CardContent>
-                </Card>
+
+                      <p className="text-lg mt-2 font-normal text-gray-600">
+                        {trip.description}
+                      </p>
+                      <p className="text-lg text-[#596B86] font-medium inline-flex items-center gap-1 hover:underline mt-4 hover:text-orange-700">
+                        Read more →
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
-        {/* <div className="text-center">
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-orange-400 to-yellow-400 text-white  px-12 py-6 my-10 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition"
-          >
-            Read all articles
-          </Button>
-        </div> */}
       </section>
     </Container>
   );

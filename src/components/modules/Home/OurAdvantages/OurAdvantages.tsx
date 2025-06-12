@@ -1,3 +1,9 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,46 +11,65 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 const OurAdvantages = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    AOS.init({ once: true });
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null; // Prevent SSR mismatch
+
   return (
     <Container>
-      <div>
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1400"
+        data-aos-easing="ease-in-out"
+      >
         <Title title="Our Advantages" />
       </div>
       <section className="py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {advantages.map((item, idx) => (
-            <Card
+            <div
               key={idx}
-              className={cn(
-                "rounded-2xl shadow-md transition-all duration-300 group",
-                item.bg,
-                // Apply hover effect only to cards after the first one
-                idx !== 1 && "hover:bg-white"
-              )}
+              data-aos="zoom-in"
+              data-aos-delay={idx * 300}
+              data-aos-duration="1400"
+              data-aos-easing="ease-in-out"
             >
-              <CardContent className="flex flex-col items-center text-center p-6 space-y-4">
-                <Image
-                  src={item.image}
-                  height={90}
-                  width={90}
-                  alt={item.title}
-                  className="my-10"
-                />
-                <h3
-                  className={cn(
-                    "font-semibold text-2xl transition-colors duration-300",
-                    idx === 1
-                      ? "text-orange-600"
-                      : "text-white group-hover:text-orange-600"
-                  )}
-                >
-                  {item.title}
-                </h3>
-                <p className="text-lg font-normal text-[#5E6282]">
-                  {item.description}
-                </p>
-              </CardContent>
-            </Card>
+              <Card
+                className={cn(
+                  "rounded-2xl shadow-md transition-all duration-300 group",
+                  item.bg,
+                  idx !== 1 && "hover:bg-white"
+                )}
+              >
+                <CardContent className="flex flex-col items-center text-center p-6 space-y-4">
+                  <Image
+                    src={item.image}
+                    height={90}
+                    width={90}
+                    alt={item.title}
+                    className="my-10"
+                  />
+                  <h3
+                    className={cn(
+                      "font-semibold text-2xl transition-colors duration-300",
+                      idx === 1
+                        ? "text-orange-600"
+                        : "text-white group-hover:text-orange-600"
+                    )}
+                  >
+                    {item.title}
+                  </h3>
+                  <p className="text-lg font-normal text-[#5E6282]">
+                    {item.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
       </section>

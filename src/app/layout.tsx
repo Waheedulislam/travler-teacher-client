@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import { Suspense } from "react";
 import Loader from "@/components/Loader/Loader";
 import { Providers } from "./providers";
+import { AosProvider } from "@/components/AosProvider/AosProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +33,13 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-r from-white to-blue-50`}
         >
-          <Navbar />
-          <Toaster richColors position="top-center" />
-          <Suspense fallback={<Loader />}>{children}</Suspense>
+          <AosProvider>
+            <Navbar />
+            <Toaster richColors position="top-center" />
+            <Suspense fallback={<Loader />}>{children}</Suspense>
 
-          <Footer />
+            <Footer />
+          </AosProvider>
         </body>
       </html>
     </Providers>

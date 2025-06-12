@@ -40,7 +40,10 @@ const NMDateComponents = () => {
             <div className="border border-[#1E93A6] rounded-xl p-3 flex items-center justify-center group-hover:bg-[#1E93A6] transition">
               <BsCurrencyDollar className="text-[#1E93A6] group-hover:text-white h-5 w-5 transition" />
             </div>
-            <Link href="/pricing" className="flex flex-col text-base group">
+            <Link
+              href="/date-booking"
+              className="flex flex-col text-base group"
+            >
               <span className="text-muted-foreground group-hover:text-[#1E93A6] transition">
                 Price
               </span>

@@ -6,7 +6,7 @@ import logo from "../../../public/assets/logo.png";
 
 export default function Footer() {
   return (
-    <footer className="bg-yellow-400 py-10 px-6 md:px-16 text-sm text-black">
+    <footer className="bg-yellow-400 py-10 px-6 md:px-16 text-base text-black">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10 items-start">
         {/* Logo */}
         <div className="flex flex-col items-center md:items-start">
@@ -21,8 +21,8 @@ export default function Footer() {
 
         {/* Teachers */}
         <div>
-          <h4 className="font-semibold text-lg mb-3">Teachers</h4>
-          <ul className="space-y-2 text-[#5E6282]">
+          <h4 className="font-semibold text-xl mb-3">Teachers</h4>
+          <ul className="space-y-2 text-[#5E6282] text-lg">
             <li>
               <Link href="#">Countries</Link>
             </li>
@@ -37,8 +37,8 @@ export default function Footer() {
 
         {/* Payment */}
         <div>
-          <h4 className="font-semibold text-lg mb-3">Payment</h4>
-          <ul className="space-y-2 text-[#5E6282]">
+          <h4 className="font-semibold text-xl mb-3">Payment</h4>
+          <ul className="space-y-2 text-[#5E6282] text-lg">
             <li>
               <Link href="#">Help</Link>
             </li>
@@ -53,8 +53,8 @@ export default function Footer() {
 
         {/* Other */}
         <div>
-          <h4 className="font-semibold text-lg mb-3">Other</h4>
-          <ul className="space-y-2 text-[#5E6282] ">
+          <h4 className="font-semibold text-xl mb-3">Other</h4>
+          <ul className="space-y-2 text-[#5E6282] text-lg">
             <li>
               <Link href="#">Profile</Link>
             </li>
@@ -110,7 +110,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <p className="mt-2">Download the app</p>
+          <p className="mt-2 text-lg">Download the app</p>
           <div className="flex space-x-2">
             <a
               href="https://play.google.com"
@@ -141,7 +141,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom note */}
-      <div className="mt-6 flex flex-col sm:flex-row justify-center items-center text-center text-md gap-4 text-black">
+      <div className="mt-6 flex flex-col sm:flex-row justify-center items-center text-center text-lg gap-4 text-black">
         Secure online payment support
         <div className="flex gap-4">
           <Image

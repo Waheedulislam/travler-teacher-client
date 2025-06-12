@@ -11,6 +11,8 @@ import Title from "@/components/shared/Title";
 import Container from "@/components/shared/Container";
 import { getAllReview } from "@/services/ReviewServies";
 import { useEffect, useState } from "react";
+import AOS from "aos"; // AOS import
+import "aos/dist/aos.css";
 
 interface IReview {
   name: string;
@@ -28,6 +30,7 @@ export default function ReviewSection() {
         const response = await getAllReview();
         const fetchedReviews: IReview[] = response?.data?.result || [];
         setReviews(fetchedReviews);
+        AOS.refresh(); // AOS refresh after dynamic content is loaded
       } catch (error) {
         console.error("Failed to fetch reviews:", error);
       }
@@ -55,7 +58,13 @@ export default function ReviewSection() {
         >
           {reviews.map((item, idx) => (
             <SwiperSlide key={idx}>
-              <Card className="bg-white shadow-lg rounded-2xl h-full flex flex-col items-center text-center p-4 transition hover:shadow-xl">
+              <Card
+                data-aos="fade-up"
+                data-aos-delay={idx * 300}
+                data-aos-duration="1500"
+                data-aos-easing="ease-in-out"
+                className="bg-white shadow-lg rounded-2xl h-full flex flex-col items-center text-center p-4 transition hover:shadow-xl"
+              >
                 <CardContent className="flex flex-col items-center gap-4">
                   <Image
                     src={item.avatar}
