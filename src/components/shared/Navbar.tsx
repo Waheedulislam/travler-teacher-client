@@ -29,6 +29,7 @@ import { signOut } from "next-auth/react";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import auth from "../Firebase/firebase.config";
 import logo from "../../../public/assets/logo.png";
+import userLogo from "../../../public/assets/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -108,11 +109,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <button className="focus:outline-none">
                   <Image
-                    src={
-                      user?.image ||
-                      firebaseUser?.photoURL ||
-                      "/default-avatar.png"
-                    }
+                    src={user?.image || firebaseUser?.photoURL || userLogo}
                     alt="User Avatar"
                     width={42}
                     height={42}
@@ -197,11 +194,7 @@ const Navbar = () => {
                     className="flex items-center gap-3 px-2 py-1 cursor-pointer"
                   >
                     <Image
-                      src={
-                        user?.image ||
-                        firebaseUser?.photoURL ||
-                        "/default-avatar.png"
-                      }
+                      src={user?.image || firebaseUser?.photoURL || userLogo}
                       alt="User Avatar"
                       width={40}
                       height={40}

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { useSession, signOut as signOutNextAuth } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -34,6 +34,7 @@ import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import auth from "@/components/Firebase/firebase.config";
+import userLogo from "../../../public/assets/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -105,18 +106,11 @@ export default function ProfilePage() {
     toast.success("🚪 Logged out");
   };
 
-  const getInitials = (name: string) =>
-    name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-10 bg-gradient-to-br from-violet-500/5 via-fuchsia-500/5 to-pink-500/5 backdrop-blur-xl border-0 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
       <div className="max-w-full mx-auto">
         <Card className="overflow-hidden border-0 shadow-2xl rounded-3xl">
-          <div className="h-36 sm:h-40 md:h-48 bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-600 relative" />
+          <div className="h-36 sm:h-40 md:h-48 bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-300  relative" />
           <CardContent className="relative -mt-20 sm:-mt-24 md:-mt-28 p-6 sm:p-8 md:p-10 bg-gradient-to-br from-violet-500/5 via-fuchsia-500/5 to-pink-500/5 backdrop-blur-xl border-0 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.05)]">
             {loading || !user ? (
               <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 mt-4">
@@ -202,9 +196,13 @@ export default function ProfilePage() {
                             className="w-full h-full object-cover rounded-full"
                           />
                         ) : (
-                          <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white">
-                            {getInitials(name)}
-                          </AvatarFallback>
+                          <Image
+                            src={userLogo}
+                            alt="Fallback User"
+                            width={128}
+                            height={128}
+                            className="w-full h-full object-cover rounded-full"
+                          />
                         )}
                       </Avatar>
                       <div
@@ -298,10 +296,10 @@ export default function ProfilePage() {
 
                       <div className="flex flex-col sm:flex-row gap-4">
                         <Button
-                          className="flex-1"
+                          className="flex-1 bg-gradient-to-r from-orange-500 to-yellow-400"
                           onClick={() => setIsEditing(true)}
                         >
-                          <Sparkles className="w-5 h-5 mr-2" /> Edit Profile
+                          <Sparkles className="w-5 h-5 mr-2 " /> Edit Profile
                         </Button>
                         <Button
                           className="flex-1"
@@ -328,7 +326,7 @@ export default function ProfilePage() {
                         </div>
                         <div className="w-full h-4 bg-gray-200 rounded-full">
                           <div
-                            className="h-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-full"
+                            className="h-full bg-gradient-to-r from-orange-500 via-amber-400 to-yellow-400 rounded-full"
                             style={{ width: "85%" }}
                           />
                         </div>
