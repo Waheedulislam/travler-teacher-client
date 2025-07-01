@@ -16,6 +16,7 @@ import ArticleSkeleton from "./ArticleSkeleton";
 import Link from "next/link";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Button } from "@/components/ui/button";
 
 export default function UseFulArticles() {
   const [articles, setArticles] = useState<IArticle[]>([]);
@@ -108,6 +109,19 @@ export default function UseFulArticles() {
               </SwiperSlide>
             ))}
           </Swiper>
+          <div
+            data-aos="fade-up"
+            data-aos-delay="600"
+            data-aos-duration="1400"
+            data-aos-easing="ease-in-out"
+            className="flex items-center justify-center"
+          >
+            <Link href="/blog">
+              <Button className="cursor-pointer bg-gradient-to-r from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition">
+                View All Blogs
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </Container>

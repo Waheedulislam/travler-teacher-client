@@ -240,6 +240,7 @@ const navItems = [
   { name: "Teachers", href: "/teacher" },
   { name: "Category", href: "/category" },
   { name: "Countries", href: "/countries" },
+  { name: "Blog", href: "/blog" },
 ];
 
 export default Navbar;
