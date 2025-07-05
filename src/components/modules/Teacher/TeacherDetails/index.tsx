@@ -2,16 +2,27 @@
 import type { ITeacher } from "@/types";
 import Image from "next/image";
 import { MapPin, Award, Globe, Mail, Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "sonner";
+import BookTourButton from "@/components/StripePaymentButton/StripePaymentButton";
+
+const extractPrice = (desc?: string) => {
+  if (!desc) return null;
+
+  return desc.replace(/^from\s+/i, "").trim();
+};
+
+const extractAmountNumber = (desc?: string): number => {
+  if (!desc) return 0;
+  const match = desc.match(/\d+/);
+  return match ? parseInt(match[0], 10) : 0;
+};
 
 const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
-  const handleMessage = () => {
-    toast.warning("Booking is not available! Try again later.");
-  };
+  const priceText = extractPrice(teacher.description);
+  const amount = extractAmountNumber(teacher.description);
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -77,20 +88,33 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                 </div>
               </div>
 
-              <div className="mt-6">
-                <Button
-                  onClick={handleMessage}
-                  className="cursor-pointer w-full bg-gradient-to-r from-orange-500 to-yellow-400 transition-all text-white"
-                >
-                  Book a Tour
-                </Button>
+              {/* Price Section */}
+              {/* Price Section */}
+              <div className="mt-6 mb-6">
+                <div className="flex items-center justify-between bg-orange-50 border border-orange-200 rounded-lg px-4 py-3 shadow-sm">
+                  <span className="text-sm text-gray-600 font-medium">
+                    Starting From:
+                  </span>
+                  <p className="text-lg font-semibold text-orange-600">
+                    {priceText}
+                  </p>
+                </div>
+              </div>
+
+              {/* Payment Button */}
+              <div>
+                <BookTourButton
+                  teacherId={teacher._id}
+                  teacherName={teacher.name}
+                  amount={amount || 10}
+                />
               </div>
             </CardContent>
           </Card>
 
           <Card className="shadow-sm">
             <CardContent className="p-4">
-              <h3 className="font-medium mb-2  ">Tour Focus</h3>
+              <h3 className="font-medium mb-2">Tour Focus</h3>
               <div className="flex flex-wrap gap-2">
                 <Badge className="bg-yellow-100 text-yellow-700">
                   City Walks
