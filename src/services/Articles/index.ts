@@ -63,3 +63,26 @@ export const getSingleArticle = async (articleId: string) => {
     return Error(error.message);
   }
 };
+export const deleteArticle = async (
+  articleId: string
+): Promise<boolean | Error> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/article/${articleId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to delete article: ${res.status}`);
+    }
+
+    return true;
+  } catch (error: any) {
+    return new Error(error.message || "Something went wrong");
+  }
+};
