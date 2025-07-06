@@ -87,7 +87,11 @@ const ArticleDetails = ({ article }: { article: IArticle }) => {
               {article.category}
             </Badge>
             <div className="flex items-center gap-4 text-sm text-gray-500">
-              <span>{formatTimeAgo(article.createdAt)}</span>
+              <span>
+                {article.createdAt
+                  ? formatTimeAgo(article.createdAt)
+                  : "Unknown date"}
+              </span>
               <span className="flex items-center gap-1">
                 <Eye className="w-4 h-4" />
                 {views.toLocaleString()}
