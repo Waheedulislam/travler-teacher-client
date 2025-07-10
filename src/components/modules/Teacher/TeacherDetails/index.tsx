@@ -18,6 +18,11 @@ const extractAmountNumber = (desc?: string): number => {
   const match = desc.match(/\d+/);
   return match ? parseInt(match[0], 10) : 0;
 };
+const handleContactClick = () => {
+  if (typeof window !== "undefined" && window.$crisp) {
+    window.$crisp.push(["do", "chat:open"]);
+  }
+};
 
 const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
   const priceText = extractPrice(teacher.description);
@@ -109,6 +114,12 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                   amount={amount || 10}
                 />
               </div>
+              <button
+                onClick={handleContactClick}
+                className="w-full mt-3 bg-gradient-to-r hover:from-orange-600 hover:to-yellow-500 text-orange-500 hover:text-white hover:border-white py-2 px-4 rounded-md border border-orange-500 hover:brightness-110 transition-all text-xl cursor-pointer"
+              >
+                Contact me
+              </button>
             </CardContent>
           </Card>
 

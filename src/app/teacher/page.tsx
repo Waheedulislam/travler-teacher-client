@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Container from "@/components/shared/Container";
 import Title from "@/components/shared/Title";
 import NMDateComponents from "@/components/ui/core/NMDateComponents/NMDateComponents";
@@ -17,15 +18,27 @@ const AllTeachers = () => {
   const [searchName, setSearchName] = useState("");
   const [searchCountry, setSearchCountry] = useState("");
 
+  const searchParams = useSearchParams();
+  const urlSearch = searchParams.get("search") || "";
+
   useEffect(() => {
     const fetchTeachers = async () => {
       const response = await getAllTeachers();
       const data: ITeacher[] = response?.data?.result || [];
       setTeachers(data);
-      setFilteredTeachers(data);
+
+      if (urlSearch) {
+        const filtered = data.filter((teacher) =>
+          teacher.name.toLowerCase().includes(urlSearch.toLowerCase())
+        );
+        setFilteredTeachers(filtered);
+        setSearchName(urlSearch);
+      } else {
+        setFilteredTeachers(data);
+      }
     };
     fetchTeachers();
-  }, []);
+  }, [urlSearch]);
 
   const handleSearch = () => {
     const filtered = teachers.filter((teacher) => {
@@ -57,9 +70,9 @@ const AllTeachers = () => {
 
       {/* Search Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-12 max-w-6xl mx-auto">
-        {/* Search by name with icon and clear button */}
+        {/* Search by Name */}
         <div className="w-full">
-          <label className="block text-sm sm:text-base font-semibold text-gray-700 mb-2">
+          <label className="block font-semibold text-gray-700 mb-2">
             Search by name
           </label>
           <div className="relative w-full">
@@ -67,16 +80,17 @@ const AllTeachers = () => {
               placeholder="Enter name"
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
-              className="rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-400 w-full
-                         h-12 text-base sm:text-lg pl-10 pr-10"
+              className="pl-10 pr-10 h-12"
             />
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             {searchName && (
               <button
                 type="button"
-                onClick={() => setSearchName("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-700"
-                aria-label="Clear name search"
+                onClick={() => {
+                  setSearchName("");
+                  setFilteredTeachers(teachers);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
               >
                 <FiX size={20} />
               </button>
@@ -84,9 +98,9 @@ const AllTeachers = () => {
           </div>
         </div>
 
-        {/* Search by country with icon and clear button */}
+        {/* Search by Country */}
         <div className="w-full">
-          <label className="block text-sm sm:text-base font-semibold text-gray-700 mb-2">
+          <label className="block font-semibold text-gray-700 mb-2">
             Search by country
           </label>
           <div className="relative w-full">
@@ -94,16 +108,17 @@ const AllTeachers = () => {
               placeholder="Enter country"
               value={searchCountry}
               onChange={(e) => setSearchCountry(e.target.value)}
-              className="rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-400 w-full
-                         h-12 text-base sm:text-lg pl-10 pr-10"
+              className="pl-10 pr-10 h-12"
             />
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             {searchCountry && (
               <button
                 type="button"
-                onClick={() => setSearchCountry("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-700"
-                aria-label="Clear country search"
+                onClick={() => {
+                  setSearchCountry("");
+                  setFilteredTeachers(teachers);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
               >
                 <FiX size={20} />
               </button>
@@ -112,12 +127,10 @@ const AllTeachers = () => {
         </div>
 
         {/* Search Button */}
-        <div className="flex items-end justify-start sm:justify-end">
+        <div className="flex items-end">
           <Button
             onClick={handleSearch}
-            className="w-full sm:w-auto bg-gradient-to-r from-orange-400 to-yellow-400
-                       text-white font-semibold px-12 py-6 rounded-md
-                       shadow-lg hover:brightness-110 transition text-lg sm:text-xl"
+            className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white py-3"
           >
             Search Teacher
           </Button>

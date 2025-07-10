@@ -98,8 +98,11 @@ export default function UseFulArticles() {
                       </h3>
 
                       <p className="text-lg mt-2 font-normal text-gray-600">
-                        {trip.description}
+                        {trip.description.length > 101
+                          ? `${trip.description.slice(0, 101)}...`
+                          : trip.description}
                       </p>
+
                       <p className="text-lg text-[#596B86] font-medium inline-flex items-center gap-1 hover:underline mt-4 hover:text-orange-700">
                         Read more →
                       </p>

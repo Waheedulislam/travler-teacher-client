@@ -1,11 +1,12 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, LogIn as LoginIcon, ExternalLink, Copy } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import Swal from "sweetalert2";
 import {
   Sheet,
   SheetContent,
@@ -20,16 +21,22 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Menu, X, LogIn as LoginIcon, ExternalLink, Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import LoginRegisterModal from "../ui/core/NMTabs/NMTabs";
 import { CgLogOut } from "react-icons/cg";
-import Swal from "sweetalert2";
 import { logoutUser } from "@/services/AuthServices";
 import { useUser } from "@/Context/UserContext";
-import { signOut } from "next-auth/react";
-import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import auth from "../Firebase/firebase.config";
 import logo from "../../../public/assets/logo.png";
 import userLogo from "../../../public/assets/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png";
+
+const navItems = [
+  { name: "Home", href: "/" },
+  { name: "Teachers", href: "/teacher" },
+  { name: "Country", href: "/category" },
+  { name: "Blog", href: "/blog" },
+];
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -38,6 +45,17 @@ const Navbar = () => {
   const { user } = useUser();
   const [firebaseUser] = useAuthState(auth);
   const [signOutFirebase] = useSignOut(auth);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/teacher?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+      setMenuOpen(false);
+    }
+  };
 
   const handleLogOut = async () => {
     const result = await Swal.fire({
@@ -102,9 +120,25 @@ const Navbar = () => {
 
       {/* Desktop Actions */}
       <div className="hidden lg:flex items-center gap-4">
+        {/* Search Input */}
+        <form onSubmit={handleSearch} className="flex items-center gap-2">
+          <input
+            type="text"
+            placeholder="Search teachers..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+          <Button
+            type="submit"
+            className="bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-7 py-2 rounded-md"
+          >
+            Search
+          </Button>
+        </form>
+
         {user || firebaseUser ? (
           <>
-            {/* Avatar Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="focus:outline-none">
@@ -117,75 +151,73 @@ const Navbar = () => {
                   />
                 </button>
               </DropdownMenuTrigger>
-
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => router.push("/profile")}
-                >
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
                   <ExternalLink className="w-4 h-4 mr-2" /> View Profile
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
-                >
+                <DropdownMenuItem onClick={() => router.push("/")}>
                   <Copy className="w-4 h-4 mr-2" /> Home
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Logout button OUTSIDE dropdown */}
             <Button
               onClick={handleLogOut}
-              className="flex items-center gap-2 bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 px-10 py-3 rounded-md text-lg font-semibold shadow-md transition-all duration-200 "
+              className="bg-red-500 text-white px-6 py-3 rounded-md hover:bg-white hover:text-red-500 hover:border-red-500 border border-transparent"
             >
-              <CgLogOut style={{ width: "20px", height: "20px" }} /> Logout
+              <CgLogOut size={20} /> Logout
             </Button>
           </>
         ) : (
           <LoginRegisterModal>
             <Button
               variant="ghost"
-              className="text-orange-500 text-xl flex items-center gap-2"
+              className="text-orange-500 bg-orange-100 text-xl flex items-center gap-2 cursor-pointer"
             >
               <LoginIcon size={20} /> Login
             </Button>
           </LoginRegisterModal>
         )}
-
-        <Link href="/teacher">
-          <Button className="cursor-pointer bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-12 py-4 rounded-md shadow hover:opacity-90 transition text-lg font-normal">
-            Find a Teacher
-          </Button>
-        </Link>
       </div>
 
-      {/* Mobile Nav Toggle */}
+      {/* Mobile Menu */}
       <div className="lg:hidden">
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger asChild>
             <div className="text-black">
-              {menuOpen ? (
-                <X size={30} className="text-black" />
-              ) : (
-                <Menu size={30} className="text-black" />
-              )}
+              {menuOpen ? <X size={30} /> : <Menu size={30} />}
             </div>
           </SheetTrigger>
-
           <SheetContent side="left">
             <SheetHeader>
               <SheetTitle className="text-left text-lg font-semibold mx-2">
                 Menu
               </SheetTitle>
             </SheetHeader>
-            <div className="mt-2 space-y-6 px-2">
+
+            {/* Mobile Search */}
+            <form onSubmit={handleSearch} className="flex gap-2 mt-4 px-2">
+              <input
+                type="text"
+                placeholder="Search teachers..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+              <Button
+                type="submit"
+                className=" bg-gradient-to-r from-[#FF700B] to-[#FDC90C]   text-white px-6  py-2 rounded-md hover:opacity-90"
+              >
+                search
+              </Button>
+            </form>
+
+            <div className="mt-6 space-y-6 px-2">
               <NavLinks />
 
               {user || firebaseUser ? (
                 <>
-                  {/* Profile link with avatar */}
                   <div
                     onClick={() => {
                       router.push("/profile");
@@ -202,20 +234,18 @@ const Navbar = () => {
                     />
                     <span className="font-medium">My Profile</span>
                   </div>
-
-                  {/* Logout button outside dropdown */}
                   <Button
                     onClick={handleLogOut}
-                    className="w-full bg-red-500 text-white border border-transparent hover:bg-white hover:border-red-500 hover:text-red-500 font-semibold py-2 rounded-md shadow-md transition-all duration-200 flex items-center gap-2 text-md"
+                    className="w-full bg-red-500 text-white py-2 rounded-md flex items-center gap-2"
                   >
-                    <CgLogOut className="w-12 h-12" /> Logout
+                    <CgLogOut size={20} /> Logout
                   </Button>
                 </>
               ) : (
                 <LoginRegisterModal>
                   <Button
                     variant="ghost"
-                    className="text-orange-500 text-xl flex items-center gap-2 w-full"
+                    className="text-orange-500 text-xl flex items-center gap-2 w-full bg-orange-100 cursor-pointer"
                   >
                     <LoginIcon size={20} /> Login
                   </Button>
@@ -223,7 +253,7 @@ const Navbar = () => {
               )}
 
               <Link href="/teacher">
-                <Button className="cursor-pointer px-2 w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md shadow hover:opacity-90 transition">
+                <Button className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md shadow hover:opacity-90">
                   Find a Teacher
                 </Button>
               </Link>
@@ -234,13 +264,5 @@ const Navbar = () => {
     </nav>
   );
 };
-
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Teachers", href: "/teacher" },
-  { name: "Category", href: "/category" },
-  { name: "Countries", href: "/countries" },
-  { name: "Blog", href: "/blog" },
-];
 
 export default Navbar;

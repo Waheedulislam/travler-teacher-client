@@ -53,7 +53,7 @@ const BookTourButton = ({ teacherId, teacherName, amount }: Props) => {
       onClick={handleBooking}
       className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white py-2 px-4 rounded-md hover:brightness-110 transition-all text-xl"
     >
-      Book a Tour 💳
+      Book a Teacher 💳
     </button>
   );
 };

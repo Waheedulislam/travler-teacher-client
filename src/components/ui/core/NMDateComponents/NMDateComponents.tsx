@@ -1,16 +1,13 @@
 "use client";
 
-import { FaCalendarAlt } from "react-icons/fa";
 import { Button } from "../../button";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
 import { Card } from "../../card";
 import Link from "next/link";
-import { format } from "date-fns";
+import { FaCity } from "react-icons/fa";
 
 const NMDateComponents = () => {
-  const today = format(new Date(), "EEE, dd MMM"); // Example: Sun, 08 Jun
-
   return (
     <div>
       <Card className="mx-auto rounded-2xl bg-white/90 backdrop-blur-md shadow-xl border border-white/40 w-full max-w-4xl">
@@ -35,6 +32,24 @@ const NMDateComponents = () => {
             </div>
           </div>
 
+          {/* City */}
+          <div className="flex items-center gap-2 min-w-[150px] flex-1 group transition">
+            <div className="border border-[#1E93A6] rounded-xl p-3 flex items-center justify-center group-hover:bg-[#1E93A6] transition">
+              <FaCity className="text-[#1E93A6] group-hover:text-white h-5 w-5 transition" />
+            </div>
+            <Link
+              href="/date-booking"
+              className="flex flex-col text-base group"
+            >
+              <span className="text-muted-foreground group-hover:text-[#1E93A6] transition">
+                City
+              </span>
+              <span className="font-medium text-[#FF8926] group-hover:underline">
+                Worldwide
+              </span>
+            </Link>
+          </div>
+
           {/* Price */}
           <div className="flex items-center gap-2 min-w-[150px] flex-1 group transition">
             <div className="border border-[#1E93A6] rounded-xl p-3 flex items-center justify-center group-hover:bg-[#1E93A6] transition">
@@ -49,24 +64,6 @@ const NMDateComponents = () => {
               </span>
               <span className="font-medium text-[#FF8926] group-hover:underline">
                 $800 - $1000
-              </span>
-            </Link>
-          </div>
-
-          {/* Date Picker */}
-          <div className="flex items-center gap-2 min-w-[160px] flex-1 group transition">
-            <div className="border border-[#1E93A6] rounded-xl p-3 flex items-center justify-center group-hover:bg-[#1E93A6] transition">
-              <FaCalendarAlt className="text-[#1E93A6] group-hover:text-white h-5 w-5 transition" />
-            </div>
-            <Link
-              href="/date-booking"
-              className="flex flex-col text-base group"
-            >
-              <span className="text-muted-foreground group-hover:text-[#1E93A6] transition">
-                Date
-              </span>
-              <span className="font-medium text-[#FF8926] group-hover:underline">
-                {today}
               </span>
             </Link>
           </div>

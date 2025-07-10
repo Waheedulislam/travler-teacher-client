@@ -11,7 +11,7 @@ import Title from "@/components/shared/Title";
 import Container from "@/components/shared/Container";
 import { getAllReview } from "@/services/ReviewServies";
 import { useEffect, useState } from "react";
-import AOS from "aos"; // AOS import
+import AOS from "aos";
 import "aos/dist/aos.css";
 
 interface IReview {
@@ -30,7 +30,7 @@ export default function ReviewSection() {
         const response = await getAllReview();
         const fetchedReviews: IReview[] = response?.data?.result || [];
         setReviews(fetchedReviews);
-        AOS.refresh(); // AOS refresh after dynamic content is loaded
+        AOS.refresh();
       } catch (error) {
         console.error("Failed to fetch reviews:", error);
       }
@@ -40,44 +40,45 @@ export default function ReviewSection() {
   }, []);
 
   return (
-    <section className="py-10 bg-gradient-to-r from-white to-blue-50">
-      <Container className="px-8 text-center">
+    <section className="py-14 bg-gradient-to-r from-white to-blue-50">
+      <Container className="px-6 text-center">
         <Title title="Student Reviews" />
 
         <Swiper
           modules={[Navigation]}
           navigation
-          spaceBetween={20}
+          spaceBetween={30}
           slidesPerView={1}
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
           }}
-          className="mb-8 px-4 lg:mt-20 mt-10"
+          className="mt-12"
         >
           {reviews.map((item, idx) => (
             <SwiperSlide key={idx}>
               <Card
                 data-aos="fade-up"
-                data-aos-delay={idx * 300}
-                data-aos-duration="1500"
-                data-aos-easing="ease-in-out"
-                className="bg-white shadow-lg rounded-2xl h-full flex flex-col items-center text-center p-4 transition hover:shadow-xl"
+                data-aos-delay={idx * 200}
+                data-aos-duration="1000"
+                className="bg-white shadow-xl rounded-2xl h-full flex flex-col items-center text-center p-6 transition hover:shadow-2xl"
               >
-                <CardContent className="flex flex-col items-center gap-4">
+                <CardContent className="flex flex-col items-center gap-5">
                   <Image
                     src={item.avatar}
-                    width={80}
-                    height={80}
+                    width={120}
+                    height={120}
                     alt={item.name}
-                    className="rounded-full object-cover"
+                    className="rounded-full object-cover border-4 border-white shadow-md ring-2 ring-orange-300"
                   />
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3 className="text-xl font-semibold text-gray-800">
                     {item.name}
                   </h3>
-                  <span className="text-sm text-gray-500">{item.role}</span>
-                  <p className="text-md text-gray-700 italic leading-relaxed">
+                  <span className="text-sm text-gray-500 italic">
+                    {item.role}
+                  </span>
+                  <p className="text-gray-700 text-base leading-relaxed italic px-2">
                     “{item.review}”
                   </p>
                 </CardContent>

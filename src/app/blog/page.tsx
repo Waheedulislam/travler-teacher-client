@@ -14,8 +14,8 @@ import {
   Camera,
 } from "lucide-react";
 import AOS from "aos";
-import "aos/dist/aos.css"; // Replace with your actual API utility
-import { IArticle } from "@/types"; // Define your interface accordingly
+import "aos/dist/aos.css";
+import { IArticle } from "@/types";
 import { getAllArticle } from "@/services/Articles";
 
 export default function BlogPage() {
@@ -30,6 +30,7 @@ export default function BlogPage() {
         "https://b2442125.smushcdn.com/2442125/wp-content/uploads/2024/10/IMG_0174.jpg?lossy=1&strip=1&webp=1",
       category: "Photography",
       icon: Camera,
+      videoUrl: "https://youtu.be/LDPpz_dF9Og?si=fPpis684DwXxMjp0",
     },
     {
       id: 2,
@@ -38,6 +39,7 @@ export default function BlogPage() {
         "https://owlcation.com/.image/t_share/MjAwNzczMDcyOTg5NDYzOTM4/how-to-plan-a-field-trip.jpg",
       category: "Education",
       icon: GraduationCap,
+      videoUrl: "https://youtu.be/OKCkLFVl80U?si=VjdIz1RLql36uN0M",
     },
     {
       id: 3,
@@ -46,6 +48,7 @@ export default function BlogPage() {
         "https://www.holidify.com/images/cmsuploads/compressed/vietnam-cambodia-6-min-2_20190207000750.jpg",
       category: "Travel",
       icon: MapPin,
+      videoUrl: "https://youtu.be/XwxMKPwLtTI?si=mrCHPZq1wMoj4QPG",
     },
     {
       id: 4,
@@ -54,6 +57,7 @@ export default function BlogPage() {
         "https://www.peru-explorer.com/wp-content/uploads/international-student-security-1024x585.jpg",
       category: "Safety",
       icon: GraduationCap,
+      videoUrl: "https://youtu.be/6wVQfKXvQ40?si=x_TTMgYa222S0Ytk",
     },
   ];
 
@@ -160,52 +164,52 @@ export default function BlogPage() {
             </div>
           </div>
 
-          {/* Sidebar remains same */}
+          {/* Sidebar - Featured Posts */}
           <div className="space-y-6">
-            {/* Featured Posts */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Featured Posts
               </h3>
               <div className="space-y-4">
                 {featuredPosts.map((post) => (
-                  <Card
+                  <a
                     key={post.id}
-                    className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow"
+                    href={post.videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    <div className="relative">
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        width={350}
-                        height={200}
-                        className="w-full h-48 object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                          <Play className="w-5 h-5 text-white ml-0.5" />
+                    <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
+                      <div className="relative">
+                        <Image
+                          src={post.image}
+                          alt={post.title}
+                          width={350}
+                          height={200}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                            <Play className="w-5 h-5 text-white ml-0.5" />
+                          </div>
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <div className="flex items-center mb-2">
+                            <post.icon className="w-4 h-4 text-white/80 mr-2" />
+                            <span className="text-xs text-white/80 uppercase tracking-wide font-medium">
+                              {post.category}
+                            </span>
+                          </div>
+                          <h4 className="text-white font-semibold text-sm leading-tight">
+                            {post.title}
+                          </h4>
                         </div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <div className="flex items-center mb-2">
-                          <post.icon className="w-4 h-4 text-white/80 mr-2" />
-                          <span className="text-xs text-white/80 uppercase tracking-wide font-medium">
-                            {post.category}
-                          </span>
-                        </div>
-                        <h4 className="text-white font-semibold text-sm leading-tight">
-                          {post.title}
-                        </h4>
-                      </div>
-                    </div>
-                  </Card>
+                    </Card>
+                  </a>
                 ))}
               </div>
             </div>
-
-            {/* Newsletter & Categories remain unchanged */}
-            {/* ... keep as is ... */}
           </div>
         </div>
       </div>

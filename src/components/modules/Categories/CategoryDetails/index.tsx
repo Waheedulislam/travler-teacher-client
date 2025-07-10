@@ -83,8 +83,7 @@ const CategoryDetails = ({ category }: { category: ICategory }) => {
               </h1>
 
               <p className="text-lg text-slate-600 leading-relaxed max-w-lg">
-                Explore this premium category with all its details and
-                comprehensive information organized for your convenience.
+                {category?.description}
               </p>
             </div>
 
@@ -120,7 +119,7 @@ const CategoryDetails = ({ category }: { category: ICategory }) => {
 
         {/* Content Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
-          {/* Category Information Card */}
+          {/* country Information Card */}
           <Card className="bg-white/70 backdrop-blur-xl border-0 rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.2)] transition-all duration-500">
             <div className="h-2 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500"></div>
             <CardContent className="p-8">
@@ -130,10 +129,10 @@ const CategoryDetails = ({ category }: { category: ICategory }) => {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-700 bg-clip-text text-transparent">
-                    Category Details
+                    Country Details
                   </h2>
                   <p className="text-slate-500 text-sm">
-                    Complete information about this category
+                    Complete information about this country
                   </p>
                 </div>
               </div>
@@ -142,7 +141,7 @@ const CategoryDetails = ({ category }: { category: ICategory }) => {
                 <div className="group">
                   <dt className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center">
                     <span className="w-1.5 h-1.5 bg-violet-500 rounded-full mr-2"></span>
-                    Category ID
+                    Country ID
                   </dt>
                   <dd className="text-lg font-mono bg-gradient-to-r from-slate-50 to-violet-50 rounded-2xl px-6 py-4 border-l-4 border-violet-400 group-hover:border-violet-600 transition-all duration-300 shadow-sm group-hover:shadow-md">
                     <div className="flex items-center justify-between">
@@ -208,7 +207,7 @@ const CategoryDetails = ({ category }: { category: ICategory }) => {
                   <div className="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-teal-400">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-bold text-teal-800 text-lg">
-                        Category Created
+                        Country Created
                       </h3>
                       <Badge className="bg-teal-100 text-teal-700 hover:bg-teal-200">
                         Initial
@@ -218,7 +217,7 @@ const CategoryDetails = ({ category }: { category: ICategory }) => {
                       {formatDate(category?.createdAt)}
                     </p>
                     <p className="text-sm text-slate-500 bg-white/50 rounded-xl px-4 py-2 inline-block">
-                      This category was first added to the system on this date
+                      This country was first added to the system on this date
                     </p>
                   </div>
                 </div>
@@ -260,7 +259,7 @@ const CategoryDetails = ({ category }: { category: ICategory }) => {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-1">
-                    Category Status
+                    Country Status
                   </h3>
                   <p className="text-slate-500">
                     Current availability and metrics
@@ -290,7 +289,7 @@ const CategoryDetails = ({ category }: { category: ICategory }) => {
                 <Sparkles className="h-6 w-6 text-fuchsia-500" />
               </div>
               <h3 className="text-xl font-semibold text-slate-700 mb-4">
-                About This Category
+                About This Country
               </h3>
               <p className="text-slate-600 leading-relaxed mb-6">
                 This category was created on{" "}

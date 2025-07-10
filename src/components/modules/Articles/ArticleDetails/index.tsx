@@ -101,9 +101,6 @@ const ArticleDetails = ({ article }: { article: IArticle }) => {
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
             {article.title}
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl">
-            {article.description}
-          </p>
         </header>
 
         {/* Featured Image */}
@@ -118,16 +115,12 @@ const ArticleDetails = ({ article }: { article: IArticle }) => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
         </div>
-
-        {/* Content */}
-        <section className="mt-16 prose prose-lg prose-gray max-w-none">
-          <p>
-            Madrid, the vibrant capital of Spain, offers an incredible blend of
-            historic charm and modern sophistication. From the world-renowned
-            Prado Museum to the bustling Puerta del Sol, every corner tells a
-            story waiting to be discovered.
+        {/* Description  */}
+        <div>
+          <p className="text-lg text-gray-600 max-w-3xl">
+            {article.description}
           </p>
-        </section>
+        </div>
 
         {/* Comments */}
         <section className="mt-16">

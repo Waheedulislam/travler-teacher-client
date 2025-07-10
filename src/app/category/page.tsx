@@ -58,11 +58,11 @@ const PopularCategories = () => {
       <div className="flex flex-col lg:flex-row items-end justify-between max-w-6xl mx-auto gap-4 mt-12">
         <div className="relative flex-grow w-full max-w-lg">
           <label className="block text-sm sm:text-base font-semibold text-gray-700 mb-2">
-            Search by title
+            Search by Name
           </label>
           <div className="relative w-full">
             <Input
-              placeholder="Enter category title"
+              placeholder="Enter country name"
               value={searchTitle}
               onChange={(e) => setSearchTitle(e.target.value)}
               className="rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-400 w-full

@@ -58,7 +58,7 @@ const PopularCategories = () => {
         data-aos-duration="1200"
         data-aos-easing="ease-in-out"
       >
-        <Title title="Popular Categories" />
+        <Title title="Popular Countries" />
       </div>
 
       <section className="py-12 text-center">
@@ -108,7 +108,7 @@ const PopularCategories = () => {
         >
           <Link href="/category">
             <Button className="cursor-pointer bg-gradient-to-r mt-10 from-orange-400 to-yellow-400 text-white px-8 py-6 text-sm font-semibold rounded-sm shadow-md hover:brightness-110 transition duration-500 ease-in-out">
-              View All Categories
+              View All Countries
             </Button>
           </Link>
         </div>
