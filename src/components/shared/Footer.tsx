@@ -1,8 +1,9 @@
-import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaInstagram, FaTwitter } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../public/assets/logo.png";
+import { FaYoutube } from "react-icons/fa6";
 
 export default function Footer() {
   return (
@@ -19,6 +20,24 @@ export default function Footer() {
           />
         </div>
 
+        {/* About Us */}
+        <div>
+          <h4 className="font-semibold text-xl mb-3">About Us</h4>
+          <ul className="space-y-2 text-[#5E6282] text-lg">
+            <li>
+              <Link href="#">How It Works</Link>
+            </li>
+            <li>
+              <Link href="#">Become a Teacher</Link>
+            </li>
+            <li>
+              <Link href="#">Terms & Privacy</Link>
+            </li>
+            <li>
+              <Link href="#">Blog</Link>
+            </li>
+          </ul>
+        </div>
         {/* Teachers */}
         <div>
           <h4 className="font-semibold text-xl mb-3">Teachers</h4>
@@ -32,21 +51,8 @@ export default function Footer() {
             <li>
               <Link href="#">Sign Up</Link>
             </li>
-          </ul>
-        </div>
-
-        {/* Payment */}
-        <div>
-          <h4 className="font-semibold text-xl mb-3">Payment</h4>
-          <ul className="space-y-2 text-[#5E6282] text-lg">
-            <li>
-              <Link href="#">Help</Link>
-            </li>
             <li>
               <Link href="#">Policy</Link>
-            </li>
-            <li>
-              <Link href="#">Offer</Link>
             </li>
           </ul>
         </div>
@@ -58,11 +64,12 @@ export default function Footer() {
             <li>
               <Link href="#">Profile</Link>
             </li>
-            <li>
-              <Link href="#">Blog</Link>
-            </li>
+
             <li>
               <Link href="#">Contact</Link>
+            </li>
+            <li>
+              <Link href="#">Help Center</Link>
             </li>
           </ul>
         </div>
@@ -70,19 +77,6 @@ export default function Footer() {
         {/* Social & App Download */}
         <div className="flex flex-col items-center md:items-start gap-4">
           <div className="flex space-x-3">
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                size="icon"
-                className="cursor-pointer bg-[#1877F2] text-white hover:bg-[#155dc1] rounded-full"
-              >
-                <FaFacebookF />
-              </Button>
-            </a>
-
             <a
               href="https://instagram.com"
               target="_blank"
@@ -93,6 +87,18 @@ export default function Footer() {
                 className="cursor-pointer bg-[#E4405F] text-white hover:bg-[#c32c4f] rounded-full"
               >
                 <FaInstagram />
+              </Button>
+            </a>
+            <a
+              href="https://youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                size="icon"
+                className="cursor-pointer bg-[#FF0000] text-white hover:bg-[#cc0000] rounded-full"
+              >
+                <FaYoutube />
               </Button>
             </a>
 
