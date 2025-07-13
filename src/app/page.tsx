@@ -1,3 +1,4 @@
+import FaqSection from "@/components/modules/Home/Faq/FaqSection";
 import HeroSection from "@/components/modules/Home/HeroSection/HeroSection";
 import MostPopularTeachers from "@/components/modules/Home/MostPopularTeachers/MostPopularTeachers";
 import OurAdvantages from "@/components/modules/Home/OurAdvantages/OurAdvantages";
@@ -14,6 +15,7 @@ export default function Home() {
       <OurAdvantages />
       <ReviewSection />
       <UseFulArticles />
+      <FaqSection />
     </div>
   );
 }

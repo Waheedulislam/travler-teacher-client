@@ -14,6 +14,7 @@ import Link from "next/link";
 import { getAllTeachers } from "@/services/TeacherServices";
 import { ITeacher } from "@/types";
 import MostPopularTeachersSkeleton from "./MostPopularTeachersSkeleton";
+import { Star } from "lucide-react";
 
 const MostPopularTeachers = () => {
   const [teachers, setTeachers] = useState<ITeacher[]>([]);
@@ -111,8 +112,17 @@ const MostPopularTeachers = () => {
                           {teacher.country}
                         </p>
                       </div>
+
                       <div className="my-2 font-semibold text-center text-gray-700">
                         {teacher.description}
+                      </div>
+
+                      {/* 🔥 Review Section */}
+                      <div className="flex items-center justify-center gap-1 mt-3 text-yellow-500">
+                        <Star className="w-5 h-5 fill-yellow-400" />
+                        <span className="text-sm font-medium text-gray-800">
+                          {teacher.review ?? "4.8"} / 5
+                        </span>
                       </div>
                     </div>
                   </Link>

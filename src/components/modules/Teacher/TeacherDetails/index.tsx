@@ -1,7 +1,7 @@
 "use client";
 import type { ITeacher } from "@/types";
 import Image from "next/image";
-import { MapPin, Award, Globe, Mail, Calendar } from "lucide-react";
+import { MapPin, Award, Globe, Mail, Calendar, Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -90,6 +90,13 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                 <div className="flex items-center">
                   <Calendar className="h-4 w-4 mr-2 text-blue-500" />
                   <span>Available Year Round</span>
+                </div>
+                {/* 🔥 Review Section */}
+                <div className="flex   gap-1 mt-3 text-yellow-500">
+                  <Star className="w-5 h-5 fill-yellow-400" />
+                  <span className="text-sm font-medium text-gray-800">
+                    {teacher.review ?? "4.8"} / 5
+                  </span>
                 </div>
               </div>
 

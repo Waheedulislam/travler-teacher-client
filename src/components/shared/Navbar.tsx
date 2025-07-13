@@ -36,6 +36,7 @@ const navItems = [
   { name: "Teachers", href: "/teacher" },
   { name: "Country", href: "/category" },
   { name: "Blog", href: "/blog" },
+  { name: "FAQ", href: "/faq" },
 ];
 
 const Navbar = () => {

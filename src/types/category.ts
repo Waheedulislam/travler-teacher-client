@@ -3,6 +3,7 @@ export interface ICategory {
   title: string;
   image: string;
   description: string;
+  secondTitle: string;
   createdAt: string;
   updatedAt: string;
 }

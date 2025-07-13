@@ -5,4 +5,5 @@ export interface ITeacher {
   country: string;
   description: string;
   countryImage: string;
+  review: string;
 }

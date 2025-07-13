@@ -43,22 +43,21 @@ const PopularCategories = () => {
     <Container>
       <div
         data-aos="fade-up"
-        data-aos-duration="1200"
-        data-aos-easing="ease-in-out"
-      >
-        <h1 className="italic text-center text-xl font-normal mt-8 lg:mb-14 mb-6">
-          You’re going on a trip, and we’ll provide you with a language teacher
-          guide for the language you&lsquo;d like to learn.
-        </h1>
-      </div>
-
-      <div
-        data-aos="fade-up"
         data-aos-delay="200"
         data-aos-duration="1200"
         data-aos-easing="ease-in-out"
       >
         <Title title="Popular Countries" />
+      </div>
+
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1200"
+        data-aos-easing="ease-in-out"
+      >
+        <h1 className="italic text-center text-xl font-normal mt-8 lg:mb-14 mb-6">
+          Explore unique learning + travel opportunities around the world.
+        </h1>
       </div>
 
       <section className="py-12 text-center">
