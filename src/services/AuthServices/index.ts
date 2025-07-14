@@ -48,6 +48,28 @@ export const LoginUser = async (userData: FieldValues) => {
     return Error(error);
   }
 };
+// get all users
+export const getAllUsers = async () => {
+  try {
+    const accessToken = (await cookies()).get("accessToken")?.value;
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+
+    const result = await res.json();
+    return result;
+  } catch (error) {
+    console.error("Failed to get users:", error);
+    return null;
+  }
+};
+
 // get-current-User
 export const getCurrentUser = async () => {
   const accessToken = (await cookies()).get("accessToken")?.value;
