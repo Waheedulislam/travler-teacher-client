@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function FaqSection() {
   return (
@@ -105,16 +106,18 @@ export default function FaqSection() {
 
         {/* CTA Button */}
         <div className="text-center">
-          <Button
-            variant="outline"
-            className="group relative px-8 py-3 bg-white/80 backdrop-blur-sm border-2 border-gray-300/50 rounded-full text-gray-700 font-medium hover:bg-white hover:border-blue-300 hover:text-blue-700 hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-          >
-            <span className="flex items-center gap-2">
-              <span className="text-lg">💫</span>
-              <span>View All FAQs</span>
-            </span>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-          </Button>
+          <Link href="/faq">
+            <Button
+              variant="outline"
+              className="group relative px-8 py-3 bg-white/80 backdrop-blur-sm border-2 border-gray-300/50 rounded-full text-gray-700 font-medium hover:bg-white hover:border-blue-300 hover:text-blue-700 hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+            >
+              <span className="flex items-center gap-2">
+                <span className="text-lg">💫</span>
+                <span>View All FAQs</span>
+              </span>
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
