@@ -18,7 +18,7 @@ export default function HeroSection() {
         />
 
         {/* Optional gradient overlay (always shown) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/20" />
       </div>
       {/* Main Content Container */}
       <div className="relative z-10 h-full flex flex-col">

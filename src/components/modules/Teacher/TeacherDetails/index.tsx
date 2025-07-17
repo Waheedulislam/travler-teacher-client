@@ -1,4 +1,5 @@
 "use client";
+
 import type { ITeacher } from "@/types";
 import Image from "next/image";
 import { MapPin, Award, Globe, Mail, Calendar, Star } from "lucide-react";
@@ -6,10 +7,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import BookTourButton from "@/components/StripePaymentButton/StripePaymentButton";
+import { useRouter } from "next/navigation";
 
 const extractPrice = (desc?: string) => {
   if (!desc) return null;
-
   return desc.replace(/^from\s+/i, "").trim();
 };
 
@@ -18,13 +19,20 @@ const extractAmountNumber = (desc?: string): number => {
   const match = desc.match(/\d+/);
   return match ? parseInt(match[0], 10) : 0;
 };
-const handleContactClick = () => {
-  if (typeof window !== "undefined" && window.$crisp) {
-    window.$crisp.push(["do", "chat:open"]);
-  }
-};
 
 const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
+  const router = useRouter();
+
+  // const handleContactClick = () => {
+  //   router.push(`/chat/${teacher._id}`);
+  // };
+  const handleContactClick = () => {
+    const url = `/chat/${teacher._id}?name=${encodeURIComponent(
+      teacher.name
+    )}&image=${encodeURIComponent(teacher.image)}`;
+    router.push(url);
+  };
+
   const priceText = extractPrice(teacher.description);
   const amount = extractAmountNumber(teacher.description);
 
@@ -91,8 +99,8 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                   <Calendar className="h-4 w-4 mr-2 text-blue-500" />
                   <span>Available Year Round</span>
                 </div>
-                {/* 🔥 Review Section */}
-                <div className="flex   gap-1 mt-3 text-yellow-500">
+
+                <div className="flex gap-1 mt-3 text-yellow-500">
                   <Star className="w-5 h-5 fill-yellow-400" />
                   <span className="text-sm font-medium text-gray-800">
                     {teacher.review ?? "4.8"} / 5
@@ -100,7 +108,6 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                 </div>
               </div>
 
-              {/* Price Section */}
               {/* Price Section */}
               <div className="mt-6 mb-6">
                 <div className="flex items-center justify-between bg-orange-50 border border-orange-200 rounded-lg px-4 py-3 shadow-sm">
@@ -121,6 +128,8 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                   amount={amount || 10}
                 />
               </div>
+
+              {/* Contact Me Button */}
               <button
                 onClick={handleContactClick}
                 className="w-full mt-3 bg-gradient-to-r hover:from-orange-600 hover:to-yellow-500 text-orange-500 hover:text-white hover:border-white py-2 px-4 rounded-md border border-orange-500 hover:brightness-110 transition-all text-xl cursor-pointer"
@@ -130,6 +139,7 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
             </CardContent>
           </Card>
 
+          {/* Tour Focus */}
           <Card className="shadow-sm">
             <CardContent className="p-4">
               <h3 className="font-medium mb-2">Tour Focus</h3>
