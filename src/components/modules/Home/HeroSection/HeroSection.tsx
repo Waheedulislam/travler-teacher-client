@@ -47,7 +47,7 @@ export default function HeroSection() {
                   Find Your Teacher
                 </Button>
               </Link>
-              <Link href="teacher">
+              <Link href="">
                 {" "}
                 <Button
                   variant="outline"
