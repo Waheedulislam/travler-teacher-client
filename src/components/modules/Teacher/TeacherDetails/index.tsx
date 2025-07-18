@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import type { ITeacher } from "@/types";
@@ -8,6 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import BookTourButton from "@/components/StripePaymentButton/StripePaymentButton";
 import { useRouter } from "next/navigation";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "sonner";
+import auth from "@/components/Firebase/firebase.config";
+import { useUser } from "@/Context/UserContext";
 
 const extractPrice = (desc?: string) => {
   if (!desc) return null;
@@ -22,24 +27,30 @@ const extractAmountNumber = (desc?: string): number => {
 
 const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
   const router = useRouter();
+  const { user } = useUser(); // custom hook
+  const [firebaseUser] = useAuthState(auth); // firebase user
 
-  // const handleContactClick = () => {
-  //   router.push(`/chat/${teacher._id}`);
-  // };
+  const priceText = extractPrice(teacher.description);
+  const amount = extractAmountNumber(teacher.description);
+
   const handleContactClick = () => {
+    const isLoggedIn = user || firebaseUser;
+
+    if (!isLoggedIn) {
+      toast.warning("Please login first to contact the guide.");
+      return;
+    }
+
     const url = `/chat/${teacher._id}?name=${encodeURIComponent(
       teacher.name
     )}&image=${encodeURIComponent(teacher.image)}`;
     router.push(url);
   };
 
-  const priceText = extractPrice(teacher.description);
-  const amount = extractAmountNumber(teacher.description);
-
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Left column - Image and quick info */}
+        {/* Left column */}
         <div className="md:col-span-1 space-y-6">
           <Card className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
             <div className="relative">
@@ -60,6 +71,7 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                 </div>
               </div>
             </div>
+
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
@@ -108,7 +120,6 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                 </div>
               </div>
 
-              {/* Price Section */}
               <div className="mt-6 mb-6">
                 <div className="flex items-center justify-between bg-orange-50 border border-orange-200 rounded-lg px-4 py-3 shadow-sm">
                   <span className="text-sm text-gray-600 font-medium">
@@ -120,16 +131,12 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                 </div>
               </div>
 
-              {/* Payment Button */}
-              <div>
-                <BookTourButton
-                  teacherId={teacher._id}
-                  teacherName={teacher.name}
-                  amount={amount || 10}
-                />
-              </div>
+              <BookTourButton
+                teacherId={teacher._id}
+                teacherName={teacher.name}
+                amount={amount || 10}
+              />
 
-              {/* Contact Me Button */}
               <button
                 onClick={handleContactClick}
                 className="w-full mt-3 bg-gradient-to-r hover:from-orange-600 hover:to-yellow-500 text-orange-500 hover:text-white hover:border-white py-2 px-4 rounded-md border border-orange-500 hover:brightness-110 transition-all text-xl cursor-pointer"
@@ -139,7 +146,6 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
             </CardContent>
           </Card>
 
-          {/* Tour Focus */}
           <Card className="shadow-sm">
             <CardContent className="p-4">
               <h3 className="font-medium mb-2">Tour Focus</h3>
@@ -158,7 +164,7 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
           </Card>
         </div>
 
-        {/* Right column - Detailed information */}
+        {/* Right column */}
         <div className="md:col-span-2 space-y-6">
           <Card className="shadow-sm">
             <CardContent className="p-6">
@@ -170,9 +176,9 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                 <p className="leading-relaxed mb-4">{teacher?.description}</p>
                 <p className="leading-relaxed">
                   {teacher?.name} is passionate about cultural exchange and
-                  storytelling. Whether you&#39;re exploring {teacher?.country}
-                  &#39;s hidden gems or its iconic landmarks, they ensure an
-                  authentic, enriching experience every time.
+                  storytelling. Whether you&lsquo;re exploring{" "}
+                  {teacher?.country}'s hidden gems or its iconic landmarks, they
+                  ensure an authentic, enriching experience every time.
                 </p>
               </div>
             </CardContent>

@@ -43,11 +43,14 @@ const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isTeacherMode, setIsTeacherMode] = useState(false);
   const { user } = useUser();
   const [firebaseUser] = useAuthState(auth);
   const [signOutFirebase] = useSignOut(auth);
-
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Controlled Dropdown open state (desktop avatar menu)
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -101,9 +104,14 @@ const Navbar = () => {
     </ul>
   );
 
+  // Function to switch mode and close desktop dropdown
+  const switchToTeacher = () => {
+    setIsTeacherMode(true);
+    setDropdownOpen(false);
+  };
+
   return (
     <nav className="w-full px-4 lg:px-12 py-3 bg-white shadow-sm flex items-center justify-between sticky top-0 z-50">
-      {/* Logo */}
       <Link href="/">
         <Image
           src={logo}
@@ -114,33 +122,32 @@ const Navbar = () => {
         />
       </Link>
 
-      {/* Desktop Nav */}
       <div className="hidden lg:flex flex-1 items-center justify-center">
         <NavLinks />
       </div>
 
-      {/* Desktop Actions */}
       <div className="hidden lg:flex items-center gap-4">
-        {/* Search Input */}
-        <form onSubmit={handleSearch} className="flex items-center gap-2">
-          <input
-            type="text"
-            placeholder="Search teachers..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
-          <Button
-            type="submit"
-            className="bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-7 py-2 rounded-md"
-          >
-            Search
-          </Button>
-        </form>
+        {!isTeacherMode && (
+          <form onSubmit={handleSearch} className="flex items-center gap-2">
+            <input
+              type="text"
+              placeholder="Search teachers..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+            <Button
+              type="submit"
+              className="bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-7 py-2 rounded-md"
+            >
+              Search
+            </Button>
+          </form>
+        )}
 
         {user || firebaseUser ? (
           <>
-            <DropdownMenu>
+            <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
               <DropdownMenuTrigger asChild>
                 <button className="focus:outline-none">
                   <Image
@@ -152,16 +159,40 @@ const Navbar = () => {
                   />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-52">
                 <DropdownMenuItem onClick={() => router.push("/profile")}>
                   <ExternalLink className="w-4 h-4 mr-2" /> View Profile
                 </DropdownMenuItem>
+
+                {!isTeacherMode && (
+                  <div className="px-3 py-1">
+                    <Button
+                      variant="outline"
+                      onClick={switchToTeacher}
+                      className="w-full border-orange-500 text-orange-600 hover:bg-orange-100"
+                    >
+                      👨‍🏫 Become a Teacher
+                    </Button>
+                  </div>
+                )}
+
                 <DropdownMenuSeparator />
+
                 <DropdownMenuItem onClick={() => router.push("/")}>
                   <Copy className="w-4 h-4 mr-2" /> Home
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {isTeacherMode && (
+              <Button
+                variant="outline"
+                onClick={() => setIsTeacherMode(false)}
+                className="border-orange-500 text-orange-600 hover:bg-orange-100"
+              >
+                🎓 Switch to Student
+              </Button>
+            )}
 
             <Button
               onClick={handleLogOut}
@@ -182,11 +213,11 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <div className="lg:hidden">
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger asChild>
-            <div className="text-black">
+            <div className="text-black cursor-pointer">
               {menuOpen ? <X size={30} /> : <Menu size={30} />}
             </div>
           </SheetTrigger>
@@ -197,7 +228,6 @@ const Navbar = () => {
               </SheetTitle>
             </SheetHeader>
 
-            {/* Mobile Search */}
             <form onSubmit={handleSearch} className="flex gap-2 mt-4 px-2">
               <input
                 type="text"
@@ -208,7 +238,7 @@ const Navbar = () => {
               />
               <Button
                 type="submit"
-                className=" bg-gradient-to-r from-[#FF700B] to-[#FDC90C]   text-white px-6  py-2 rounded-md hover:opacity-90"
+                className="bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-2 rounded-md hover:opacity-90"
               >
                 search
               </Button>
@@ -235,6 +265,31 @@ const Navbar = () => {
                     />
                     <span className="font-medium">My Profile</span>
                   </div>
+
+                  {!isTeacherMode && (
+                    <Button
+                      onClick={() => {
+                        setIsTeacherMode(true);
+                        setMenuOpen(false);
+                      }}
+                      className="w-full bg-orange-100 text-orange-700"
+                    >
+                      👨‍🏫 Become a Teacher
+                    </Button>
+                  )}
+
+                  {isTeacherMode && (
+                    <Button
+                      onClick={() => {
+                        setIsTeacherMode(false);
+                        setMenuOpen(false); // Close mobile menu on switch
+                      }}
+                      className="w-full bg-orange-100 text-orange-700"
+                    >
+                      🎓 Switch to Student
+                    </Button>
+                  )}
+
                   <Button
                     onClick={handleLogOut}
                     className="w-full bg-red-500 text-white py-2 rounded-md flex items-center gap-2"

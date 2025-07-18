@@ -46,6 +46,7 @@ export default function Chat({
   const [receiver, setReceiver] = useState<User | null>(null);
   const [autoReplyIndex, setAutoReplyIndex] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     fetch(`/api/users/${receiverId}`)
@@ -60,7 +61,6 @@ export default function Chat({
       });
   }, [receiverId, receiverName, receiverImage]);
 
-  // Show welcome message when chat loads or receiver changes
   useEffect(() => {
     setMessages([
       {
@@ -69,15 +69,8 @@ export default function Chat({
         timestamp: new Date().toLocaleTimeString(),
       },
     ]);
-    setAutoReplyIndex(1); // Start auto-replies from second message
+    setAutoReplyIndex(1);
   }, [receiverId]);
-
-  // Optional: Clear messages when current user or receiver changes
-  useEffect(() => {
-    // Comment this out if you don't want to clear on currentUserId change
-    // setMessages([]);
-    // setAutoReplyIndex(0);
-  }, [currentUserId, receiverId]);
 
   const handleSend = () => {
     if (!newMessage.trim()) return;
@@ -105,14 +98,25 @@ export default function Chat({
     }
   };
 
+  // Smart scroll only when near bottom
+  const shouldAutoScroll = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return false;
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+    return distanceFromBottom < 100;
+  };
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (shouldAutoScroll()) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
   return (
-    <div className="flex  max-w-6xl mx-auto my-10 h-[85vh] rounded-xl overflow-hidden shadow-lg border border-orange-200 bg-white">
+    <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto my-4 md:my-10 h-[100dvh] md:h-[85vh] rounded-xl overflow-hidden shadow-lg border border-orange-200 bg-white">
       {/* Sidebar */}
-      <div className="w-64 sm:w-72 bg-gradient-to-br from-yellow-300 to-orange-300 text-white p-6 flex flex-col justify-between">
+      <div className="w-full md:w-72 bg-gradient-to-br from-yellow-300 to-orange-300 text-white p-6 flex flex-col justify-between">
         <div>
           <div className="w-20 h-20 rounded-full overflow-hidden mx-auto shadow-md">
             <Image
@@ -128,8 +132,8 @@ export default function Chat({
           <h2 className="text-center text-2xl text-orange-600 font-bold mt-4">
             {receiverName || "Teacher"}🟢
           </h2>
-          <p className="text-center text-orange-600 text-lg  mt-1 ">
-            {"Designation: Tour Teacher"}
+          <p className="text-center text-orange-600 text-lg mt-1">
+            Designation: Tour Teacher
           </p>
         </div>
         <div className="text-center text-sm font-medium">
@@ -138,14 +142,17 @@ export default function Chat({
       </div>
 
       {/* Chat Panel */}
-      <div className="flex-1 flex flex-col h-full">
+      <div className="flex flex-col flex-1 h-full">
         {/* Chat Header */}
         <div className="p-4 bg-orange-100 border-b text-orange-600 font-semibold text-lg flex justify-between items-center">
-          <span>Chat with {receiverName || "Teacher"} </span>
+          <span>Chat with {receiverName || "Teacher"}</span>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 p-6 overflow-y-auto bg-amber-50 space-y-5">
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto bg-amber-50 space-y-5 px-4 py-6"
+        >
           {messages.map((msg, idx) => {
             const isCurrentUser = msg.senderId === currentUserId;
             return (

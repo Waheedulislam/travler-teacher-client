@@ -22,7 +22,6 @@ export default function ChatWithPage({ params }: Props) {
   const name = searchParams.get("name") || "";
   const image = searchParams.get("image") || "";
 
-  // এখানে কোনো if condition নাই, সবসময় সব render করবে
   return (
     <SocketProvider userId={userId}>
       <Chat
