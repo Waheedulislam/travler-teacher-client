@@ -5,8 +5,9 @@ import { SocketProvider } from "@/Context/SocketContext";
 import Chat from "@/components/Chat/Chat";
 
 export default function ChatWithClient({ chatWith }: { chatWith: string }) {
-  const { userId } = useAuth();
+  const { userId, loading } = useAuth();
 
+  if (loading || userId === undefined) return <div>Loading...</div>;
   if (!userId) return <div>Please login</div>;
 
   return (

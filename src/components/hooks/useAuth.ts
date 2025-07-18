@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { jwtDecode } from "jwt-decode";
@@ -10,22 +11,26 @@ interface DecodedToken {
 
 export function useAuth() {
   const [userId, setUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
+
     if (!token) {
       setUserId(null);
+      setLoading(false);
       return;
     }
 
     try {
       const decoded = jwtDecode<DecodedToken>(token);
       setUserId(decoded.userId);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setUserId(null);
+    } finally {
+      setLoading(false); // ✅ Always set loading to false
     }
   }, []);
 
-  return { userId };
+  return { userId, loading };
 }
