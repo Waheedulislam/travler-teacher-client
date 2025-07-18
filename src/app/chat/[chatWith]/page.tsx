@@ -11,23 +11,22 @@ interface AsyncParams {
 }
 
 interface Props {
-  params: Promise<AsyncParams>; // ✅ update to match new async type
+  params: Promise<AsyncParams>;
 }
 
 export default function ChatWithPage({ params }: Props) {
-  const { chatWith } = use(params); // ✅ unwrap the Promise safely
+  const { chatWith } = use(params);
   const { userId } = useAuth();
   const searchParams = useSearchParams();
 
   const name = searchParams.get("name") || "";
   const image = searchParams.get("image") || "";
 
-  if (!userId) return <div>Please login</div>;
-
+  // এখানে কোনো if condition নাই, সবসময় সব render করবে
   return (
     <SocketProvider userId={userId}>
       <Chat
-        currentUserId={userId}
+        currentUserId={userId ?? ""}
         receiverId={chatWith}
         receiverName={name}
         receiverImage={image}
