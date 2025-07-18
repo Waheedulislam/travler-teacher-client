@@ -8,9 +8,8 @@ export const SocketProvider = ({ userId, children }: any) => {
   const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    const baseURL = process.env.NEXT_PUBLIC_BASE_API
-      ? process.env.NEXT_PUBLIC_BASE_API.replace("/api/v1", "")
-      : "http://localhost:5000";
+    const baseURL =
+      process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000";
 
     const socketIo = io(baseURL, {
       query: { userId },
