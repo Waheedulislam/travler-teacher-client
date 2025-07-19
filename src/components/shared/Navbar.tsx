@@ -31,14 +31,6 @@ import auth from "../Firebase/firebase.config";
 import logo from "../../../public/assets/logo.png";
 import userLogo from "../../../public/assets/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png";
 
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Teachers", href: "/teacher" },
-  { name: "Country", href: "/category" },
-  { name: "Blog", href: "/blog" },
-  { name: "FAQ", href: "/faq" },
-];
-
 const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -48,8 +40,6 @@ const Navbar = () => {
   const [firebaseUser] = useAuthState(auth);
   const [signOutFirebase] = useSignOut(auth);
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Controlled Dropdown open state (desktop avatar menu)
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,26 +75,40 @@ const Navbar = () => {
     }
   };
 
-  const NavLinks = () => (
-    <ul className="flex flex-col lg:flex-row lg:justify-center items-start lg:items-center gap-4 lg:gap-12 text-base lg:text-lg text-[#33373D] w-full lg:w-auto">
-      {navItems.map((item) => (
-        <li key={item.href} className="w-full lg:w-auto">
-          <Link
-            href={item.href}
-            className={`block w-full px-4 py-2 rounded-md transition-all duration-200 ${
-              pathname === item.href
-                ? "bg-orange-100 text-orange-600 font-semibold"
-                : "hover:bg-gray-100"
-            }`}
-          >
-            {item.name}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
+  const NavLinks = () => {
+    const navItems = [
+      { name: "Home", href: "/" },
+      { name: "Teachers", href: "/teacher" },
+      { name: "Country", href: "/category" },
+      { name: "Blog", href: "/blog" },
+      { name: "FAQ", href: "/faq" },
+    ];
 
-  // Function to switch mode and close desktop dropdown
+    // Admin hole ALL-Users link add koro
+    if (user?.role === "admin") {
+      navItems.push({ name: "ALL-Users", href: "/all-users" });
+    }
+
+    return (
+      <ul className="flex flex-col lg:flex-row lg:justify-center items-start lg:items-center gap-4 lg:gap-12 text-base lg:text-lg text-[#33373D] w-full lg:w-auto">
+        {navItems.map((item) => (
+          <li key={item.href} className="w-full lg:w-auto">
+            <Link
+              href={item.href}
+              className={`block w-full px-4 py-2 rounded-md transition-all duration-200 ${
+                pathname === item.href
+                  ? "bg-orange-100 text-orange-600 font-semibold"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              {item.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   const switchToTeacher = () => {
     setIsTeacherMode(true);
     setDropdownOpen(false);
@@ -127,7 +131,8 @@ const Navbar = () => {
       </div>
 
       <div className="hidden lg:flex items-center gap-4">
-        {!isTeacherMode && (
+        {/* 🔥 Admin hole search input dekhabe na */}
+        {!isTeacherMode && user?.role !== "admin" && (
           <form onSubmit={handleSearch} className="flex items-center gap-2">
             <input
               type="text"
@@ -228,21 +233,24 @@ const Navbar = () => {
               </SheetTitle>
             </SheetHeader>
 
-            <form onSubmit={handleSearch} className="flex gap-2 mt-4 px-2">
-              <input
-                type="text"
-                placeholder="Search teachers..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <Button
-                type="submit"
-                className="bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-2 rounded-md hover:opacity-90"
-              >
-                search
-              </Button>
-            </form>
+            {/* 🔥 Admin hole mobile e search input dekhabe na */}
+            {user?.role !== "admin" && (
+              <form onSubmit={handleSearch} className="flex gap-2 mt-4 px-2">
+                <input
+                  type="text"
+                  placeholder="Search teachers..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+                <Button
+                  type="submit"
+                  className="bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-2 rounded-md hover:opacity-90"
+                >
+                  search
+                </Button>
+              </form>
+            )}
 
             <div className="mt-6 space-y-6 px-2">
               <NavLinks />
@@ -282,7 +290,7 @@ const Navbar = () => {
                     <Button
                       onClick={() => {
                         setIsTeacherMode(false);
-                        setMenuOpen(false); // Close mobile menu on switch
+                        setMenuOpen(false);
                       }}
                       className="w-full bg-orange-100 text-orange-700"
                     >
