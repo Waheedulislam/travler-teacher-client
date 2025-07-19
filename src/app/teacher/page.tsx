@@ -17,10 +17,15 @@ const AllTeachers = () => {
   const [filteredTeachers, setFilteredTeachers] = useState<ITeacher[]>([]);
   const [searchName, setSearchName] = useState("");
   const [searchCountry, setSearchCountry] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState({
+    name: "",
+    country: "",
+  });
 
   const searchParams = useSearchParams();
   const urlSearch = searchParams.get("search") || "";
 
+  // Fetch teachers on mount
   useEffect(() => {
     const fetchTeachers = async () => {
       const response = await getAllTeachers();
@@ -40,16 +45,42 @@ const AllTeachers = () => {
     fetchTeachers();
   }, [urlSearch]);
 
-  const handleSearch = () => {
+  // Debounce search input
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setDebouncedSearch({
+        name: searchName.trim().toLowerCase(),
+        country: searchCountry.trim().toLowerCase(),
+      });
+    }, 300);
+
+    return () => clearTimeout(delay);
+  }, [searchName, searchCountry]);
+
+  // Auto filter when debounced values change
+  useEffect(() => {
+    const { name, country } = debouncedSearch;
+
     const filtered = teachers.filter((teacher) => {
-      const nameMatch = teacher.name
-        .toLowerCase()
-        .includes(searchName.toLowerCase());
-      const countryMatch = teacher.country
-        .toLowerCase()
-        .includes(searchCountry.toLowerCase());
+      const nameMatch = teacher.name.toLowerCase().includes(name);
+      const countryMatch = teacher.country.toLowerCase().includes(country);
       return nameMatch && countryMatch;
     });
+
+    setFilteredTeachers(filtered);
+  }, [debouncedSearch, teachers]);
+
+  // Manual search handler (search button)
+  const handleSearch = () => {
+    const name = searchName.trim().toLowerCase();
+    const country = searchCountry.trim().toLowerCase();
+
+    const filtered = teachers.filter((teacher) => {
+      const nameMatch = teacher.name.toLowerCase().includes(name);
+      const countryMatch = teacher.country.toLowerCase().includes(country);
+      return nameMatch && countryMatch;
+    });
+
     setFilteredTeachers(filtered);
   };
 
@@ -63,7 +94,7 @@ const AllTeachers = () => {
         </h1>
       </div>
 
-      {/* Date Component */}
+      {/* Date Picker */}
       <div className="mt-8 max-w-4xl mx-auto">
         <NMDateComponents />
       </div>
@@ -86,10 +117,7 @@ const AllTeachers = () => {
             {searchName && (
               <button
                 type="button"
-                onClick={() => {
-                  setSearchName("");
-                  setFilteredTeachers(teachers);
-                }}
+                onClick={() => setSearchName("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
               >
                 <FiX size={20} />
@@ -114,10 +142,7 @@ const AllTeachers = () => {
             {searchCountry && (
               <button
                 type="button"
-                onClick={() => {
-                  setSearchCountry("");
-                  setFilteredTeachers(teachers);
-                }}
+                onClick={() => setSearchCountry("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
               >
                 <FiX size={20} />
@@ -126,7 +151,7 @@ const AllTeachers = () => {
           </div>
         </div>
 
-        {/* Search Button */}
+        {/* Manual Search Button */}
         <div className="flex items-end">
           <Button
             onClick={handleSearch}
