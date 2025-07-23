@@ -24,7 +24,7 @@ const NMDateComponents = () => {
                 Country
               </span>
               <span className="font-semibold text-[#FF8926] group-hover:underline">
-                Sen Martin
+                Saint Martin
               </span>
             </Link>
           </div>
