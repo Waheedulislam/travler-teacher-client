@@ -88,6 +88,12 @@ const Navbar = () => {
     if (user?.role === "admin") {
       navItems.push({ name: "ALL-Users", href: "/all-users" });
     }
+    if (user?.role === "admin") {
+      navItems.push({ name: "Create-Article", href: "/create-article" });
+    }
+    if (user?.role === "admin") {
+      navItems.push({ name: "Delete-Article", href: "/delete-article" });
+    }
 
     return (
       <ul className="flex flex-col lg:flex-row lg:justify-center items-start lg:items-center gap-4 lg:gap-12 text-base lg:text-lg text-[#33373D] w-full lg:w-auto">
