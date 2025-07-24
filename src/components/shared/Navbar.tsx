@@ -86,7 +86,7 @@ const Navbar = () => {
 
     // Admin hole ALL-Users link add koro
     if (user?.role === "admin") {
-      navItems.push({ name: "ALL-Users", href: "/all-users" });
+      navItems.push({ name: "Users", href: "/all-users" });
     }
     if (user?.role === "admin") {
       navItems.push({ name: "Create-Article", href: "/create-article" });
