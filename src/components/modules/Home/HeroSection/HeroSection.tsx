@@ -8,6 +8,7 @@ import Link from "next/link";
 export default function HeroSection() {
   return (
     <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden">
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
           src="https://rezdy.com/wp-content/uploads/2018/11/Blog-Photos-86_11zon.jpg"
@@ -16,27 +17,27 @@ export default function HeroSection() {
           className="object-cover transition-opacity duration-500 opacity-100"
           priority
         />
-
-        {/* Optional gradient overlay (always shown) */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/20" />
       </div>
-      {/* Main Content Container */}
+
+      {/* Main Content */}
       <div className="relative z-10 h-full flex flex-col">
-        {/* Hero Content */}
         <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
           <div className="text-center text-white max-w-4xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-              Travel the World.{" "}
+            {/* Heading */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight drop-shadow-md">
+              Book Live Lessons.
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400">
-                Learn with Locals.
+                Explore Local Culture.
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-gray-100 max-w-3xl mx-auto leading-relaxed">
-              Book live language lessons and cultural experiences — in person or
-              on Zoom — with passionate local teachers.
+
+            {/* Subheading */}
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl my-8 sm:mb-8 text-gray-100 max-w-3xl mx-auto leading-relaxed drop-shadow">
+              We Believe Teachers Are the World’s Best Tour Guides.
             </p>
 
-            {/* Call-to-Action Buttons */}
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-8">
               <Link href="teacher">
                 <Button
@@ -48,7 +49,6 @@ export default function HeroSection() {
                 </Button>
               </Link>
               <Link href="">
-                {" "}
                 <Button
                   variant="outline"
                   size="lg"
@@ -77,12 +77,10 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Date Components Card */}
+        {/* Date Component */}
         <div className="relative z-20 pb-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div>
-              <NMDateComponents />
-            </div>
+            <NMDateComponents />
           </div>
         </div>
       </div>

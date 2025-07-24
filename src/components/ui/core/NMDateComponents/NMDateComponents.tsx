@@ -47,11 +47,19 @@ const NMDateComponents = () => {
             </Link>
           </div>
 
-          {/* 🔍 CTA Button */}
-          <div className="w-full md:w-auto">
-            <Link href="/teacher">
+          {/* 🔍 CTA Buttons */}
+          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+            <Link href="/teacher" className="w-full md:w-auto">
               <Button className="w-full md:w-auto bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-4 rounded-xl shadow-md hover:brightness-110 hover:scale-105 transition-all duration-200 font-semibold text-base">
                 Find a Teacher
+              </Button>
+            </Link>
+            <Link href="/become-teacher" className="w-full md:w-auto">
+              <Button
+                variant="outline"
+                className="w-full md:w-auto border-[#FF8926] text-[#FF8926] hover:bg-[#FF8926]/10 px-6 py-4 rounded-xl font-semibold text-base transition-all"
+              >
+                Become a Teacher
               </Button>
             </Link>
           </div>
