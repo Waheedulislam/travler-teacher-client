@@ -18,6 +18,7 @@ import {
 import Image from "next/image";
 import { createArticle } from "@/services/Articles";
 import { IArticle } from "@/types";
+import Link from "next/link";
 
 export default function CreateArticleForm() {
   const [formData, setFormData] = useState<IArticle>({
@@ -43,7 +44,6 @@ export default function CreateArticleForm() {
     if (error) setError(null);
   };
 
-  // Create handler
   const handleCreate = async () => {
     setLoading(true);
     setError(null);
@@ -235,9 +235,21 @@ export default function CreateArticleForm() {
             </Button>
           </div>
 
+          {/* Footer Message */}
           <p className="text-center text-sm text-gray-500 pt-4">
             Fill in all details carefully before submitting
           </p>
+
+          {/* Delete Article Text Link */}
+          <div className="pt-4 text-center">
+            <p className="text-sm text-gray-500">Want to remove an article?</p>
+            <Link
+              href="/delete-article"
+              className="mt-1 inline-block text-sm font-medium text-red-600 hover:underline hover:text-red-700 transition-colors duration-200"
+            >
+              Go to Delete Article Page
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>
