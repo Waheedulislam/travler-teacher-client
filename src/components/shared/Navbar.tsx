@@ -86,10 +86,10 @@ const Navbar = () => {
 
     // Admin hole ALL-Users link add koro
     if (user?.role === "admin") {
+      navItems.filter((item) => item.name !== "FAQ");
       navItems.push({ name: "Users", href: "/all-users" });
-    }
-    if (user?.role === "admin") {
       navItems.push({ name: "Create-Article", href: "/create-article" });
+      navItems.push({ name: "Delete-Article", href: "/delete-article" });
     }
 
     return (
