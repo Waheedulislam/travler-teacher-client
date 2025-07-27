@@ -54,7 +54,7 @@ const NMDateComponents = () => {
                 Find a Teacher
               </Button>
             </Link>
-            <Link href="/" className="w-full md:w-auto">
+            <Link href="/teacher" className="w-full md:w-auto">
               <Button
                 variant="outline"
                 className="w-full md:w-auto border-[#FF8926] text-[#FF8926] hover:bg-[#FF8926]/10 px-6 py-4 rounded-xl font-semibold text-base transition-all"
