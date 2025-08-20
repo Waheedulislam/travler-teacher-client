@@ -57,7 +57,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Teachers / Explore */}
+        {/* Teachers  */}
         <div>
           <h4 className="font-semibold text-xl mb-3">Explore</h4>
           <ul className="space-y-2 text-[#5E6282] text-lg">
