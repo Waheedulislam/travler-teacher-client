@@ -40,6 +40,7 @@ const NMContactComponents = () => {
               {" "}
               <Button
                 size="lg"
+                disabled
                 variant="outline"
                 className="border-2 hover:bg-gray-50 bg-transparent"
               >

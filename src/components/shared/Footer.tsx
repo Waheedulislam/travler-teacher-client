@@ -1,11 +1,32 @@
+"use client";
 import { FaInstagram, FaTwitter } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../public/assets/logo.png";
 import { FaYoutube } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/Context/UserContext";
+import LoginRegisterModal from "../ui/core/NMTabs/NMTabs";
 
 export default function Footer() {
+  const router = useRouter();
+  const { user } = useUser();
+
+  const handleProfileClick = () => {
+    if (user?.email) {
+      router.push("/profile");
+    } else {
+      // Open login modal
+    }
+  };
+
+  const handleHelpCenterClick = () => {
+    if (typeof window !== "undefined" && window.$crisp) {
+      window.$crisp.push(["do", "chat:open"]);
+    }
+  };
+
   return (
     <footer className="bg-yellow-400 py-10 px-6 md:px-16 text-base text-black">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10 items-start">
@@ -25,34 +46,30 @@ export default function Footer() {
           <h4 className="font-semibold text-xl mb-3">About Us</h4>
           <ul className="space-y-2 text-[#5E6282] text-lg">
             <li>
-              <Link href="#">How It Works</Link>
+              <Link href="/faq">How It Works</Link>
             </li>
             <li>
-              <Link href="#">Become a Teacher</Link>
+              <Link href="/privacy-policy">Privacy & Policy</Link>
             </li>
             <li>
-              <Link href="#">Terms & Privacy</Link>
-            </li>
-            <li>
-              <Link href="#">Blog</Link>
+              <Link href="/terms-service">Terms & Service</Link>
             </li>
           </ul>
         </div>
-        {/* Teachers */}
+
+        {/* Teachers / Explore */}
         <div>
-          <h4 className="font-semibold text-xl mb-3">Teachers</h4>
+          <h4 className="font-semibold text-xl mb-3">Explore</h4>
           <ul className="space-y-2 text-[#5E6282] text-lg">
             <li>
-              <Link href="#">Countries</Link>
+              <Link href="/teacher">Teachers</Link>
             </li>
             <li>
-              <Link href="#">Categories</Link>
+              <Link href="/category">Countries</Link>
             </li>
+
             <li>
-              <Link href="#">Sign Up</Link>
-            </li>
-            <li>
-              <Link href="#">Policy</Link>
+              <Link href="/faq">FaQ</Link>
             </li>
           </ul>
         </div>
@@ -61,15 +78,37 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold text-xl mb-3">Other</h4>
           <ul className="space-y-2 text-[#5E6282] text-lg">
+            {user?.email ? (
+              <li>
+                <button
+                  onClick={handleProfileClick}
+                  className="hover:underline text-left"
+                >
+                  Profile
+                </button>
+              </li>
+            ) : (
+              <LoginRegisterModal>
+                <li>
+                  <button
+                    onClick={handleProfileClick}
+                    className="hover:underline text-left"
+                  >
+                    Login
+                  </button>
+                </li>
+              </LoginRegisterModal>
+            )}
             <li>
-              <Link href="#">Profile</Link>
+              <Link href="/blog">Blog</Link>
             </li>
-
             <li>
-              <Link href="#">Contact</Link>
-            </li>
-            <li>
-              <Link href="#">Help Center</Link>
+              <button
+                onClick={handleHelpCenterClick}
+                className="hover:underline text-left"
+              >
+                Help Center
+              </button>
             </li>
           </ul>
         </div>

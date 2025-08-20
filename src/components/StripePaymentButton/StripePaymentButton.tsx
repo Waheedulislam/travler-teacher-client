@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "@/components/Firebase/firebase.config";
 
 interface Props {
-  teacherId: string;
-  teacherName: string;
+  teacherId?: string;
+  teacherName?: string;
   amount: number;
+  name: string;
 }
 
-const BookTourButton = ({ teacherId, teacherName, amount }: Props) => {
+const BookTourButton = ({ teacherId, teacherName, amount, name }: Props) => {
   const [firebaseUser] = useAuthState(auth);
   const { data: session } = useSession();
 
@@ -53,7 +53,7 @@ const BookTourButton = ({ teacherId, teacherName, amount }: Props) => {
       onClick={handleBooking}
       className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white py-2 px-4 rounded-md hover:brightness-110 transition-all text-xl"
     >
-      Book a Teacher 💳
+      {name}
     </button>
   );
 };
