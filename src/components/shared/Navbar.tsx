@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import Swal from "sweetalert2";
+
 import {
   Sheet,
   SheetContent,
@@ -30,17 +30,19 @@ import { useUser } from "@/Context/UserContext";
 import auth from "../Firebase/firebase.config";
 import logo from "../../../public/assets/logo.png";
 import userLogo from "../../../public/assets/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png";
+import { useTeacherMode } from "@/Context/TeacherModeContext";
 
 const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isTeacherMode, setIsTeacherMode] = useState(false);
   const { user } = useUser();
   const [firebaseUser] = useAuthState(auth);
   const [signOutFirebase] = useSignOut(auth);
   const [searchQuery, setSearchQuery] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const { isTeacherMode, setTeacherMode } = useTeacherMode();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,7 +86,6 @@ const Navbar = () => {
       { name: "FAQ", href: "/faq" },
     ];
 
-    // Admin hole ALL-Users link add koro
     if (user?.role === "admin") {
       navItems.push({ name: "Users", href: "/all-users" });
       navItems.push({ name: "Create-Article", href: "/create-article" });
@@ -110,11 +111,6 @@ const Navbar = () => {
     );
   };
 
-  const switchToTeacher = () => {
-    setIsTeacherMode(true);
-    setDropdownOpen(false);
-  };
-
   return (
     <nav className="w-full px-4 lg:px-12 py-3 bg-white shadow-sm flex items-center justify-between sticky top-0 z-50">
       <Link href="/">
@@ -132,7 +128,6 @@ const Navbar = () => {
       </div>
 
       <div className="hidden lg:flex items-center gap-4">
-        {/* 🔥 Admin hole search input dekhabe na */}
         {!isTeacherMode && user?.role !== "admin" && (
           <form onSubmit={handleSearch} className="flex items-center gap-2">
             <input
@@ -169,21 +164,18 @@ const Navbar = () => {
                 <DropdownMenuItem onClick={() => router.push("/profile")}>
                   <ExternalLink className="w-4 h-4 mr-2" /> View Profile
                 </DropdownMenuItem>
-
                 {!isTeacherMode && (
                   <div className="px-3 py-1">
                     <Button
                       variant="outline"
-                      onClick={switchToTeacher}
+                      onClick={() => setTeacherMode(true)}
                       className="w-full border-orange-500 text-orange-600 hover:bg-orange-100"
                     >
                       👨‍🏫 Become a Teacher
                     </Button>
                   </div>
                 )}
-
                 <DropdownMenuSeparator />
-
                 <DropdownMenuItem onClick={() => router.push("/")}>
                   <Copy className="w-4 h-4 mr-2" /> Home
                 </DropdownMenuItem>
@@ -193,7 +185,7 @@ const Navbar = () => {
             {isTeacherMode && (
               <Button
                 variant="outline"
-                onClick={() => setIsTeacherMode(false)}
+                onClick={() => setTeacherMode(false)}
                 className="border-orange-500 text-orange-600 hover:bg-orange-100"
               >
                 🎓 Switch to Student
@@ -230,11 +222,11 @@ const Navbar = () => {
           <SheetContent side="left">
             <SheetHeader>
               <SheetTitle className="text-left text-lg font-semibold mx-2">
-                Menu
+                {" "}
+                Menu{" "}
               </SheetTitle>
             </SheetHeader>
 
-            {/* 🔥 Admin hole mobile e search input dekhabe na */}
             {user?.role !== "admin" && (
               <form onSubmit={handleSearch} className="flex gap-2 mt-4 px-2">
                 <input
@@ -246,83 +238,52 @@ const Navbar = () => {
                 />
                 <Button
                   type="submit"
-                  className="bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-6 py-2 rounded-md hover:opacity-90"
+                  className="bg-gradient-to-r from-[#FF700B] to-[#FDC90C] text-white px-4 py-2 rounded-md"
                 >
-                  search
+                  Search
                 </Button>
               </form>
             )}
 
-            <div className="mt-6 space-y-6 px-2">
-              <NavLinks />
+            <NavLinks />
 
-              {user || firebaseUser ? (
-                <>
-                  <div
-                    onClick={() => {
-                      router.push("/profile");
-                      setMenuOpen(false);
-                    }}
-                    className="flex items-center gap-3 px-2 py-1 cursor-pointer"
-                  >
-                    <Image
-                      src={user?.image || firebaseUser?.photoURL || userLogo}
-                      alt="User Avatar"
-                      width={40}
-                      height={40}
-                      className="rounded-full border border-gray-300"
-                    />
-                    <span className="font-medium">My Profile</span>
-                  </div>
-
-                  {!isTeacherMode && (
-                    <Button
-                      onClick={() => {
-                        setIsTeacherMode(true);
-                        setMenuOpen(false);
-                      }}
-                      className="w-full bg-orange-100 text-orange-700"
-                    >
-                      👨‍🏫 Become a Teacher
-                    </Button>
-                  )}
-
-                  {isTeacherMode && (
-                    <Button
-                      onClick={() => {
-                        setIsTeacherMode(false);
-                        setMenuOpen(false);
-                      }}
-                      className="w-full bg-orange-100 text-orange-700"
-                    >
-                      🎓 Switch to Student
-                    </Button>
-                  )}
-
+            {user || firebaseUser ? (
+              <div className="flex flex-col gap-3 mt-4">
+                {!isTeacherMode && (
                   <Button
-                    onClick={handleLogOut}
-                    className="w-full bg-red-500 text-white py-2 rounded-md flex items-center gap-2"
+                    variant="outline"
+                    onClick={() => setTeacherMode(true)}
+                    className="w-full border-orange-500 text-orange-600 hover:bg-orange-100"
                   >
-                    <CgLogOut size={20} /> Logout
+                    👨‍🏫 Become a Teacher
                   </Button>
-                </>
-              ) : (
-                <LoginRegisterModal>
+                )}
+                {isTeacherMode && (
                   <Button
-                    variant="ghost"
-                    className="text-orange-500 text-xl flex items-center gap-2 w-full bg-orange-100 cursor-pointer"
+                    variant="outline"
+                    onClick={() => setTeacherMode(false)}
+                    className="w-full border-orange-500 text-orange-600 hover:bg-orange-100"
                   >
-                    <LoginIcon size={20} /> Login
+                    🎓 Switch to Student
                   </Button>
-                </LoginRegisterModal>
-              )}
-
-              <Link href="/teacher">
-                <Button className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md shadow hover:opacity-90">
-                  Find a Teacher
+                )}
+                <Button
+                  onClick={handleLogOut}
+                  className="w-full bg-red-500 text-white px-6 py-3 rounded-md hover:bg-white hover:text-red-500 hover:border-red-500 border border-transparent"
+                >
+                  <CgLogOut size={20} /> Logout
                 </Button>
-              </Link>
-            </div>
+              </div>
+            ) : (
+              <LoginRegisterModal>
+                <Button
+                  variant="ghost"
+                  className="text-orange-500 bg-orange-100 text-xl flex items-center gap-2 cursor-pointer"
+                >
+                  <LoginIcon size={20} /> Login
+                </Button>
+              </LoginRegisterModal>
+            )}
           </SheetContent>
         </Sheet>
       </div>

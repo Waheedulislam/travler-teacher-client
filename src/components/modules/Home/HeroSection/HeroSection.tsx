@@ -4,8 +4,22 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NMDateComponents from "@/components/ui/core/NMDateComponents/NMDateComponents";
 import Link from "next/link";
+import { useTeacherMode } from "@/Context/TeacherModeContext";
+import { useUser } from "@/Context/UserContext";
+import { toast } from "sonner";
 
 export default function HeroSection() {
+  const { isTeacherMode, setTeacherMode } = useTeacherMode();
+  const { user } = useUser();
+
+  const handleTeacherToggle = () => {
+    if (!user?.email) {
+      toast.error("Please login first to become a teacher or switch mode.");
+      return;
+    }
+    setTeacherMode(!isTeacherMode);
+  };
+
   return (
     <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden">
       {/* Background Image */}
@@ -48,15 +62,16 @@ export default function HeroSection() {
                   Find Your Teacher
                 </Button>
               </Link>
-              <Link href="/teacher">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="text-white border-2 border-yellow-400 hover:bg-yellow-400 hover:text-black font-semibold px-8 py-5 text-lg transition-all duration-300 transform hover:scale-105 bg-transparent backdrop-blur-sm shadow-lg"
-                >
-                  Become a Teacher
-                </Button>
-              </Link>
+              {/* Toggle Teacher Mode */}
+
+              <Button
+                variant="outline"
+                onClick={handleTeacherToggle}
+                size="lg"
+                className="text-white border-2 border-yellow-400 hover:bg-yellow-400 hover:text-black font-semibold px-8 py-5 text-lg transition-all duration-300 transform hover:scale-105 bg-transparent backdrop-blur-sm shadow-lg"
+              >
+                {isTeacherMode ? "Switch to Student" : "Become a Teacher"}
+              </Button>
             </div>
 
             {/* Trust Indicators */}

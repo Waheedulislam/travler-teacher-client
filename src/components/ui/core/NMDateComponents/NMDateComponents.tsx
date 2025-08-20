@@ -1,12 +1,26 @@
 "use client";
 
-import { Button } from "../../button";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
-import { Card } from "../../card";
 import Link from "next/link";
+import { useTeacherMode } from "@/Context/TeacherModeContext";
+import { useUser } from "@/Context/UserContext";
+import { Card } from "../../card";
+import { Button } from "../../button";
+import { toast } from "sonner";
 
 const NMDateComponents = () => {
+  const { isTeacherMode, setTeacherMode } = useTeacherMode();
+  const { user } = useUser();
+
+  const handleTeacherToggle = () => {
+    if (!user?.email) {
+      toast.error("Please login first to become a teacher or switch mode.");
+      return;
+    }
+    setTeacherMode(!isTeacherMode);
+  };
+
   return (
     <div className="w-full px-4">
       <Card className="mx-auto rounded-2xl bg-white/90 backdrop-blur-md shadow-xl border border-white/40 w-full max-w-4xl">
@@ -54,14 +68,15 @@ const NMDateComponents = () => {
                 Find a Teacher
               </Button>
             </Link>
-            <Link href="/teacher" className="w-full md:w-auto">
-              <Button
-                variant="outline"
-                className="w-full md:w-auto border-[#FF8926] text-[#FF8926] hover:bg-[#FF8926]/10 px-6 py-4 rounded-xl font-semibold text-base transition-all"
-              >
-                Become a Teacher
-              </Button>
-            </Link>
+
+            {/* Toggle Teacher Mode */}
+            <Button
+              onClick={handleTeacherToggle}
+              variant="outline"
+              className="w-full md:w-auto border-[#FF8926] text-[#FF8926] hover:bg-[#FF8926]/10 px-6 py-4 rounded-xl font-semibold text-base transition-all"
+            >
+              {isTeacherMode ? "Switch to Student" : "Become a Teacher"}
+            </Button>
           </div>
         </div>
       </Card>

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { SessionProvider } from "next-auth/react";
 import { UserProvider } from "@/Context/UserContext";
+import { TeacherModeProvider } from "@/Context/TeacherModeContext";
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -39,7 +40,7 @@ export function Providers({ children }: ProvidersProps) {
     <SessionProvider>
       <UserProvider>
         <CrispIntegration />
-        {children}
+        <TeacherModeProvider>{children}</TeacherModeProvider>
       </UserProvider>
     </SessionProvider>
   );
