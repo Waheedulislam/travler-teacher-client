@@ -136,6 +136,7 @@ const TeacherDetails = ({ teacher }: { teacher: ITeacher }) => {
                 teacherName={teacher.name}
                 amount={amount || 10}
                 name=" Book a Teacher 💳"
+                className=" bg-gradient-to-r from-orange-500 to-yellow-400 text-white"
               />
 
               <button

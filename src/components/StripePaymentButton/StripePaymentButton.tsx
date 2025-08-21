@@ -11,9 +11,16 @@ interface Props {
   teacherName?: string;
   amount: number;
   name: string;
+  className?: string;
 }
 
-const BookTourButton = ({ teacherId, teacherName, amount, name }: Props) => {
+const BookTourButton = ({
+  teacherId,
+  teacherName,
+  amount,
+  name,
+  className,
+}: Props) => {
   const [firebaseUser] = useAuthState(auth);
   const { data: session } = useSession();
 
@@ -51,7 +58,7 @@ const BookTourButton = ({ teacherId, teacherName, amount, name }: Props) => {
   return (
     <button
       onClick={handleBooking}
-      className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white py-2 px-4 rounded-md hover:brightness-110 transition-all text-xl"
+      className={`w-full py-2 px-4 rounded-md text-xl hover:brightness-110 transition-all ${className}`}
     >
       {name}
     </button>
