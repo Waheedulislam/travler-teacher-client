@@ -29,11 +29,11 @@ import Image from "next/image";
 import userLogo from "../../../../public/assets/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png";
 import { toast } from "sonner";
 
-interface TeacherProfileProps {
+interface UserProfileProps {
   user: IUser;
 }
 
-export default function TravelerProfileForm({ user }: TeacherProfileProps) {
+export default function TravelerProfileForm({ user }: UserProfileProps) {
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",

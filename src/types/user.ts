@@ -21,4 +21,6 @@ export interface IUser {
   foodPreferences?: string;
   socialStyle?: number;
   adventurousness?: number;
+
+  accommodationPreferences?: string;
 }
