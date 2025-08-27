@@ -10,6 +10,7 @@ export default async function UserTable() {
   const result = await getAllUsers();
   const users: IUser[] = result?.data || [];
   console.log(users);
+
   return (
     <Card className="mt-6 shadow-lg">
       <CardContent className="overflow-x-auto p-4">
@@ -27,7 +28,7 @@ export default async function UserTable() {
             <tbody>
               {users.map((user) => (
                 <tr
-                  key={user._id}
+                  key={user.userId}
                   className="border-b hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
                   <td className="p-3">

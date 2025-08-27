@@ -30,7 +30,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  console.log("bappy:", user);
   useEffect(() => {
     const handleUser = async () => {
       try {
