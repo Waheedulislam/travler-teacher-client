@@ -9,84 +9,73 @@ import TeacherCard from "./teacherCard";
 import { getAllTeachers } from "@/services/TeacherServices";
 import { ITeacher } from "@/types";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { FiSearch, FiX } from "react-icons/fi";
 
 const AllTeachers = () => {
+  const searchParams = useSearchParams();
+
   const [teachers, setTeachers] = useState<ITeacher[]>([]);
   const [filteredTeachers, setFilteredTeachers] = useState<ITeacher[]>([]);
   const [searchName, setSearchName] = useState("");
   const [searchCountry, setSearchCountry] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState({
-    name: "",
-    country: "",
-  });
+  const [searchBudget, setSearchBudget] = useState("any");
 
-  const searchParams = useSearchParams();
-  const urlSearch = searchParams.get("search") || "";
-
-  // Fetch teachers on mount
   useEffect(() => {
     const fetchTeachers = async () => {
       const response = await getAllTeachers();
       const data: ITeacher[] = response?.data?.result || [];
       setTeachers(data);
 
-      if (urlSearch) {
-        const filtered = data.filter((teacher) =>
-          teacher.name.toLowerCase().includes(urlSearch.toLowerCase())
-        );
-        setFilteredTeachers(filtered);
-        setSearchName(urlSearch);
-      } else {
-        setFilteredTeachers(data);
-      }
+      // URL params থেকে value নাও
+      setSearchName(searchParams.get("name") || "");
+      setSearchCountry(searchParams.get("country") || "");
+      setSearchBudget(searchParams.get("budget") || "any");
     };
+
     fetchTeachers();
-  }, [urlSearch]);
+  }, [searchParams]);
 
-  // Debounce search input
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      setDebouncedSearch({
-        name: searchName.trim().toLowerCase(),
-        country: searchCountry.trim().toLowerCase(),
-      });
-    }, 300);
+  const applyFilters = (
+    data: ITeacher[],
+    name: string,
+    country: string,
+    budget: string
+  ) => {
+    return data.filter((teacher) => {
+      const nameMatch = name
+        ? teacher.name.toLowerCase().includes(name.toLowerCase())
+        : true;
 
-    return () => clearTimeout(delay);
-  }, [searchName, searchCountry]);
+      const countryMatch = country
+        ? teacher.country.toLowerCase().includes(country.toLowerCase())
+        : true;
 
-  // Auto filter when debounced values change
-  useEffect(() => {
-    const { name, country } = debouncedSearch;
+      let budgetMatch = true;
+      if (budget !== "any") {
+        const priceMatch = teacher.description.match(/\d+/);
+        const price = priceMatch ? parseInt(priceMatch[0], 10) : 0;
 
-    const filtered = teachers.filter((teacher) => {
-      const nameMatch = teacher.name.toLowerCase().includes(name);
-      const countryMatch = teacher.country.toLowerCase().includes(country);
-      return nameMatch && countryMatch;
+        if (budget === "5-25") budgetMatch = price >= 5 && price <= 25;
+        else if (budget === "25-50") budgetMatch = price > 25 && price <= 50;
+        else if (budget === "over-50") budgetMatch = price > 50;
+      }
+
+      return nameMatch && countryMatch && budgetMatch;
     });
-
-    setFilteredTeachers(filtered);
-  }, [debouncedSearch, teachers]);
-
-  // Manual search handler (search button)
-  const handleSearch = () => {
-    const name = searchName.trim().toLowerCase();
-    const country = searchCountry.trim().toLowerCase();
-
-    const filtered = teachers.filter((teacher) => {
-      const nameMatch = teacher.name.toLowerCase().includes(name);
-      const countryMatch = teacher.country.toLowerCase().includes(country);
-      return nameMatch && countryMatch;
-    });
-
-    setFilteredTeachers(filtered);
   };
+
+  useEffect(() => {
+    const filtered = applyFilters(
+      teachers,
+      searchName,
+      searchCountry,
+      searchBudget
+    );
+    setFilteredTeachers(filtered);
+  }, [teachers, searchName, searchCountry, searchBudget]);
 
   return (
     <Container className="bg-gray-50 min-h-screen pb-20 px-4 sm:px-6 lg:px-12 xl:px-20">
-      {/* Title */}
       <div className="mt-8 text-center">
         <Title title="All Teachers" />
         <h1 className="italic text-xl sm:text-2xl font-normal mt-4 text-gray-700 max-w-3xl mx-auto">
@@ -94,14 +83,13 @@ const AllTeachers = () => {
         </h1>
       </div>
 
-      {/* Date Picker */}
       <div className="mt-8 max-w-4xl mx-auto">
         <NMDateComponents />
       </div>
 
-      {/* Search Section */}
+      {/* Filters */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-12 max-w-6xl mx-auto">
-        {/* Search by Name */}
+        {/* Name */}
         <div className="w-full">
           <label className="block font-semibold text-gray-700 mb-2">
             Search by name
@@ -126,7 +114,7 @@ const AllTeachers = () => {
           </div>
         </div>
 
-        {/* Search by Country */}
+        {/* Country */}
         <div className="w-full">
           <label className="block font-semibold text-gray-700 mb-2">
             Search by country
@@ -151,18 +139,24 @@ const AllTeachers = () => {
           </div>
         </div>
 
-        {/* Manual Search Button */}
-        <div className="flex items-end">
-          <Button
-            onClick={handleSearch}
-            className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white py-3"
+        {/* Budget */}
+        <div className="w-full">
+          <label className="block font-semibold text-gray-700 mb-2">
+            Budget
+          </label>
+          <select
+            value={searchBudget}
+            onChange={(e) => setSearchBudget(e.target.value)}
+            className="w-full border rounded-lg p-3 h-12"
           >
-            Search Teacher
-          </Button>
+            <option value="any">Any Budget</option>
+            <option value="5-25">$5 – $25</option>
+            <option value="25-50">$25 – $50</option>
+          </select>
         </div>
       </div>
 
-      {/* Teachers List */}
+      {/* Teacher Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10 mt-14 max-w-8xl mx-auto">
         {filteredTeachers.length > 0 ? (
           filteredTeachers.map((teacher, index) => (
@@ -170,7 +164,9 @@ const AllTeachers = () => {
           ))
         ) : (
           <p className="col-span-full text-center text-gray-500 text-lg mt-16">
-            No teachers found.
+            No teachers found for this combination. <br />
+            Try searching with another{" "}
+            <span className="text-red-700">name, country, or budget.</span>
           </p>
         )}
       </div>

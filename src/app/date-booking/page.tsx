@@ -31,21 +31,19 @@ export default function SearchWithCountries() {
   const handleSearch = () => {
     setLoading(true);
 
-    const filters = {
-      country,
-      price: pricePreset,
-    };
-
-    console.log("Filters applied:", filters);
+    const filters = new URLSearchParams({
+      country: country || "",
+      budget: pricePreset || "any",
+    });
 
     setTimeout(() => {
       setLoading(false);
-      router.push("/teacher");
-    }, 800);
+      router.push(`/teacher?${filters.toString()}`);
+    }, 500);
   };
 
   return (
-    <div className="container mx-auto p-6 ">
+    <div className="container mx-auto p-6">
       <div className="text-center mb-16">
         <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
           <Sparkles className="w-4 h-4" />
@@ -60,8 +58,8 @@ export default function SearchWithCountries() {
           perfect plan for your next adventure.
         </p>
       </div>
+
       <Card className="bg-gradient-to-br my-20 py-20 from-white to-gray-50 p-6 rounded-3xl shadow-2xl mx-auto relative overflow-hidden border border-white/50">
-        {/* Top controls */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Country dropdown */}
           <div>
@@ -120,10 +118,8 @@ export default function SearchWithCountries() {
 
               <SelectContent>
                 <SelectItem value="any">Any Budget</SelectItem>
-                <SelectItem value="upto-25">Up to $25</SelectItem>
+                <SelectItem value="5-25">$5 – $25</SelectItem>
                 <SelectItem value="25-50">$25 – $50</SelectItem>
-                <SelectItem value="50-100">$50 – $100</SelectItem>
-                <SelectItem value="over-100">Over $100</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -146,31 +142,8 @@ export default function SearchWithCountries() {
             </Button>
           </div>
         </div>
-
-        {/* Quick Filters */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="flex flex-wrap gap-3 items-center">
-            <span className="text-sm font-medium text-gray-700">
-              Quick Filters:
-            </span>
-            {[
-              "Online Classes",
-              "Native Speakers",
-              "Certified Teachers",
-              "Group Classes",
-            ].map((filter) => (
-              <Button
-                key={filter}
-                variant="outline"
-                size="sm"
-                className="rounded-full border-teal-300 text-teal-700 bg-teal-50/50 hover:bg-teal-100 hover:border-teal-400 transition-colors duration-200"
-              >
-                {filter}
-              </Button>
-            ))}
-          </div>
-        </div>
       </Card>
+
       {/* PricingPlans */}
       <PricingPlans />
 

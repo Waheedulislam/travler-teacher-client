@@ -6,4 +6,5 @@ export interface ITeacher {
   description: string;
   countryImage: string;
   review: string;
+  price: number;
 }

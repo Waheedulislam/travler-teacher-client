@@ -7,6 +7,7 @@ import Link from "next/link";
 import React from "react";
 
 const TeacherCard = ({ teacher }: { teacher: ITeacher }) => {
+  console.log(teacher);
   return (
     <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
       <Link href={`/teacher/${teacher._id}`} passHref>

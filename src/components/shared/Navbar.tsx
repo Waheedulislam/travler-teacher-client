@@ -44,10 +44,11 @@ const Navbar = () => {
 
   const { isTeacherMode, setTeacherMode } = useTeacherMode();
 
+  // Search now sends "name" param
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/teacher?search=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/teacher?name=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
       setMenuOpen(false);
     }
@@ -123,6 +124,7 @@ const Navbar = () => {
         />
       </Link>
 
+      {/* Desktop nav */}
       <div className="hidden lg:flex flex-1 items-center justify-center">
         <NavLinks />
       </div>
@@ -222,8 +224,7 @@ const Navbar = () => {
           <SheetContent side="left">
             <SheetHeader>
               <SheetTitle className="text-left text-lg font-semibold mx-2">
-                {" "}
-                Menu{" "}
+                Menu
               </SheetTitle>
             </SheetHeader>
 
